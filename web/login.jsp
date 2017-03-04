@@ -1,3 +1,10 @@
+<%-- 
+    Document   : newjsp
+    Created on : Mar 4, 2017, 12:14:32 AM
+    Author     : user
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
     
@@ -48,13 +55,13 @@
                         <form action="Controller?action=checklogin" method="post">
                             <h2 style="margin-bottom: 50px">Who are you?</h2>
                             <div class="form-group">
-                                <input class="form-control" name="username" type="text" required placeholder="Username"/>
+                                <input class="form-control" name="username" value="<%=userName%>" type="text" required placeholder="Username"/>
                             </div>
                             <div class="form-group">
-                                <input class="form-control" name="password" type="password" required placeholder="Password"/>
+                                <input class="form-control" name="password" value="<%=password%>" type="password" required placeholder="Password"/>
                             </div>
                             <div class="form-group text-left">
-                                <input type="checkbox"  name="checkremember" class="form-control-static"/>
+                                <input type="checkbox"   name="checkremember"   class="form-control-static"/>
                                 Remember me
                             </div>
                             <div class="form-group">

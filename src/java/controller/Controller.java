@@ -5,12 +5,17 @@
  */
 package controller;
 
+import entity.Account;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import model.ConnectDB;
 
 /**
  *
@@ -31,21 +36,71 @@ public class Controller extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Controller</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Controller at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            String action = request.getParameter("action");
+            HttpSession session = request.getSession();
+            if (action.equals("checklogin")) {            
+                Account acc = checkLogin(request, response);
+                session.setAttribute("session_Account", acc);
+            }
         }
-        // day bai
+
+    }
+
+    private Account checkLogin(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String idUser = request.getParameter("username");
+        String pass = request.getParameter("password");
+        if (request.getParameter("checkremember") != null) {
+          String remember = request.getParameter("checkremember");
+          System.out.println("remember : " + remember);
+          Cookie cUserName = new Cookie("cookuser", idUser.trim());
+          Cookie cPassword = new Cookie("cookpass", pass.trim());
+           Cookie cRemember = new Cookie("cookrem", remember.trim());
+          cUserName.setMaxAge(60 * 60 * 24 * 15);//15 days
+          cPassword.setMaxAge(60 * 60 * 24 * 15);    
+          cRemember.setMaxAge(60 * 60 * 24 * 15);
+          response.addCookie(cUserName);
+          response.addCookie(cPassword);
+          response.addCookie(cRemember);
+        }
+        Account acc = ConnectDB.checkLogin(idUser, pass);
+        if (acc != null) {
+            switch (acc.getLever()) {
+                case 1:
+                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("index.html");
+                    requestDispatcher.forward(request, response);
+                    
+                    break;
+                case 2:
+                    sendMessage(response, acc.getFullName(), "login.html");
+                    break;
+                case 3:
+                    sendMessage(response, acc.getFullName(), "login.html");
+                    break;
+                case 4:
+                    sendMessage(response, acc.getFullName(), "login.html");
+                    break;
+                default:
+                    return null;
+            }
+        }
+        else{
+            String mes="UserName or PassWord is failed!";
+            sendMessage(response,mes, "login.html");
+        }
+        return acc;
+    }
+
+    private void sendMessage(HttpServletResponse response, String sms, String path) throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        out.println("<script type=\"text/javascript\">");
+        out.println("alert('" + sms + "');");
+        out.println("location='" + path + "';");
+        out.println("</script>");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *
