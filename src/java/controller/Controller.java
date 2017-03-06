@@ -35,57 +35,39 @@ public class Controller extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
             String action = request.getParameter("action");
             HttpSession session = request.getSession();
             if (action.equals("checklogin")) {            
                 Account acc = checkLogin(request, response);
                 session.setAttribute("session_Account", acc);
             }
-        }
 
     }
 
     private Account checkLogin(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String idUser = request.getParameter("username");
         String pass = request.getParameter("password");
-        if (request.getParameter("checkremember") != null) {
-          String remember = request.getParameter("checkremember");
-          System.out.println("remember : " + remember);
-          Cookie cUserName = new Cookie("cookuser", idUser.trim());
-          Cookie cPassword = new Cookie("cookpass", pass.trim());
-           Cookie cRemember = new Cookie("cookrem", remember.trim());
-          cUserName.setMaxAge(60 * 60 * 24 * 15);//15 days
-          cPassword.setMaxAge(60 * 60 * 24 * 15);    
-          cRemember.setMaxAge(60 * 60 * 24 * 15);
-          response.addCookie(cUserName);
-          response.addCookie(cPassword);
-          response.addCookie(cRemember);
-        }
         Account acc = ConnectDB.checkLogin(idUser, pass);
-        if (acc != null) {
+        if (acc!=null) {
             switch (acc.getLever()) {
                 case 1:
                     RequestDispatcher requestDispatcher = request.getRequestDispatcher("index.html");
                     requestDispatcher.forward(request, response);
-                    
                     break;
                 case 2:
-                    sendMessage(response, acc.getFullName(), "login.html");
+                    sendMessage(response, acc.getFullName(), "login.jsp");
                     break;
                 case 3:
-                    sendMessage(response, acc.getFullName(), "login.html");
+                    sendMessage(response, acc.getFullName(), "login.jsp");
                     break;
                 case 4:
-                    sendMessage(response, acc.getFullName(), "login.html");
+                    sendMessage(response, acc.getFullName(), "login.jsp");
                     break;
-                default:
-                    return null;
             }
         }
         else{
-            String mes="UserName or PassWord is failed!";
-            sendMessage(response,mes, "login.html");
+            String mes="UserName or PassWord is wrong!";
+            sendMessage(response,mes, "login.jsp");
         }
         return acc;
     }
