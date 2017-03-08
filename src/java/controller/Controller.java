@@ -6,8 +6,10 @@
 package controller;
 
 import entity.Account;
+import entity.Claim;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -15,7 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.ConnectDB;
+import model.Connect_DB;
 
 /**
  *
@@ -35,23 +37,38 @@ public class Controller extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-            String action = request.getParameter("action");
-            HttpSession session = request.getSession();
-            if (action.equals("checklogin")) {            
-                Account acc = checkLogin(request, response);
-                session.setAttribute("session_Account", acc);
-            }
+        String action = request.getParameter("action");
+        HttpSession session = request.getSession();
+        if (action.equals("checklogin")) {
+            Account acc = checkLogin(request, response);
+            session.setAttribute("session_Account", acc);
+
+        }
+        if (action.equals("viewC")) {
+
+            List<Claim> lClaim = Connect_DB.getAllClaim();
+            session.setAttribute("listClaim", lClaim);
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("process.jsp");
+            requestDispatcher.forward(request, response);
+        }
+        if(action.equals("viewDetail")){
+            String id=request.getParameter("id");
+            Claim claim=Connect_DB.getClaimByIdClaim(Integer.parseInt(id));
+          
+            session.setAttribute("ClaimDetail", claim);
+            response.sendRedirect("sample/detail-process.jsp");
+        }
 
     }
 
     private Account checkLogin(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String idUser = request.getParameter("username");
         String pass = request.getParameter("password");
-        Account acc = ConnectDB.checkLogin(idUser, pass);
-        if (acc!=null) {
+        Account acc = Connect_DB.checkLogin(idUser, pass);
+        if (acc != null) {
             switch (acc.getLever()) {
                 case 1:
-                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("index.html");
+                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("process.jsp");
                     requestDispatcher.forward(request, response);
                     break;
                 case 2:
@@ -64,10 +81,9 @@ public class Controller extends HttpServlet {
                     sendMessage(response, acc.getFullName(), "login.jsp");
                     break;
             }
-        }
-        else{
-            String mes="UserName or PassWord is wrong!";
-            sendMessage(response,mes, "login.jsp");
+        } else {
+            String mes = "UserName or PassWord is wrong!";
+            sendMessage(response, mes, "login.jsp");
         }
         return acc;
     }
@@ -82,7 +98,6 @@ public class Controller extends HttpServlet {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-
     /**
      * Handles the HTTP <code>GET</code> method.
      *
