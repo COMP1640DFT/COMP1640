@@ -6,6 +6,7 @@
 package controller;
 
 import entity.Account;
+import entity.Claim;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -41,9 +42,19 @@ public class Controller extends HttpServlet {
                 Account acc = checkLogin(request, response);
                 session.setAttribute("session_Account", acc);
             }
+            if (action.equals("viewstatistic")) {
+                viewAllStudentUpClaimWithOutEvidence(request, response);
+            }
 
     }
-
+    private void viewAllStudentUpClaimWithOutEvidence(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        response.setContentType("text/html;charset=UTF-8");
+        Claim claim = new Claim();
+        claim.setList(ConnectDB.getStudentUpClaimWithOutEvidence());
+        HttpSession session = request.getSession();
+        session.setAttribute("beanClaim", claim);
+        response.sendRedirect("statistics.jsp");
+    }
     private Account checkLogin(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String idUser = request.getParameter("username");
         String pass = request.getParameter("password");
