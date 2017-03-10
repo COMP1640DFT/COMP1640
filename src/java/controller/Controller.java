@@ -7,8 +7,11 @@ package controller;
 
 import entity.Account;
 import entity.Claim;
+import entity.Major;
+import entity.Statistic;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -37,32 +40,36 @@ public class Controller extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-            String action = request.getParameter("action");
-            HttpSession session = request.getSession();
-            if (action.equals("checklogin")) {            
-                Account acc = checkLogin(request, response);
-                session.setAttribute("session_Account", acc);
-            }
-            if (action.equals("viewstatistic")) {
-                viewAllStudentUpClaimWithOutEvidence(request, response);
-            }
-             if (action.equals("viewC")) {
+        String action = request.getParameter("action");
+        HttpSession session = request.getSession();
+        if (action.equals("checklogin")) {
+            Account acc = checkLogin(request, response);
+            session.setAttribute("session_Account", acc);
+        }
+        if (action.equals("viewstatistic")) {
+            viewAllStudentUpClaimWithOutEvidence(request, response);
+        }
+        if (action.equals("viewC")) {
 
             List<Claim> lClaim = ConnectDB.getAllClaim();
             session.setAttribute("listClaim", lClaim);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("process.jsp");
             requestDispatcher.forward(request, response);
         }
-        if(action.equals("viewDetail")){
-            String id=request.getParameter("id");
-            Claim claim=ConnectDB.getClaimByIdClaim(Integer.parseInt(id));
-          
+        if (action.equals("viewDetail")) {
+            String id = request.getParameter("id");
+            Claim claim = ConnectDB.getClaimByIdClaim(Integer.parseInt(id));
+
             session.setAttribute("ClaimDetail", claim);
             response.sendRedirect("sample/detail-process.jsp");
         }
-            
+        
+        if(action.equals("viewStatisticChart")){
+            viewStaticsChart(request, response);
+        }
 
     }
+
     private void viewAllStudentUpClaimWithOutEvidence(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html;charset=UTF-8");
         Claim claimWithoutEvidence = new Claim();
@@ -74,11 +81,12 @@ public class Controller extends HttpServlet {
         session.setAttribute("beanClaim2", claimUnresolvedAfterTwoWeek);
         response.sendRedirect("statistics.jsp");
     }
+
     private Account checkLogin(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String idUser = request.getParameter("username");
         String pass = request.getParameter("password");
         Account acc = ConnectDB.checkLogin(idUser, pass);
-        if (acc!=null) {
+        if (acc != null) {
             switch (acc.getLever()) {
                 case 1:
                     RequestDispatcher requestDispatcher = request.getRequestDispatcher("index.html");
@@ -94,10 +102,9 @@ public class Controller extends HttpServlet {
                     sendMessage(response, acc.getFullName(), "login.jsp");
                     break;
             }
-        }
-        else{
-            String mes="UserName or PassWord is wrong!";
-            sendMessage(response,mes, "login.jsp");
+        } else {
+            String mes = "UserName or PassWord is wrong!";
+            sendMessage(response, mes, "login.jsp");
         }
         return acc;
     }
@@ -110,9 +117,48 @@ public class Controller extends HttpServlet {
         out.println("location='" + path + "';");
         out.println("</script>");
     }
+    
+    private void viewStaticsChart(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        List<Major> listM = ConnectDB.getListMajor();
+        String[] month = {"01", "02", "03", "04", "05", "06", "07", "08", "09","10","11","12"};
+        //chart2
+        List<Statistic> listS = new ArrayList<>();
+        for (Major listM1 : listM) {
+            int data = ConnectDB.getCountClaimByMajor("2017", listM1.getId());
+            Statistic s = new Statistic();
+            s.setData(data);
+            s.setTitle(listM1.getName());
+            listS.add(s);
+        }
+        
+        //chart1
+        List<Statistic> listSOfClaims = new ArrayList<>();
+        for(int i =0; i<12; i++){
+            int data = ConnectDB.getCountClaimByMonth("2017",month[i], 1);
+            Statistic s = new Statistic();
+            s.setData(data);
+            listSOfClaims.add(s);
+        }
+        
+        //chart3
+        List<Statistic> listSOfStd = new ArrayList<>();
+        for(int i =0; i<12; i++){
+            int data = ConnectDB.getCountStudentUpClaim("2017",month[i], 1);
+            Statistic s = new Statistic();
+            s.setData(data);
+            listSOfStd.add(s);
+        }
+        
+        Statistic s = new Statistic();
+        s.setListStatisticAllMajor(listS);
+        s.setListNumOfClaim(listSOfClaims);
+        s.setListNumOfStudent(listSOfStd);
+        HttpSession session = request.getSession();
+        session.setAttribute("beanStatistic", s);
+        response.sendRedirect("statisticsChart.jsp");
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-
     /**
      * Handles the HTTP <code>GET</code> method.
      *

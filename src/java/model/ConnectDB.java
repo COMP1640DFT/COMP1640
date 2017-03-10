@@ -8,6 +8,7 @@ package model;
 import entity.Account;
 import entity.Claim;
 import entity.Decision;
+import entity.Major;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -195,9 +196,87 @@ public class ConnectDB {
         }
         return list;
     }
+    
+    public static List<Major> getListMajor(){
+        List<Major> list = new LinkedList<>();
+        String sql = "select * from tblMajor";
+        try {
+            PreparedStatement ps = connectdatabase().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Major m = new Major();
+                m.setId(rs.getInt(1));
+                m.setName(rs.getString(2));
+                list.add(m);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+    
+    public static int getCountClaimByMajor(String year, int idMajor){
+        int result = 0;
+        String sql = "select count(*) from tblClaim tc inner join tblUser tu on tc.idUser = tu.idUser \n" +
+                                    "inner join tblMajor tm on tu.idMajor = tm.id\n" +
+                                    "inner join tblClaimManage tcm on tc.idCM = tcm.idCM \n" +
+                                    "where \n" +
+                                    "tcm.createDate between '01/01/"+year+"' and '12/31/"+year+"'\n" +
+                                    "and tm.id = "+idMajor;
+        try {
+            PreparedStatement ps = connectdatabase().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                result = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+    
+    public static int getCountClaimByMonth(String year,String month, int idMajor){
+        int result = 0;
+        String sql = "select count(*) from tblClaim tc inner join tblUser tu on tc.idUser = tu.idUser \n" +
+                                    "inner join tblMajor tm on tu.idMajor = tm.id\n" +
+                                    "inner join tblClaimManage tcm on tc.idCM = tcm.idCM \n" +
+                                    "where \n" +
+                                    "tc.sendDate like '%"+year+"-"+month+"-%'"+
+                                    "and tm.id = "+idMajor;
+        try {
+            PreparedStatement ps = connectdatabase().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                result = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
 
+    public static int getCountStudentUpClaim(String year,String month, int idMajor){
+        int result = 0;
+        String sql = "select count(tc.idUser), tc.idUser from tblClaim tc inner join tblUser tu on tc.idUser = tu.idUser \n" +
+                                    "inner join tblMajor tm on tu.idMajor = tm.id\n" +
+                                    "inner join tblClaimManage tcm on tc.idCM = tcm.idCM \n" +
+                                    "where \n" +
+                                    "tc.sendDate like '%"+year+"-"+month+"-%'"+
+                                    "and tm.id = "+idMajor +" group by tc.idUser";
+        try {
+            PreparedStatement ps = connectdatabase().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                result++;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+    
     public static void main(String[] args) {
         connectdatabase();
-
+        
     }
 }
