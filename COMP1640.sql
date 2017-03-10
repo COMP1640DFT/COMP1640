@@ -108,10 +108,14 @@ select * from tblDecision
 select * from tblClaim
 select * from tblUser
 -- c.idClaim, c.title, c.sendDate, u.fullName
+--select all student up claim without evidence
 select c.idClaim, c.title, c.sendDate, u.fullName, cl.name from tblClaim c 
 inner join tblUser u on c.idUser = u.idUser 
 inner join tblClassDetail cd on u.idUser = cd.idUser
 inner join tblClass cl on cd.idClass = cl.id
 where c.filedata = ''
-
-select * from tblClaim c where c.sendDate >= DATEADD(DAY,-24,GETDATE()) 
+--select all claim unresolved after 14days
+select c.idClaim, c.title,c.content, c.sendDate,c.filedata, c._status, c.idUser, u.fullName 
+from tblClaim c 
+join tblUser u on c.idUser = u.idUser 
+where c.sendDate <= DATEADD(WEEK,-2,GETDATE()) and _status = 0

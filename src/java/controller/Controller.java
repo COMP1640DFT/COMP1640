@@ -65,10 +65,13 @@ public class Controller extends HttpServlet {
     }
     private void viewAllStudentUpClaimWithOutEvidence(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html;charset=UTF-8");
-        Claim claim = new Claim();
-        claim.setList(ConnectDB.getStudentUpClaimWithOutEvidence());
+        Claim claimWithoutEvidence = new Claim();
+        Claim claimUnresolvedAfterTwoWeek = new Claim();
+        claimWithoutEvidence.setList(ConnectDB.getStudentUpClaimWithOutEvidence());
+        claimUnresolvedAfterTwoWeek.setList(ConnectDB.getAllClaimUnresolvedAfterTwoWeek());
         HttpSession session = request.getSession();
-        session.setAttribute("beanClaim", claim);
+        session.setAttribute("beanClaim", claimWithoutEvidence);
+        session.setAttribute("beanClaim2", claimUnresolvedAfterTwoWeek);
         response.sendRedirect("statistics.jsp");
     }
     private Account checkLogin(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

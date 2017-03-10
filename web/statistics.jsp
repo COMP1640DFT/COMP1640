@@ -27,6 +27,7 @@
 </head>
 <body>
     <jsp:useBean id="beanClaim" class="entity.Claim" scope="session"></jsp:useBean>
+    <jsp:useBean id="beanClaim2" class="entity.Claim" scope="session"></jsp:useBean>
 <img src="img/bg_header.jpg" id="bg" alt="">
 <div class="container" style="min-height: 1000px">
     <section id="logo">
@@ -169,240 +170,35 @@
                 </div>
                 <div class="clearfix"></div>
                 <div class="col-sm-12">
-                    <h3>Title 2</h3>
+                    <h3>Claim unresolved after two weeks</h3>
                     <table class="dataTable table table-bordered table table-responsive">
                         <thead>
-                        <th>Column 1</th>
-                        <th>Collumn 2</th>
-                        <th>Collumn 3</th>
-                        <th>Collumn 4</th>
-                        <th>Collumn 5</th>
+                        <th>Claim ID</th>
+                        <th>Title</th>
+                        <th>Content</th>
+                        <th>Evidence File</th>
+                        <th>Send Date</th>
+                        <th>Status</th>
+                        <th>User</th>
+                        <th>Full Name</th>
                         </thead>
-                        <tfoot>
-                        <th>Column 1</th>
-                        <th>Collumn 2</th>
-                        <th>Collumn 3</th>
-                        <th>Collumn 4</th>
-                        <th>Collumn 5</th>
-                        </tfoot>
+                       
                         <tbody>
+                       
+                         <c:forEach var="cl" items="${beanClaim2.list}">
                         <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
+                            <td>${cl.idClaim}</td>
+                            <td>${cl.title}</td>
+                            <td>${cl.content}</td>
+                            <td>${cl.filedata}</td>
+                            <td>${cl.sendDate}</td>
+                            <c:if test="${cl.status == 0}">
+                                <td><c:out value="Waiting"/></td>
+                            </c:if>
+                            <td>${cl.idUser}</td>
+                            <td>${cl.userFullName}</td>
                         </tr>
-                        <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                        </tr>
-                        <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                        </tr>
-                        <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                        </tr>
-                        <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                        </tr>
-                        <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                        </tr>
-                        <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                        </tr>
-                        <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                        </tr>
-                        <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                        </tr>
-                        <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                        </tr>
-                        <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                        </tr>
-                        <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                        </tr>
-                        <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                        </tr>
-                        <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                        </tr>
-                        <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                        </tr>
-                        <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                        </tr>
-                        <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                        </tr>
-                        <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                        </tr>
-                        <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                        </tr>
-                        <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                        </tr>
-                        <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                        </tr>
-                        <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                        </tr>
-                        <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                        </tr>
-                        <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                        </tr>
-                        <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                        </tr>
-                        <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                        </tr>
-                        <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                        </tr>
-                        <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                        </tr>
-                        <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                        </tr>
-                        <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                        </tr>
-                        <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                        </tr>
+                        </c:forEach>
 
 
                         </tbody>

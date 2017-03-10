@@ -16,6 +16,7 @@ public class Claim {
     private String userFullName;
     private String idUser;
     private int idCM;
+    private int status;
     private Decision decision;
     private String className;
     List<Claim> list;
@@ -122,5 +123,14 @@ public class Claim {
     public void setClassName(String className) {
         this.className = className;
     }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+    
     
 }
