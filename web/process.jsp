@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,7 +55,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li class=""><a href="index.html">Home<span class="sr-only">(current)</span></a></li>
-                    <li><a href="#">View process</a></li>
+                    <li><a href="Controller?action=viewC">View process</a></li>
                     <li><a href="Controller?action=viewstatistic">View statistic</a></li>
                     <li><a href="#">About university</a></li>
                     <li><a href="#">Logout</a></li>
@@ -107,41 +108,15 @@
                         <th>Datetime</th>
                         </tfoot>
                         <tbody>
-                        <tr>
-                            <td>trang_lay</td>
-                            <td>dung123</td>
-                            <td><a href="sample/detail-process.html" class="btn-reader">Manifesto for Agile Software
-                                Development</a></td>
-                            <td>2017-01-03 08:00</td>
-                        </tr>
-                        <tr>
-                            <td>trang_lay</td>
-                            <td>dung123</td>
-                            <td><a href="sample/detail-process.html" class="btn-reader">Manifesto for Agile Software
-                                Development</a></td>
-                            <td>2017-01-03 08:00</td>
-                        </tr>
-                        <tr>
-                            <td>trang_lay</td>
-                            <td>dung123</td>
-                            <td><a href="sample/detail-process.html" class="btn-reader">Manifesto for Agile Software
-                                Development</a></td>
-                            <td>2017-01-03 08:00</td>
-                        </tr>
-                        <tr>
-                            <td>trang_lay</td>
-                            <td>dung123</td>
-                            <td><a href="sample/detail-process.html" class="btn-reader">Manifesto for Agile Software
-                                Development</a></td>
-                            <td>2017-01-03 08:00</td>
-                        </tr>
-                        <tr>
-                            <td>trang_lay</td>
-                            <td>dung123</td>
-                            <td><a href="sample/detail-process.html" class="btn-reader">Manifesto for Agile Software
-                                Development</a></td>
-                            <td>2017-01-03 08:00</td>
-                        </tr>
+                        <c:forEach items="${sessionScope['listClaim']}" var="cl">
+                                            <tr>
+                                            <td>${cl.idUser}</td>
+                                            <td>${cl.decision.idUser}</td>
+                                          
+                                            <td><a href="Controller?action=viewDetail&id=${cl.idClaim}" class="btn-reader">${cl.content}</a></td>
+                                            <td>${cl.sendDate}</td>
+                                        </tr>
+                                        </c:forEach>
                         </tbody>
                     </table>
                 </div>

@@ -7,11 +7,13 @@ package model;
 
 import entity.Account;
 import entity.Claim;
+import entity.Decision;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -76,6 +78,66 @@ public class ConnectDB {
         }
         return acc;
 
+    }
+    
+      public static List<Claim> getAllClaim() {
+        String sql = "select c.idClaim,c.title,c.content,c.sendDate,c.filedata,c.idUser,c.idCM,d.idUser from tblClaim c join tblDecision d on c.idClaim=d.idClaim";
+        Claim claim = null;
+        Decision s = null;
+        List<Claim> lClaim = new ArrayList<>();
+        try {
+            PreparedStatement ps = connectdatabase().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                claim = new Claim();
+                claim.setIdClaim(rs.getInt(1));
+                claim.setTitle(rs.getString(2));
+                claim.setContent(rs.getString(3));
+                claim.setSendDate(rs.getString(4));
+                claim.setFiledata(rs.getString(5));
+                claim.setIdUser(rs.getString(6));
+                claim.setIdCM(rs.getInt(7));
+                s = new Decision();
+                s.setIdUser(rs.getString(8));
+                claim.setDecision(s);
+                lClaim.add(claim);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return lClaim;
+    }
+
+    public static Claim getClaimByIdClaim(int id) {
+        String sql ="select c.idClaim,c.title,c.content,c.sendDate,c.filedata,c.idUser,c.idCM,d.idUser,d.content,u.fullName from tblClaim c join tblDecision d on c.idClaim=d.idClaim join tblUser u on u.idUser=c.idUser  where c.idClaim=?";
+        Claim claim = null;
+        Decision s = null;
+
+        try {
+            PreparedStatement ps = connectdatabase().prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                claim = new Claim();
+                claim.setIdClaim(rs.getInt(1));
+                claim.setTitle(rs.getString(2));
+                claim.setContent(rs.getString(3));
+                claim.setSendDate(rs.getString(4));
+                claim.setFiledata(rs.getString(5));
+                claim.setIdUser(rs.getString(6));
+                claim.setIdCM(rs.getInt(7));
+                s = new Decision();
+                s.setIdUser(rs.getString(8));
+                s.setContent(rs.getString(9));
+                claim.setUserFullName(rs.getString(10));
+                claim.setDecision(s);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return claim;
     }
 
     //Get all student send claim without evidence

@@ -9,6 +9,7 @@ import entity.Account;
 import entity.Claim;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -45,6 +46,21 @@ public class Controller extends HttpServlet {
             if (action.equals("viewstatistic")) {
                 viewAllStudentUpClaimWithOutEvidence(request, response);
             }
+             if (action.equals("viewC")) {
+
+            List<Claim> lClaim = ConnectDB.getAllClaim();
+            session.setAttribute("listClaim", lClaim);
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("process.jsp");
+            requestDispatcher.forward(request, response);
+        }
+        if(action.equals("viewDetail")){
+            String id=request.getParameter("id");
+            Claim claim=ConnectDB.getClaimByIdClaim(Integer.parseInt(id));
+          
+            session.setAttribute("ClaimDetail", claim);
+            response.sendRedirect("sample/detail-process.jsp");
+        }
+            
 
     }
     private void viewAllStudentUpClaimWithOutEvidence(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package entity;
 
 import java.util.List;
@@ -16,9 +12,60 @@ public class Claim {
     private String title;
     private String content;
     private String sendDate;
+     private String filedata;
     private String userFullName;
+    private String idUser;
+    private int idCM;
+    private Decision decision;
     private String className;
     List<Claim> list;
+
+    public String getFiledata() {
+        return filedata;
+    }
+
+    public void setFiledata(String filedata) {
+        this.filedata = filedata;
+    }
+    
+    
+     public Claim() {
+    }
+
+    public Claim(int idClaim, String title, String content, String date, String filedata, String idUser, int idCM) {
+        this.idClaim = idClaim;
+        this.title = title;
+        this.content = content;
+        this.sendDate = date;
+        this.filedata = filedata;
+        this.idUser = idUser;
+        this.idCM = idCM;
+
+    }
+
+    public String getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(String idUser) {
+        this.idUser = idUser;
+    }
+
+    public int getIdCM() {
+        return idCM;
+    }
+
+    public void setIdCM(int idCM) {
+        this.idCM = idCM;
+    }
+
+    public Decision getDecision() {
+        return decision;
+    }
+
+    public void setDecision(Decision decision) {
+        this.decision = decision;
+    }
 
     public List<Claim> getList() {
         return list;
