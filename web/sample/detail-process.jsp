@@ -17,7 +17,7 @@
         <p>
             <%=c.getContent()%>
         </p>
-        <a href="Agile-Manifesto.pdf" target="_blank"><img src="http://placehold.it/350x150?text=Mina Phan" class="img-thumbnail"></a>
+        <a href="demo.pdf" target="_blank"><img src="http://placehold.it/350x150?text=Mina Phan" class="img-thumbnail"></a>
         <a href="Agile-Manifesto.pdf" target="_blank"><img src="http://placehold.it/350x150? text=Mina Phan" class="img-thumbnail"></a>
         <hr/>
         <h3>Reply from: <strong><%=c.getDecision().getIdUser()%></strong></h3>
