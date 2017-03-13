@@ -1,0 +1,40 @@
+.logo h3{
+    color: #fff;
+}
+.profile-info{
+    padding-top: 12px;
+}
+
+a{
+    color: #4c535c;
+}
+a:hover{
+     color: #555f6d;
+}
+
+.page-container .sidebar-menu #main-menu li a {
+    padding: 20px 10px 20px 10px;
+    font-size: 16px;
+}
+.mail-env .mail-body{
+    width: 100%;
+}
+
+.mail-info{
+    width: 100%;
+}
+.fake-form{
+    margin-bottom: 5px;
+}
+.fake-form.owner{
+    color: #0c3c50;
+}
+
+.fake-form.coordinator{
+    color: #000;
+    background-color: rgba(44,244,22,0.2);
+}
+
+.fake-form textarea{
+    min-height: 100px;
+}
