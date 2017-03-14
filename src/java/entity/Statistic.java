@@ -14,9 +14,14 @@ import java.util.List;
 public class Statistic {
     private int data;
     private String title;
+    private String year;
+    private String major;
+   
     private List<Statistic>  listStatisticAllMajor;
     private List<Statistic>  listNumOfStudent;
     private List<Statistic>  listNumOfClaim;
+    private List<ItemSelected> listItemYear;
+    private List<ItemSelected> listItemMajor;
 
     public String getTitle() {
         return title;
@@ -48,6 +53,38 @@ public class Statistic {
 
     public void setListNumOfClaim(List<Statistic> listNumOfClaim) {
         this.listNumOfClaim = listNumOfClaim;
+    }
+
+    public List<ItemSelected> getListItemYear() {
+        return listItemYear;
+    }
+
+    public void setListItemYear(List<ItemSelected> listItemYear) {
+        this.listItemYear = listItemYear;
+    }
+
+    public List<ItemSelected> getListItemMajor() {
+        return listItemMajor;
+    }
+
+    public void setListItemMajor(List<ItemSelected> listItemMajor) {
+        this.listItemMajor = listItemMajor;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    public String getMajor() {
+        return major;
+    }
+
+    public void setMajor(String major) {
+        this.major = major;
     }
     
     

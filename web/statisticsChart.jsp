@@ -70,45 +70,63 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-sm-12">
-                        <form class="form-inline" action="#" method="get">
+                        <form class="form-inline" action="Controller?action=viewStatisticChart" method="POST">
                             <div class="form-group">
                                 <label><strong>Filter: &nbsp;&nbsp;&nbsp;&nbsp;</strong></label>
                             </div>
                             <div class="form-group">
                                 <label for="option1">Year</label>
                                 <select id="option1" name="year">
-                                    <option value="1">value 1</option>
-                                    <option value="2">value 2</option>
+                                <c:forEach var="y" items="${beanStatistic.listItemYear}">
+                                    <c:choose>
+                                        <c:when test="${y.selected==true}">
+                                            <option selected value="${y.value}">${y.data}</option>
+                                        </c:when>    
+                                        <c:otherwise>
+                                            <option value="${y.value}">${y.data}</option>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    
+                                </c:forEach>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="option2">Major</label>
-                                <select id="option2" name="major">
-                                    <option value="1">value 1</option>
-                                    <option value="2">value 2</option>
+                                <select id="option2" name="idmajor">
+                                <c:forEach var="m" items="${beanStatistic.listItemMajor}">
+                                    <c:choose>
+                                        <c:when test="${m.selected==true}">
+                                            <option selected value="${m.value}">${m.data}</option>
+                                        </c:when>    
+                                        <c:otherwise>
+                                            <option value="${m.value}">${m.data}</option>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    
+                                </c:forEach>
                                 </select>
                             </div>
+                            <div class="form-group"><input type="submit" value="Search"/></div>
                         </form>
                     </div>
                 </div>
                 <div class="clearfix"></div>
                 <div class="row">
-                    
                     <div class="row">
                         <div class="col-sm-12">
-                            <h3 class="text-center">Number of claims</h3>
+                            <h3 class="text-center">Number of claims in ${beanStatistic.year} of ${beanStatistic.major}</h3>
                             <canvas id="myChart1" style="width: 100%;height:400px"></canvas>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
-                            <h3 class="text-center">Number of student up claims 3</h3>
+                            <h3 class="text-center">Number of student up claims in ${beanStatistic.year} of ${beanStatistic.major}</h3>
                             <canvas id="myChart3" style="width: 100%;height:400px"></canvas>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
-                            <h3 class="text-center"></h3>
+                            <h3 class="text-center">All claims in ${beanStatistic.year}</h3>
                             <canvas id="myChart2" style="width: 100%;height:400px"></canvas>
                         </div>
                     </div>

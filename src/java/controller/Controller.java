@@ -7,11 +7,13 @@ package controller;
 
 import entity.Account;
 import entity.Claim;
+import entity.ItemSelected;
 import entity.Major;
 import entity.Statistic;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -121,20 +123,60 @@ public class Controller extends HttpServlet {
     private void viewStaticsChart(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         List<Major> listM = ConnectDB.getListMajor();
         String[] month = {"01", "02", "03", "04", "05", "06", "07", "08", "09","10","11","12"};
+        String year= request.getParameter("year");
+        String idmajor = request.getParameter("idmajor");
+        String major = "";
+        Calendar cal = Calendar.getInstance();
+        HttpSession session = request.getSession();
+        session.setAttribute("beanStatistic", null);
+        if(idmajor==null){
+            idmajor = "1";
+        }
+        
+        List<ItemSelected> listMajor = new ArrayList<>();
+        
+        if(year==null){
+            year = cal.get(Calendar.YEAR)+"";
+        }
+        
+        List<ItemSelected> listYear = new ArrayList<>();
+        
+        for(int i = 2010; i< 2030;i++){
+            ItemSelected item = new ItemSelected();
+            item.setData(i+"");
+            item.setValue(i+"");
+            item.setSelected(false);
+            if(year.equals(i+"")){
+                item.setSelected(true);
+            }
+            listYear.add(item);
+        }
+        
         //chart2
         List<Statistic> listS = new ArrayList<>();
         for (Major listM1 : listM) {
-            int data = ConnectDB.getCountClaimByMajor("2017", listM1.getId());
+            ItemSelected item = new ItemSelected();
+            item.setData(listM1.getName());
+            item.setValue(listM1.getId()+"");
+            item.setSelected(false);
+            if(idmajor.equals(listM1.getId()+"")){
+                item.setSelected(true);
+                major = listM1.getName();
+            }
+            listMajor.add(item);
+            
+            int data = ConnectDB.getCountClaimByMajor(year, listM1.getId());
             Statistic s = new Statistic();
             s.setData(data);
             s.setTitle(listM1.getName());
             listS.add(s);
         }
         
+        int idM = Integer.parseInt(idmajor);
         //chart1
         List<Statistic> listSOfClaims = new ArrayList<>();
         for(int i =0; i<12; i++){
-            int data = ConnectDB.getCountClaimByMonth("2017",month[i], 1);
+            int data = ConnectDB.getCountClaimByMonth(year,month[i], idM);
             Statistic s = new Statistic();
             s.setData(data);
             listSOfClaims.add(s);
@@ -143,17 +185,22 @@ public class Controller extends HttpServlet {
         //chart3
         List<Statistic> listSOfStd = new ArrayList<>();
         for(int i =0; i<12; i++){
-            int data = ConnectDB.getCountStudentUpClaim("2017",month[i], 1);
+            int data = ConnectDB.getCountStudentUpClaim(year,month[i], idM);
             Statistic s = new Statistic();
             s.setData(data);
             listSOfStd.add(s);
         }
         
+        
         Statistic s = new Statistic();
         s.setListStatisticAllMajor(listS);
         s.setListNumOfClaim(listSOfClaims);
         s.setListNumOfStudent(listSOfStd);
-        HttpSession session = request.getSession();
+        s.setListItemYear(listYear);
+        s.setListItemMajor(listMajor);
+        s.setMajor(major);
+        s.setYear(year);
+        
         session.setAttribute("beanStatistic", s);
         response.sendRedirect("statisticsChart.jsp");
     }
