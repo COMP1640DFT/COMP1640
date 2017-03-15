@@ -4,9 +4,17 @@
         <servlet-name>Controller</servlet-name>
         <servlet-class>controller.Controller</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>StudentsController</servlet-name>
+        <servlet-class>controller.StudentsController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Controller</servlet-name>
         <url-pattern>/Controller</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StudentsController</servlet-name>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -70,7 +71,7 @@
                 <a href="index.html"><i class="glyphicon glyphicon-home"></i> Home</a>
             </li>
             <li class="active">
-                <a href="create.html"><i class="glyphicon glyphicon-plus-sign"></i> Create a claim</a>
+                <a href="StudentsController?action=AddClaimPage"><i class="glyphicon glyphicon-plus-sign"></i> Create a claim</a>
             </li>
             <li><a href="#"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
 
@@ -225,8 +226,11 @@
                    <label for="faculty" class="col-sm-3 control-label">Faculty</label>
                    <div class="col-sm-5">
                    <select name="faculty" id="faculty" class="form-control">
-                       <option value="1">Data 1</option>
-                       <option value="2">Data 2</option>
+                       <c:forEach items="${sessionScope['lMajor']}" var="Major">
+                                 <option  value="${Major.id}">${Major.name}</option>
+                                 
+                       </c:forEach>
+                     
                    </select>
                    </div>
                </div>

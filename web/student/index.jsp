@@ -71,7 +71,7 @@
                 <a href="index.html"><i class="glyphicon glyphicon-home"></i> Home</a>
             </li>
             <li>
-                <a href="create.html"><i class="glyphicon glyphicon-plus-sign"></i> Create a claim</a>
+                <a href="StudentsController?action=AddClaimPage"><i class="glyphicon glyphicon-plus-sign"></i> Create a claim</a>
             </li>
             <li><a href="#"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
 
