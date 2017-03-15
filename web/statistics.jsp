@@ -51,9 +51,9 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li class=""><a href="index.html">Home<span class="sr-only">(current)</span></a></li>
-                    <li><a href="Controller?action=viewC">View process</a></li>
-                    <li><a href="Controller?action=viewstatistic">View statistic</a></li>
-                    <li><a href="Controller?action=viewStatisticChart">View chart</a></li>
+                    <li><a href="#">View process</a></li>
+                    <li><a href="#">View statistic</a></li>
+                    <li><a href="#">About university</a></li>
                     <li><a href="#">Logout</a></li>
                 </ul>
             </div>
@@ -63,7 +63,7 @@
     </nav>
     <div class="clearfix"></div>
     <div class="row" style="">
-        
+      
         <div class="col-sm-12 panel panel-default">
             <div class="page-header">
                 <h2 class="panel-heading text-center">Reports</h2>
@@ -75,7 +75,7 @@
                             <div class="form-group">
                                 <label><strong>Filter: &nbsp;&nbsp;&nbsp;&nbsp;</strong></label>
                             </div>
-                              <div class="form-group">
+                             <div class="form-group">
                                 <label for="option2">Major</label>
                                 <select id="option2" name="idmajor">
                                 <c:forEach var="m" items="${beanClaim.listSelectedMajor}">
@@ -185,83 +185,7 @@
         $("#wrapper").toggleClass("toggled");
     });
     $(document).ready(function () {
-        var ctx = document.getElementById("myChart1");
-        var data = [12, 19, 3, 5, 2, 3, 6, 7, 8];
-        var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange", "Orange", "Orange", "Orange"],
-                datasets: [{
-                    label: '# of Votes',
-                    data: data,
-                    backgroundColor: "#758EA7",
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            }
-        });
-
-
-        var ctx2 = document.getElementById("myChart2");
-        var data2 = {
-            labels: [
-                "Red",
-                "Blue",
-                "Yellow"
-            ],
-            datasets: [
-                {
-                    data: [300, 50, 100],
-                    backgroundColor: [
-                        "#9c3a4e",
-                        "#1a4466",
-                        "#a0a0a0"
-                    ],
-                    hoverBackgroundColor: [
-                        "#FF6384",
-                        "#36A2EB",
-                        "#FFCE56"
-                    ]
-                }]
-        };
-        var myPieChart = new Chart(ctx2, {
-            type: 'pie',
-            data: data2,
-            options: {}
-        });
-        var ctx3 = document.getElementById('myChart3');
-        var myChart3 = new Chart(ctx3, {
-            type: 'bar',
-            data: {
-                labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange", "Orange", "Orange", "Orange"],
-                datasets: [{
-                    label: '# of Votes',
-                    data: data,
-                    backgroundColor: "#7A8E59",
-                    borderColor: "#44572f",
-                    borderWidth: 3
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            }
-        });
-
-
+ 
         $('.dataTable').DataTable({
             searching: false, responsive: true, dom: 'Bfrtip',
             buttons: [
