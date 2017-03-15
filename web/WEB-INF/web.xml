@@ -14,7 +14,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>StudentsController</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/student/StudentsController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

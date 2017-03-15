@@ -39,7 +39,7 @@ public class StudentsController extends HttpServlet {
          if (action.equals("AddClaimPage")) {
             List<Major> lMajor= ConnectDB.getListMajor();
             session.setAttribute("lMajor", lMajor);
-            response.sendRedirect("../createclaim.jsp");
+            response.sendRedirect("../student/createclaim.jsp");
           
         }
     }
