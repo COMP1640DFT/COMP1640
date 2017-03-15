@@ -19,8 +19,18 @@ public class Claim {
     private int status;
     private Decision decision;
     private String className;
-    List<Claim> list;
+    private List<Claim> listClaimWithoutEvidence;
+    private List<Claim> listClaimUnresolved;
+    private List<ItemSelected> listSelectedMajor;
 
+    public List<ItemSelected> getListSelectedMajor() {
+        return listSelectedMajor;
+    }
+
+    public void setListSelectedMajor(List<ItemSelected> listSelectedMajor) {
+        this.listSelectedMajor = listSelectedMajor;
+    }
+    
     public String getFiledata() {
         return filedata;
     }
@@ -68,13 +78,22 @@ public class Claim {
         this.decision = decision;
     }
 
-    public List<Claim> getList() {
-        return list;
+    public List<Claim> getListClaimWithoutEvidence() {
+        return listClaimWithoutEvidence;
     }
 
-    public void setList(List<Claim> list) {
-        this.list = list;
+    public void setListClaimWithoutEvidence(List<Claim> listClaimWithoutEvidence) {
+        this.listClaimWithoutEvidence = listClaimWithoutEvidence;
     }
+
+    public List<Claim> getListClaimUnresolved() {
+        return listClaimUnresolved;
+    }
+
+    public void setListClaimUnresolved(List<Claim> listClaimUnresolved) {
+        this.listClaimUnresolved = listClaimUnresolved;
+    }
+
     
     public int getIdClaim() {
         return idClaim;

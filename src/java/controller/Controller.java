@@ -45,11 +45,14 @@ public class Controller extends HttpServlet {
         String action = request.getParameter("action");
         HttpSession session = request.getSession();
         if (action.equals("checklogin")) {
-            Account acc = checkLogin(request, response,session);
+            Account acc = checkLogin(request, response, session);
             session.setAttribute("session_Account", acc);
         }
         if (action.equals("viewstatistic")) {
-            viewAllStudentUpClaimWithOutEvidence(request, response);
+            viewStatistic(request, response);
+        }
+        if(action.equals("viewstatisticwithfilter")){
+            viewStatisticWithFilter(request, response);
         }
         if (action.equals("viewC")) {
 
@@ -72,19 +75,67 @@ public class Controller extends HttpServlet {
 
     }
 
-    private void viewAllStudentUpClaimWithOutEvidence(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    private void viewStatistic(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html;charset=UTF-8");
-        Claim claimWithoutEvidence = new Claim();
-        Claim claimUnresolvedAfterTwoWeek = new Claim();
-        claimWithoutEvidence.setList(ConnectDB.getStudentUpClaimWithOutEvidence());
-        claimUnresolvedAfterTwoWeek.setList(ConnectDB.getAllClaimUnresolvedAfterTwoWeek());
+        String idmajor = request.getParameter("idmajor");
+        String major = "";
         HttpSession session = request.getSession();
-        session.setAttribute("beanClaim", claimWithoutEvidence);
-        session.setAttribute("beanClaim2", claimUnresolvedAfterTwoWeek);
+        session.setAttribute("beanStatistic", null);
+        if (idmajor == null) {
+            idmajor = "1";
+        }
+        List<Major> listM = ConnectDB.getListMajor();
+        List<ItemSelected> listMajor = new ArrayList<>();
+        for (Major listM1 : listM) {
+            ItemSelected item = new ItemSelected();
+            item.setData(listM1.getName());
+            item.setValue(listM1.getId() + "");
+            item.setSelected(false);
+            if (idmajor.equals(listM1.getId() + "")) {
+                item.setSelected(true);
+                major = listM1.getName();
+            }
+            listMajor.add(item);
+        }
+        Claim claim = new Claim();
+        claim.setListClaimWithoutEvidence(ConnectDB.getStudentUpClaimWithOutEvidence());
+        claim.setListClaimUnresolved(ConnectDB.getAllClaimUnresolvedAfterTwoWeek());
+        claim.setListSelectedMajor(listMajor);
+        session.setAttribute("beanClaim", claim);
         response.sendRedirect("statistics.jsp");
     }
-
-    private Account checkLogin(HttpServletRequest request, HttpServletResponse response,HttpSession session) throws IOException, ServletException {
+    private void viewStatisticWithFilter(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        response.setContentType("text/html;charset=UTF-8");
+        String idmajor = request.getParameter("idmajor");
+        String major = "";
+        int idM = Integer.parseInt(idmajor);
+        HttpSession session = request.getSession();
+        session.setAttribute("beanClaim", null);
+        if (idmajor == null) {
+            idmajor = "1";
+        }
+        List<Major> listM = ConnectDB.getListMajor();
+        List<ItemSelected> listMajor = new ArrayList<>();
+        for (Major listM1 : listM) {
+            ItemSelected item = new ItemSelected();
+            item.setData(listM1.getName());
+            item.setValue(listM1.getId() + "");
+            item.setSelected(false);
+            if (idmajor.equals(listM1.getId() + "")) {
+                item.setSelected(true);
+                major = listM1.getName();
+            }
+            listMajor.add(item);
+        }
+        Claim claim = new Claim();
+        claim.setListClaimWithoutEvidence(ConnectDB.getStudentUpClaimWithOutEvidenceInMajor(idM));
+        claim.setListClaimUnresolved(ConnectDB.getAllClaimUnresolvedAfterTwoWeekInMajor(idM));
+        claim.setListSelectedMajor(listMajor);
+        session.setAttribute("beanClaim", claim);
+        response.sendRedirect("statistics.jsp");
+    }
+   
+    private Account checkLogin(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
         String idUser = request.getParameter("username");
         String pass = request.getParameter("password");
         Account acc = ConnectDB.checkLogin(idUser, pass);

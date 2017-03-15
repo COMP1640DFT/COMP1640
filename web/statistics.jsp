@@ -27,7 +27,6 @@
 </head>
 <body>
     <jsp:useBean id="beanClaim" class="entity.Claim" scope="session"></jsp:useBean>
-    <jsp:useBean id="beanClaim2" class="entity.Claim" scope="session"></jsp:useBean>
 <img src="img/bg_header.jpg" id="bg" alt="">
 <div class="container" style="min-height: 1000px">
     <section id="logo">
@@ -72,24 +71,27 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-sm-12">
-                        <form class="form-inline" action="#" method="get">
+                        <form class="form-inline" action="Controller?action=viewstatisticwithfilter" method="post">
                             <div class="form-group">
                                 <label><strong>Filter: &nbsp;&nbsp;&nbsp;&nbsp;</strong></label>
                             </div>
-                            <div class="form-group">
-                                <label for="option3">Option 1 </label>
-                                <select id="option3" name="option1">
-                                    <option value="1">value 1</option>
-                                    <option value="2">value 2</option>
+                              <div class="form-group">
+                                <label for="option2">Major</label>
+                                <select id="option2" name="idmajor">
+                                <c:forEach var="m" items="${beanClaim.listSelectedMajor}">
+                                    <c:choose>
+                                        <c:when test="${m.selected==true}">
+                                            <option selected value="${m.value}">${m.data}</option>
+                                        </c:when>    
+                                        <c:otherwise>
+                                            <option value="${m.value}">${m.data}</option>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    
+                                </c:forEach>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label for="option4">Option 2 </label>
-                                <select id="option4" name="option2">
-                                    <option value="1">value 1</option>
-                                    <option value="2">value 2</option>
-                                </select>
-                            </div>
+                            <div class="form-group"><input type="submit" value="Search"/></div>
                         </form>
                     </div>
                 </div>
@@ -105,7 +107,7 @@
                         <th>Send Date</th>
                         </thead>
                         <tbody>
-                        <c:forEach var="c" items="${beanClaim.list}">
+                        <c:forEach var="c" items="${beanClaim.listClaimWithoutEvidence}">
                         <tr>
                             <td>${c.idClaim}</td>
                             <td>${c.userFullName}</td>
@@ -134,7 +136,7 @@
                        
                         <tbody>
                        
-                         <c:forEach var="cl" items="${beanClaim2.list}">
+                        <c:forEach var="cl" items="${beanClaim.listClaimUnresolved}">
                         <tr>
                             <td>${cl.idClaim}</td>
                             <td>${cl.title}</td>
