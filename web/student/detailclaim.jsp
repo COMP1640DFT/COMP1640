@@ -93,7 +93,7 @@
                         <!-- add class "pull-right" if you want to place this from right -->
 
 
-                        Welcome: <strong>Phan Huyền Trang (minaphan)</strong>
+                        Welcome: <strong>${idUser} (${fullName})</strong>
 
 
                     </li>

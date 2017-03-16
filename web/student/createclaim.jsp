@@ -37,6 +37,28 @@
     <![endif]-->
 
     <!-- TS1387507309: Neon - Responsive Admin Template created by Laborator -->
+    
+    
+    
+    <script type="text/javascript">
+        function validate() {
+
+
+            var subject = document.getElementById('subject');
+            var description = document.getElementById('description');
+           
+            if (subject.value == "")
+            {
+                alert("Claim subject is not null ");
+            }
+             if (description.value == "")
+            {
+                alert("Description is not null");
+            }
+            
+        }
+
+    </script>
 </head>
 <body class="page-body">
 
@@ -94,7 +116,7 @@
                         <!-- add class "pull-right" if you want to place this from right -->
 
 
-                        Welcome: <strong>Phan Huyền Trang (minaphan)</strong>
+                        Welcome: <strong>${idUser} (${fullName})</strong>
 
 
                     </li>
@@ -209,7 +231,7 @@
         <br/>
 
         <div class="panel panel-primary" style="padding: 10px">
-           <form  action="#" method="post" class="form-horizontal">
+            <form  action="StudentsController?action=createClaim&Uid=${idUser}" method="post" class="form-horizontal" onsubmit="validate()">
                <div class="form-group">
                    <label for="subject" class="col-sm-3 control-label">Subject</label>
                    <div class="col-sm-9">
@@ -222,7 +244,7 @@
                    <textarea rows="8" placeholder="Input your claim description" class="form-control" name="description" id="description"></textarea>
                    </div>
                </div>
-               <div class="form-group">
+<!--               <div class="form-group">
                    <label for="faculty" class="col-sm-3 control-label">Faculty</label>
                    <div class="col-sm-5">
                    <select name="faculty" id="faculty" class="form-control">
@@ -233,22 +255,14 @@
                      
                    </select>
                    </div>
-               </div>
-               <div class="form-group">
-                   <label for="coordinator" class="col-sm-3 control-label">EC Coordinator</label>
-                   <div class="col-sm-5">
-                   <select name="coordinator" id="coordinator" class="form-control">
-                       <option value="1">EC Coordinator 1</option>
-                       <option value="2">EC Coordinator 2</option>
-                   </select>
-                   </div>
-               </div>
+               </div>-->
+               
                <div class="form-group">
                    <label class="col-sm-3 control-label">Attachments</label>
 
                    <div class="col-sm-5">
 
-                       <input type="file" class="form-control file2 inline btn btn-default" multiple
+                       <input type="file" id="fileS" class="form-control file2 inline btn btn-default" multiple
                               data-label="<i class='glyphicon glyphicon-circle-arrow-up'></i> &nbsp;Browse Files"/>
 
                    </div>
