@@ -332,9 +332,32 @@ public class ConnectDB {
         }
         return result;
     }
+    
+    public static boolean createClaim(Claim claim){
+         try {
+            String sql="insert into tblClaim values(?,?,?,?,?,?,?)";
+            PreparedStatement st = connectdatabase().prepareStatement(sql);
+            st.setString(1, claim.getTitle());
+            st.setString(2, claim.getContent());
+            st.setString(3, claim.getSendDate());
+            st.setString(4, claim.getFiledata());
+            st.setInt(5, claim.getStatus());
+            st.setString(6, claim.getIdUser());
+            st.setInt(7, claim.getIdCM());
+            if(st.executeUpdate()>0){
+                return true;
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         return false;
+    }
 
     public static void main(String[] args) {
         connectdatabase();
-
+        Claim c= new Claim("1", "1", "2017-02-12", "1", "taincgc",1, 0);
+        boolean a= createClaim(c);
+        System.out.println(a+"");
     }
 }

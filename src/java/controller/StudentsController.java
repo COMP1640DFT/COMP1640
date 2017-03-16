@@ -5,9 +5,12 @@
  */
 package controller;
 
+import entity.Claim;
 import entity.Major;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -34,14 +37,42 @@ public class StudentsController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-       String action = request.getParameter("action");
+        String action = request.getParameter("action");
         HttpSession session = request.getSession();
-         if (action.equals("AddClaimPage")) {
-            List<Major> lMajor= ConnectDB.getListMajor();
+        if (action.equals("AddClaimPage")) {
+            List<Major> lMajor = ConnectDB.getListMajor();
             session.setAttribute("lMajor", lMajor);
             response.sendRedirect("../student/createclaim.jsp");
-          
+
         }
+        if (action.equals("createClaim")) {
+            String title = request.getParameter("subject");
+            String description = request.getParameter("description");
+            if (!title.equals("") && !description.equals("")) {
+                String date_send = new SimpleDateFormat("yyyy/MM/dd").format(Calendar.getInstance().getTime());
+                String file = "";
+                int status = 0;
+                int idCM = 1;
+                String idU = request.getParameter("Uid");
+                Claim claim = new Claim(title, description, date_send, file, idU, idCM, status);
+              
+                if (ConnectDB.createClaim(claim)) {
+                    sendMessage(response, "Add claim complete successfull!", "../student/createclaim.jsp");
+                } else {
+                    sendMessage(response, "Add claim is failed!", "../student/createclaim.jsp");
+                }
+            }
+
+        }
+    }
+
+    private void sendMessage(HttpServletResponse response, String sms, String path) throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        out.println("<script type=\"text/javascript\">");
+        out.println("alert('" + sms + "');");
+        out.println("location='" + path + "';");
+        out.println("</script>");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -49,7 +49,6 @@ create table tblClaim(
 	filedata varchar(300),
 	_status int,
 	idUser varchar(20),
-	idCourse int,
 	idCM int
 )
 
@@ -97,16 +96,16 @@ insert into tblClassDetail values('taincgc',1),('trangph',1),('dungkv',2)
 --insert claim manage
 insert into tblClaimManage values('2017-02-22',1),('2017-02-23',1)
 --insert claim 
-insert into tblClaim values('Xin kiem tra lai bai thi', 'Bai thi cua em bi cham sai diem','2017-02-22','//system.data.pdf',1,'dungkv',3,1)
-insert into tblClaim values('Yeu cau giang vien chinh sua diem thi', 'Em da lam bai va duoc 8 diem, nhung tren he thong chi duoc co 6','2017-02-22','//system.data2.pdf',1,'trangph',1,1)
-insert into tblClaim values('Diem danh lai', 'Em co di hoc ngay 2017-01-10, thay kiem tra lai giup em','2017-01-11','',0,'taincgc',1,2)
+insert into tblClaim values('Xin kiem tra lai bai thi', 'Bai thi cua em bi cham sai diem','2017-02-22','//system.data.pdf',1,'dungkv',1)
+insert into tblClaim values('Yeu cau giang vien chinh sua diem thi', 'Em da lam bai va duoc 8 diem, nhung tren he thong chi duoc co 6','2017-02-22','//system.data2.pdf',1,'trangph',1)
+insert into tblClaim values('Diem danh lai', 'Em co di hoc ngay 2017-01-10, thay kiem tra lai giup em','2017-01-11','',0,'taincgc',2)
 --insert decision
 insert into tblDecision values(1,'Thay da xem lai, ket qua hoan toan dung.','2017-02-27',1,'admin')
 insert into tblDecision values(2,'Ok. Thay da chinh sua','2017-02-28',1,'admin')
 select * from tblDecision 
 
+select * from tblClaimManage
 select * from tblClaim
-select * from tblUser
 -- c.idClaim, c.title, c.sendDate, u.fullName
 --select all student up claim without evidence
 select c.idClaim, c.title, c.sendDate, u.fullName, cl.name from tblClaim c 
@@ -119,3 +118,6 @@ select c.idClaim, c.title,c.content, c.sendDate,c.filedata, c._status, c.idUser,
 from tblClaim c 
 join tblUser u on c.idUser = u.idUser 
 where c.sendDate <= DATEADD(WEEK,-2,GETDATE()) and _status = 0
+
+
+

@@ -142,8 +142,8 @@ public class Controller extends HttpServlet {
         if (acc != null) {
             switch (acc.getLever()) {
                 case 1:
-                    List<Major> lMajor = ConnectDB.getListMajor();
-                    session.setAttribute("lMajor", lMajor);
+                   session.setAttribute("idUser", acc.getIdUser());
+                   session.setAttribute("fullName", acc.getFullName());
                     response.sendRedirect("student/index.jsp");
                     break;
                 case 2:

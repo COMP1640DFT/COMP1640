@@ -54,6 +54,17 @@ public class Claim {
 
     }
 
+    public Claim(String title, String content, String sendDate, String filedata, String idUser, int idCM, int status) {
+        this.title = title;
+        this.content = content;
+        this.sendDate = sendDate;
+        this.filedata = filedata;
+        this.idUser = idUser;
+        this.idCM = idCM;
+        this.status = status;
+    }
+    
+
     public String getIdUser() {
         return idUser;
     }
