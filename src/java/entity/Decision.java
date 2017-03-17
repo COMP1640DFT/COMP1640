@@ -15,7 +15,9 @@ public class Decision {
     private String sendDate;
     private int status;
     private String idUser;
-
+    private String idUserEC;
+    private String fullNameEC;
+    private String claimTitle;
     public Decision() {
     }
 
@@ -65,6 +67,30 @@ public class Decision {
 
     public void setIdUser(String idUser) {
         this.idUser = idUser;
+    }
+
+    public String getIdUserEC() {
+        return idUserEC;
+    }
+
+    public void setIdUserEC(String idUserEC) {
+        this.idUserEC = idUserEC;
+    }
+
+    public String getFullNameEC() {
+        return fullNameEC;
+    }
+
+    public void setFullNameEC(String fullNameEC) {
+        this.fullNameEC = fullNameEC;
+    }
+
+    public String getClaimTitle() {
+        return claimTitle;
+    }
+
+    public void setClaimTitle(String claimTitle) {
+        this.claimTitle = claimTitle;
     }
     
     

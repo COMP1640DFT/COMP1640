@@ -6,6 +6,7 @@
 package controller;
 
 import entity.Claim;
+import entity.Decision;
 import entity.Major;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -55,7 +56,7 @@ public class StudentsController extends HttpServlet {
                 int idCM = 1;
                 String idU = request.getParameter("Uid");
                 Claim claim = new Claim(title, description, date_send, file, idU, idCM, status);
-              
+
                 if (ConnectDB.createClaim(claim)) {
                     sendMessage(response, "Add claim complete successfull!", "../student/createclaim.jsp");
                 } else {
@@ -64,6 +65,19 @@ public class StudentsController extends HttpServlet {
             }
 
         }
+        if (action.equals("viewDecision")) {
+            viewDecision(request, response);
+        }
+    }
+
+    private void viewDecision(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        response.setContentType("text/html;charset=UTF-8");
+        String id = request.getParameter("id");
+        int idC = Integer.parseInt(id);
+        Decision d = ConnectDB.getDecisionOfAClaim(idC);
+        HttpSession session = request.getSession();
+        session.setAttribute("beanDecision", d);
+        response.sendRedirect("detailclaim.jsp");
     }
 
     private void sendMessage(HttpServletResponse response, String sms, String path) throws ServletException, IOException {

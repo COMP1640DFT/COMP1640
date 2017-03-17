@@ -51,7 +51,7 @@ public class Controller extends HttpServlet {
         if (action.equals("viewstatistic")) {
             viewStatistic(request, response);
         }
-        if(action.equals("viewstatisticwithfilter")){
+        if (action.equals("viewstatisticwithfilter")) {
             viewStatisticWithFilter(request, response);
         }
         if (action.equals("viewC")) {
@@ -104,6 +104,7 @@ public class Controller extends HttpServlet {
         session.setAttribute("beanClaim", claim);
         response.sendRedirect("statistics.jsp");
     }
+
     private void viewStatisticWithFilter(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html;charset=UTF-8");
         String idmajor = request.getParameter("idmajor");
@@ -134,16 +135,19 @@ public class Controller extends HttpServlet {
         session.setAttribute("beanClaim", claim);
         response.sendRedirect("statistics.jsp");
     }
-   
+
     private Account checkLogin(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
         String idUser = request.getParameter("username");
         String pass = request.getParameter("password");
         Account acc = ConnectDB.checkLogin(idUser, pass);
+        Claim c = new Claim();
+        c.setListClaimUnresolved(ConnectDB.getAllClaimOfStudent(idUser));
         if (acc != null) {
             switch (acc.getLever()) {
                 case 1:
-                   session.setAttribute("idUser", acc.getIdUser());
-                   session.setAttribute("fullName", acc.getFullName());
+                    session.setAttribute("idUser", acc.getIdUser());
+                    session.setAttribute("fullName", acc.getFullName());
+                    session.setAttribute("beanAllClaim", c);
                     response.sendRedirect("student/index.jsp");
                     break;
                 case 2:

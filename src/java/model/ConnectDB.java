@@ -255,6 +255,63 @@ public class ConnectDB {
         return list;
     }
 
+    public static List<Claim> getAllClaimOfStudent(String user) {
+        String sql = "select c.idClaim, c.title,c.content, c.sendDate,c.filedata,cm._status ,u.idUser\n"
+                + "from tblClaim c \n"
+                + "join tblClaimManage cm on c.idCM = cm.idCM\n"
+                + "join tblDecision d on c.idClaim = d.idClaim\n"
+                + "join tblUser u on d.idUser = u.idUser\n"
+                + " where c.idUser = ?";
+        List<Claim> list = new LinkedList<>();
+
+        try {
+            PreparedStatement ps = connectdatabase().prepareStatement(sql);
+            ps.setString(1, user);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Claim claim = new Claim();
+                claim.setIdClaim(rs.getInt(1));
+                claim.setTitle(rs.getString(2));
+                claim.setContent(rs.getString(3));
+                claim.setSendDate(rs.getString(4));
+                claim.setFiledata(rs.getString(5));
+                claim.setStatus(rs.getInt(6));
+                claim.setIdUser(rs.getString(7));
+                list.add(claim);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+
+    public static Decision getDecisionOfAClaim(int claimID) {
+        String sql = " select c.title,d.content,d.sendDate,d._status,u.fullName,d.idUser from tblDecision d\n"
+                + " join tblUser u on d.idUser = u.idUser \n"
+                + " join tblClaim c on d.idClaim = c.idClaim\n"
+                + " where d.idClaim = ?";
+        Decision d = null;
+
+        try {
+            PreparedStatement ps = connectdatabase().prepareStatement(sql);
+            ps.setInt(1, claimID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                d = new Decision();
+                d.setClaimTitle(rs.getString(1));
+                d.setContent(rs.getString(2));
+                d.setSendDate(rs.getString(3));
+                d.setStatus(rs.getInt(4));
+                d.setFullNameEC(rs.getString(5));
+                d.setIdUserEC(rs.getString(6));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return d;
+    }
+
     public static List<Major> getListMajor() {
         List<Major> list = new LinkedList<>();
         String sql = "select * from tblMajor";
@@ -332,10 +389,10 @@ public class ConnectDB {
         }
         return result;
     }
-    
-    public static boolean createClaim(Claim claim){
-         try {
-            String sql="insert into tblClaim values(?,?,?,?,?,?,?)";
+
+    public static boolean createClaim(Claim claim) {
+        try {
+            String sql = "insert into tblClaim values(?,?,?,?,?,?,?)";
             PreparedStatement st = connectdatabase().prepareStatement(sql);
             st.setString(1, claim.getTitle());
             st.setString(2, claim.getContent());
@@ -344,20 +401,24 @@ public class ConnectDB {
             st.setInt(5, claim.getStatus());
             st.setString(6, claim.getIdUser());
             st.setInt(7, claim.getIdCM());
-            if(st.executeUpdate()>0){
+            if (st.executeUpdate() > 0) {
                 return true;
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
-         return false;
+        return false;
     }
 
     public static void main(String[] args) {
         connectdatabase();
-        Claim c= new Claim("1", "1", "2017-02-12", "1", "taincgc",1, 0);
-        boolean a= createClaim(c);
-        System.out.println(a+"");
+//        Claim c = new Claim("1", "1", "2017-02-12", "1", "taincgc", 1, 0);
+//        boolean a = createClaim(c);
+//        System.out.println(a + "");
+        for (Claim c : ConnectDB.getAllClaimOfStudent("dungkv")) {
+            System.out.println(c.getTitle());
+        }
+
     }
 }

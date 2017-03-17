@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,7 +38,7 @@
     <!-- TS1387507309: Neon - Responsive Admin Template created by Laborator -->
 </head>
 <body class="page-body">
-
+<jsp:useBean id="beanDecision" class="entity.Decision" scope="session"></jsp:useBean>
 <div class="page-container">
 
     <div class="sidebar-menu">
@@ -217,7 +218,7 @@
                     <div class="mail-header">
                         <!-- title -->
                         <div class="mail-title">
-                            My mark in C# has problem
+                            ${beanDecision.claimTitle}
                             <p>
                                 <span class="text-danger">Remaining time: 13 days 4 hours</span>
 
@@ -239,8 +240,8 @@
                         <div class="mail-sender dropdown">
 
                             <a href="#">
-                                EC Coordinator: <span>Dao Minh Thien</span>
-                                <span>(thiendm)</span>
+                                EC Coordinator: <span>${beanDecision.fullNameEC}</span>
+                                <span>(${beanDecision.idUserEC})</span>
                             </a>
 
 
@@ -254,16 +255,9 @@
 
                     <div class="mail-text">
 
-                        <p>Lose away off why half led have near bed. At engage simple father of period others except. My
-                            giving do summer of though narrow marked at. Spring formal no county ye waited. My whether
-                            cheered at regular it of promise blushes perhaps. Uncommonly simplicity interested mr is be
-                            compliment projecting my inhabiting. Gentleman he september in oh excellent.</p>
+                        <p>${beanDecision.content}</p>
 
-                        <p>New the her nor case that lady paid read. Invitation friendship travelling eat everything the
-                            out two. Shy you who scarcely expenses debating hastened resolved. Always polite moment on
-                            is warmth spirit it to hearts. Downs those still witty an balls so chief so. Moment an
-                            little remain no up lively no. Way brought may off our regular country towards adapted
-                            cheered.</p>
+                        
                     </div>
 
                     <div class="mail-attachments">
