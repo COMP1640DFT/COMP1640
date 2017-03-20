@@ -51,9 +51,9 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li class=""><a href="index.html">Home<span class="sr-only">(current)</span></a></li>
-                    <li><a href="#">View process</a></li>
-                    <li><a href="#">View statistic</a></li>
-                    <li><a href="#">About university</a></li>
+                    <li><a href="Controller?action=viewC">View process</a></li>
+                    <li><a href="Controller?action=viewstatistic">View statistic</a></li>
+                    <li><a href="Controller?action=viewStatisticChart">View chart</a></li>
                     <li><a href="#">Logout</a></li>
                 </ul>
             </div>

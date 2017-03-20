@@ -1,7 +1,7 @@
 <%-- 
-    Document   : index
-    Created on : Mar 13, 2017, 10:33:32 PM
-    Author     : minamaurer
+    Document   : newClaims
+    Created on : Mar 20, 2017, 6:54:22 PM
+    Author     : DaoMinhThien
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -69,7 +69,10 @@
                     <ul id="main-menu" class="">
 
                         <li class="active">
-                            <a href=""><i class="glyphicon glyphicon-home"></i> All Claims</a>
+                            <a href=""><i class="glyphicon glyphicon-home"></i> Home</a>
+                        </li>
+                        <li>
+                            <a href="StudentsController?action=AddClaimPage"><i class="glyphicon glyphicon-plus-sign"></i> Create a claim</a>
                         </li>
                         <li><a href="#"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
 
@@ -81,26 +84,6 @@
                 <div class="main-content">
 
                     <div class="row">
-
-                        <!-- Profile Info and Notifications -->
-                        <div class="col-md-6 col-sm-8 clearfix">
-
-                            <ul class="user-info pull-left pull-none-xsm">
-
-                                <!-- Profile Info -->
-                                <li class="profile-info dropdown">
-                                    <!-- add class "pull-right" if you want to place this from right -->
-
-
-                                    Welcome: <strong>${idUser} (${fullName})</strong>
-
-
-                            </li>
-
-                        </ul>
-
-                    </div>
-
 
                     <!-- Raw Links -->
                     <div class="col-md-6 col-sm-4 clearfix hidden-xs">
@@ -134,6 +117,8 @@
                                 <option value="expired">Expired</option>
                             </select>
                         </div>
+                        <a href="create.html" class="btn btn-default" style="float: right;margin-top: 20px"><i
+                                class="glyphicon glyphicon-plus-sign"></i> New</a>
                     </form>
 
                     <table class="table  table-responsive">
@@ -141,24 +126,29 @@
                             <tr>
                                 <th>#</th>
                                 <th>Subject</th>
-                                <th>Close Date</th>
+                                <th>EC Coordinator</th>
+                                <th>Last reply</th>
                                 <th>Status</th>
-                                <th>Action</th>
                             </tr>
                         </thead>
 
                         <tbody>
+                            <c:forEach var="c" items="${beanAllClaim.listClaimUnresolved}">
                                 <tr>
                                     <td>${c.idClaim}</td>
-                                    <td><a href=""></a></td>
-                                    <td></td>
+                                    <td><a href="StudentsController?id=${c.idClaim}&action=viewDecision">${c.title}</a></td>
+                                    <td>${c.idUser}</td>
                                     <td>
-                                        
+                                        Phan Huyen Trang (16h ago)
                                     </td>
-                                    <td>
-                                        <a href="">View</a>|<a href="">Up Claim</a>
-                                    </td>
+                                    <c:if test="${c.status == 0}">
+                                        <td><span class="text-danger"><c:out value="Closed"/></span></td>
+                                    </c:if>
+                                    <c:if test="${c.status == 1}">
+                                        <td><c:out value="Open"/></td>
+                                    </c:if>
                                 </tr>
+                            </c:forEach>
                         </tbody>
                     </table>
                 </div><!-- Footer -->

@@ -144,18 +144,22 @@ public class Controller extends HttpServlet {
         c.setListClaimUnresolved(ConnectDB.getAllClaimOfStudent(idUser));
         if (acc != null) {
             switch (acc.getLever()) {
+                //student
                 case 1:
                     session.setAttribute("idUser", acc.getIdUser());
                     session.setAttribute("fullName", acc.getFullName());
                     session.setAttribute("beanAllClaim", c);
                     response.sendRedirect("student/index.jsp");
                     break;
+                //admin
                 case 2:
                     sendMessage(response, acc.getFullName(), "login.jsp");
                     break;
+                //manager
                 case 3:
                     sendMessage(response, acc.getFullName(), "login.jsp");
                     break;
+                //condinator
                 case 4:
                     sendMessage(response, acc.getFullName(), "login.jsp");
                     break;

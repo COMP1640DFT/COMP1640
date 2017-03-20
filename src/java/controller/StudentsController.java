@@ -77,7 +77,7 @@ public class StudentsController extends HttpServlet {
         Decision d = ConnectDB.getDecisionOfAClaim(idC);
         HttpSession session = request.getSession();
         session.setAttribute("beanDecision", d);
-        response.sendRedirect("detailclaim.jsp");
+        response.sendRedirect("student/detailclaim.jsp");
     }
 
     private void sendMessage(HttpServletResponse response, String sms, String path) throws ServletException, IOException {

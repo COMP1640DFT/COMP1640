@@ -90,7 +90,7 @@
 
         <ul id="main-menu" class="">
             <li >
-                <a href="index.html"><i class="glyphicon glyphicon-home"></i> Home</a>
+                <a href=""><i class="glyphicon glyphicon-home"></i> Home</a>
             </li>
             <li class="active">
                 <a href="StudentsController?action=AddClaimPage"><i class="glyphicon glyphicon-plus-sign"></i> Create a claim</a>
