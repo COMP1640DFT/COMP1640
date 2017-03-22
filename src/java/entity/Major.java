@@ -40,7 +40,4 @@ public class Major {
     public void setListMajor(List<Major> listMajor) {
         this.listMajor = listMajor;
     }
-    
-    
-    
 }

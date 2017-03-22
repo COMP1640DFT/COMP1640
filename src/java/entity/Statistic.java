@@ -16,6 +16,7 @@ public class Statistic {
     private String title;
     private String year;
     private String major;
+    private String user;
    
     private List<Statistic>  listStatisticAllMajor;
     private List<Statistic>  listNumOfStudent;
@@ -96,4 +97,14 @@ public class Statistic {
     public void setData(int count) {
         this.data = count;
     }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+    
+    
 }

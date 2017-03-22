@@ -12,6 +12,7 @@ import entity.Major;
 import entity.Statistic;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -39,6 +40,8 @@ public class Controller extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    ConnectDB connectDB = new ConnectDB();
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -56,14 +59,14 @@ public class Controller extends HttpServlet {
         }
         if (action.equals("viewC")) {
 
-            List<Claim> lClaim = ConnectDB.getAllClaim();
+            List<Claim> lClaim = connectDB.getAllClaim();
             session.setAttribute("listClaim", lClaim);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("process.jsp");
             requestDispatcher.forward(request, response);
         }
         if (action.equals("viewDetail")) {
             String id = request.getParameter("id");
-            Claim claim = ConnectDB.getClaimByIdClaim(Integer.parseInt(id));
+            Claim claim = connectDB.getClaimByIdClaim(Integer.parseInt(id));
 
             session.setAttribute("ClaimDetail", claim);
             response.sendRedirect("sample/detail-process.jsp");
@@ -84,7 +87,7 @@ public class Controller extends HttpServlet {
         if (idmajor == null) {
             idmajor = "1";
         }
-        List<Major> listM = ConnectDB.getListMajor();
+        List<Major> listM = connectDB.getListMajor();
         List<ItemSelected> listMajor = new ArrayList<>();
         for (Major listM1 : listM) {
             ItemSelected item = new ItemSelected();
@@ -98,8 +101,8 @@ public class Controller extends HttpServlet {
             listMajor.add(item);
         }
         Claim claim = new Claim();
-        claim.setListClaimWithoutEvidence(ConnectDB.getStudentUpClaimWithOutEvidence());
-        claim.setListClaimUnresolved(ConnectDB.getAllClaimUnresolvedAfterTwoWeek());
+        claim.setListClaimWithoutEvidence(connectDB.getStudentUpClaimWithOutEvidence());
+        claim.setListClaimUnresolved(connectDB.getAllClaimUnresolvedAfterTwoWeek());
         claim.setListSelectedMajor(listMajor);
         session.setAttribute("beanClaim", claim);
         response.sendRedirect("statistics.jsp");
@@ -115,7 +118,7 @@ public class Controller extends HttpServlet {
         if (idmajor == null) {
             idmajor = "1";
         }
-        List<Major> listM = ConnectDB.getListMajor();
+        List<Major> listM = connectDB.getListMajor();
         List<ItemSelected> listMajor = new ArrayList<>();
         for (Major listM1 : listM) {
             ItemSelected item = new ItemSelected();
@@ -129,8 +132,8 @@ public class Controller extends HttpServlet {
             listMajor.add(item);
         }
         Claim claim = new Claim();
-        claim.setListClaimWithoutEvidence(ConnectDB.getStudentUpClaimWithOutEvidenceInMajor(idM));
-        claim.setListClaimUnresolved(ConnectDB.getAllClaimUnresolvedAfterTwoWeekInMajor(idM));
+        claim.setListClaimWithoutEvidence(connectDB.getStudentUpClaimWithOutEvidenceInMajor(idM));
+        claim.setListClaimUnresolved(connectDB.getAllClaimUnresolvedAfterTwoWeekInMajor(idM));
         claim.setListSelectedMajor(listMajor);
         session.setAttribute("beanClaim", claim);
         response.sendRedirect("statistics.jsp");
@@ -139,9 +142,9 @@ public class Controller extends HttpServlet {
     private Account checkLogin(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
         String idUser = request.getParameter("username");
         String pass = request.getParameter("password");
-        Account acc = ConnectDB.checkLogin(idUser, pass);
+        Account acc = connectDB.checkLogin(idUser, pass);
         Claim c = new Claim();
-        c.setListClaimUnresolved(ConnectDB.getAllClaimOfStudent(idUser));
+        c.setListClaimUnresolved(connectDB.getAllClaimOfStudent(idUser));
         if (acc != null) {
             switch (acc.getLever()) {
                 //student
@@ -181,7 +184,7 @@ public class Controller extends HttpServlet {
     }
 
     private void viewStaticsChart(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        List<Major> listM = ConnectDB.getListMajor();
+        List<Major> listM = connectDB.getListMajor();
         String[] month = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
         String year = request.getParameter("year");
         String idmajor = request.getParameter("idmajor");
@@ -225,29 +228,56 @@ public class Controller extends HttpServlet {
             }
             listMajor.add(item);
 
-            int data = ConnectDB.getCountClaimByMajor(year, listM1.getId());
             Statistic s = new Statistic();
-            s.setData(data);
             s.setTitle(listM1.getName());
+            s.setData(0);
             listS.add(s);
+        }
+
+        List<Major> dataCount = connectDB.getCountClaimByMajor(year);
+        for (Major dataCount1 : dataCount) {
+            for (Statistic s : listS) {
+                if (s.getTitle().equals(dataCount1.getName())) {
+                    s.setData(s.getData() + 1);
+                }
+            }
         }
 
         int idM = Integer.parseInt(idmajor);
         //chart1
         List<Statistic> listSOfClaims = new ArrayList<>();
+        List<Statistic> listTotal = connectDB.getAllClaim(year, idM);
         for (int i = 0; i < 12; i++) {
-            int data = ConnectDB.getCountClaimByMonth(year, month[i], idM);
             Statistic s = new Statistic();
-            s.setData(data);
+            s.setData(0);
+            for (Statistic st : listTotal) {
+                if (st.getYear().substring(5, 7).equals(month[i])) {
+                    s.setData(s.getData() + 1);
+                }
+            }
             listSOfClaims.add(s);
         }
 
         //chart3
         List<Statistic> listSOfStd = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
-            int data = ConnectDB.getCountStudentUpClaim(year, month[i], idM);
+            List<String> listNameUser = new ArrayList<>();
             Statistic s = new Statistic();
-            s.setData(data);
+            for (Statistic st : listTotal) {
+                if (st.getYear().substring(5, 7).equals(month[i])) {
+                    if (listNameUser.size() > 0) {
+                        for (int j = 0; j< listNameUser.size();j++) {
+                            if (!listNameUser.get(j).equals(st.getUser())) {
+                                listNameUser.add(st.getUser());
+                                
+                            }
+                        }
+                    } else {
+                        listNameUser.add(st.getUser());
+                    }
+                    s.setData(listNameUser.size());
+                }
+            }
             listSOfStd.add(s);
         }
 

@@ -9,6 +9,7 @@ import entity.Account;
 import entity.Claim;
 import entity.Decision;
 import entity.Major;
+import entity.Statistic;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -26,40 +27,43 @@ import java.util.logging.Logger;
  */
 public class ConnectDB {
 
-    private static Connection con;
+    private Connection con;
 
-    public static Connection connectdatabase() {
-
-        try {
-
-            try {
-                Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println(ex.getMessage());
-            }
-            String user = "sa";
-            String passwd = "123123";
-            String url = "jdbc:sqlserver://10.211.55.3:1433;databaseName=COMP1640";
-            con = DriverManager.getConnection(url, user, passwd);
-            if (con != null) {
-                System.out.println("thanh cong");
-
-            } else {
-                System.out.println("that bai");
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            con = null;
-        }
-        return con;
+    public ConnectDB() {
     }
 
-    public static Account checkLogin(String idUser, String pass) {
+    public void connectdatabase() {
+        this.con = MySQLConnection.getConnection();
+//        try {
+//
+//            try {
+//                Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+//            } catch (ClassNotFoundException ex) {
+//                Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+//                System.out.println(ex.getMessage());
+//            }
+//            String user = "sa";
+//            String passwd = "123123";
+//            String url = "jdbc:sqlserver://10.211.55.3:1433;databaseName=COMP1640";
+//            con = DriverManager.getConnection(url, user, passwd);
+//            if (con != null) {
+//                System.out.println("thanh cong");
+//
+//            } else {
+//                System.out.println("that bai");
+//            }
+//        } catch (SQLException e) {
+//            System.out.println(e.getMessage());
+//            con = null;
+//        }
+    }
+
+    public Account checkLogin(String idUser, String pass) {
         Account acc = null;
         String sql = "select * from tblUser where idUser=? and _passWord=? ";
         try {
-            PreparedStatement ps = connectdatabase().prepareStatement(sql);
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, idUser);
             ps.setString(2, pass);
             ResultSet rs = ps.executeQuery();
@@ -74,6 +78,7 @@ public class ConnectDB {
                 acc.setIdMajor(rs.getInt(8));
                 acc.setLever(rs.getInt(9));
             }
+            con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -81,13 +86,14 @@ public class ConnectDB {
 
     }
 
-    public static List<Claim> getAllClaim() {
+    public List<Claim> getAllClaim() {
         String sql = "select c.idClaim,c.title,c.content,c.sendDate,c.filedata,c.idUser,c.idCM,d.idUser from tblClaim c join tblDecision d on c.idClaim=d.idClaim";
         Claim claim = null;
         Decision s = null;
         List<Claim> lClaim = new ArrayList<>();
         try {
-            PreparedStatement ps = connectdatabase().prepareStatement(sql);
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 claim = new Claim();
@@ -104,19 +110,21 @@ public class ConnectDB {
                 lClaim.add(claim);
 
             }
+            con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
         return lClaim;
     }
 
-    public static Claim getClaimByIdClaim(int id) {
+    public Claim getClaimByIdClaim(int id) {
         String sql = "select c.idClaim,c.title,c.content,c.sendDate,c.filedata,c.idUser,c.idCM,d.idUser,d.content,u.fullName from tblClaim c join tblDecision d on c.idClaim=d.idClaim join tblUser u on u.idUser=c.idUser  where c.idClaim=?";
         Claim claim = null;
         Decision s = null;
 
         try {
-            PreparedStatement ps = connectdatabase().prepareStatement(sql);
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -135,6 +143,7 @@ public class ConnectDB {
                 claim.setDecision(s);
 
             }
+            con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -142,7 +151,7 @@ public class ConnectDB {
     }
 
     //Get all student send claim without evidence
-    public static List<Claim> getStudentUpClaimWithOutEvidence() {
+    public List<Claim> getStudentUpClaimWithOutEvidence() {
         List<Claim> list = new LinkedList<>();
         String sql = "select c.idClaim, c.title, c.sendDate, u.fullName, cl.name from tblClaim c \n"
                 + "inner join tblUser u on c.idUser = u.idUser \n"
@@ -150,7 +159,8 @@ public class ConnectDB {
                 + "inner join tblClass cl on cd.idClass = cl.id\n"
                 + "where c.filedata = ''";
         try {
-            PreparedStatement ps = connectdatabase().prepareStatement(sql);
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Claim c = new Claim();
@@ -161,13 +171,14 @@ public class ConnectDB {
                 c.setClassName(rs.getString(5));
                 list.add(c);
             }
+            con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
 
-    public static List<Claim> getStudentUpClaimWithOutEvidenceInMajor(int id) {
+    public List<Claim> getStudentUpClaimWithOutEvidenceInMajor(int id) {
         List<Claim> list = new LinkedList<>();
         String sql = "select c.idClaim, c.title, c.sendDate, u.fullName, cl.name from tblClaim c \n"
                 + "inner join tblUser u on c.idUser = u.idUser \n"
@@ -176,7 +187,8 @@ public class ConnectDB {
                 + "inner join tblMajor m on cl.idMajor = m.id\n"
                 + "where c.filedata = '' and m.id = ?";
         try {
-            PreparedStatement ps = connectdatabase().prepareStatement(sql);
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -188,6 +200,7 @@ public class ConnectDB {
                 c.setClassName(rs.getString(5));
                 list.add(c);
             }
+            con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -195,7 +208,7 @@ public class ConnectDB {
     }
 
     // Get all claim unresolved after 14 days
-    public static List<Claim> getAllClaimUnresolvedAfterTwoWeek() {
+    public List<Claim> getAllClaimUnresolvedAfterTwoWeek() {
         String sql = "select c.idClaim, c.title,c.content, c.sendDate,c.filedata, c._status, c.idUser, u.fullName \n"
                 + "from tblClaim c \n"
                 + "join tblUser u on c.idUser = u.idUser \n"
@@ -203,7 +216,8 @@ public class ConnectDB {
         List<Claim> list = new LinkedList<>();
 
         try {
-            PreparedStatement ps = connectdatabase().prepareStatement(sql);
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Claim claim = new Claim();
@@ -218,13 +232,14 @@ public class ConnectDB {
                 list.add(claim);
 
             }
+            con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
 
-    public static List<Claim> getAllClaimUnresolvedAfterTwoWeekInMajor(int id) {
+    public List<Claim> getAllClaimUnresolvedAfterTwoWeekInMajor(int id) {
         String sql = "select c.idClaim, c.title,c.content, c.sendDate,c.filedata, c._status, c.idUser, u.fullName \n"
                 + "from tblClaim c \n"
                 + "join tblUser u on c.idUser = u.idUser\n"
@@ -233,7 +248,8 @@ public class ConnectDB {
         List<Claim> list = new LinkedList<>();
 
         try {
-            PreparedStatement ps = connectdatabase().prepareStatement(sql);
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -249,13 +265,14 @@ public class ConnectDB {
                 list.add(claim);
 
             }
+            con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
 
-    public static List<Claim> getAllClaimOfStudent(String user) {
+    public List<Claim> getAllClaimOfStudent(String user) {
         String sql = "select c.idClaim, c.title,c.content, c.sendDate,c.filedata,cm._status ,u.idUser\n"
                 + "from tblClaim c \n"
                 + "join tblClaimManage cm on c.idCM = cm.idCM\n"
@@ -265,7 +282,8 @@ public class ConnectDB {
         List<Claim> list = new LinkedList<>();
 
         try {
-            PreparedStatement ps = connectdatabase().prepareStatement(sql);
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, user);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -280,13 +298,14 @@ public class ConnectDB {
                 list.add(claim);
 
             }
+            con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
 
-    public static Decision getDecisionOfAClaim(int claimID) {
+    public Decision getDecisionOfAClaim(int claimID) {
         String sql = " select c.title,d.content,d.sendDate,d._status,u.fullName,d.idUser from tblDecision d\n"
                 + " join tblUser u on d.idUser = u.idUser \n"
                 + " join tblClaim c on d.idClaim = c.idClaim\n"
@@ -294,7 +313,8 @@ public class ConnectDB {
         Decision d = null;
 
         try {
-            PreparedStatement ps = connectdatabase().prepareStatement(sql);
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, claimID);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -306,17 +326,19 @@ public class ConnectDB {
                 d.setFullNameEC(rs.getString(5));
                 d.setIdUserEC(rs.getString(6));
             }
+            con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
         return d;
     }
 
-    public static List<Major> getListMajor() {
+    public List<Major> getListMajor() {
         List<Major> list = new LinkedList<>();
         String sql = "select * from tblMajor";
         try {
-            PreparedStatement ps = connectdatabase().prepareStatement(sql);
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Major m = new Major();
@@ -324,76 +346,90 @@ public class ConnectDB {
                 m.setName(rs.getString(2));
                 list.add(m);
             }
+            con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
 
-    public static int getCountClaimByMajor(String year, int idMajor) {
-        int result = 0;
-        String sql = "select count(*) from tblClaim tc inner join tblUser tu on tc.idUser = tu.idUser \n"
+    public List<Major> getCountClaimByMajor(String year) {
+        List<Major> list = new ArrayList<>();
+        String sql = "select tm.id, tm.name from tblClaim tc inner join tblUser tu on tc.idUser = tu.idUser \n"
                 + "inner join tblMajor tm on tu.idMajor = tm.id\n"
                 + "inner join tblClaimManage tcm on tc.idCM = tcm.idCM \n"
                 + "where \n"
-                + "tcm.createDate between '01/01/" + year + "' and '12/31/" + year + "'\n"
+                + "tcm.createDate between '" + year + "-01-01' and '" + year + "-12-31'\n";
+        try {
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Major m = new Major();
+                m.setId(rs.getInt(1));
+                m.setName(rs.getString(2));
+                list.add(m);
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+
+    public List<Statistic> getAllClaim(String year, int idMajor) {
+        List<Statistic> list = new ArrayList<>();
+        String sql = "select tm.id, tm.name, tc.sendDate, tc.idUser from tblClaim tc inner join tblUser tu on tc.idUser = tu.idUser \n"
+                + "inner join tblMajor tm on tu.idMajor = tm.id\n"
+                + "inner join tblClaimManage tcm on tc.idCM = tcm.idCM \n"
+                + "where \n"
+                + "tc.sendDate between '" + year + "-01-01' and '" + year + "-12-31'\n"
                 + "and tm.id = " + idMajor;
         try {
-            PreparedStatement ps = connectdatabase().prepareStatement(sql);
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                result = rs.getInt(1);
+                Statistic s = new Statistic();
+                s.setData(rs.getInt(1));
+                s.setTitle(rs.getString(2));
+                s.setYear(rs.getString(3));
+                s.setUser(rs.getString(4));
+                list.add(s);
             }
+            con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return result;
+        return list;
     }
 
-    public static int getCountClaimByMonth(String year, String month, int idMajor) {
-        int result = 0;
-        String sql = "select count(*) from tblClaim tc inner join tblUser tu on tc.idUser = tu.idUser \n"
-                + "inner join tblMajor tm on tu.idMajor = tm.id\n"
-                + "inner join tblClaimManage tcm on tc.idCM = tcm.idCM \n"
-                + "where \n"
-                + "tc.sendDate like '%" + year + "-" + month + "-%'"
-                + "and tm.id = " + idMajor;
+//    public List<Statistic> getCountStudentUpClaim(String year, String month, int idMajor) {
+//        List<Statistic> list = new ArrayList<>();
+//        String sql = "select count(tc.idUser), tc.idUser from tblClaim tc inner join tblUser tu on tc.idUser = tu.idUser \n"
+//                + "inner join tblMajor tm on tu.idMajor = tm.id\n"
+//                + "inner join tblClaimManage tcm on tc.idCM = tcm.idCM \n"
+//                + "where \n"
+//                + "tc.sendDate between '" + year + "-01-01' and '" + year + "-12-31'\n"
+//                + "and tm.id = " + idMajor + " group by tc.idUser";
+//        try {
+//            connectdatabase();
+//            PreparedStatement ps = con.prepareStatement(sql);
+//            ResultSet rs = ps.executeQuery();
+//            while (rs.next()) {
+//                result++;
+//            }
+//            con.close();
+//        } catch (SQLException ex) {
+//            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return list;
+//    }
+    public boolean createClaim(Claim claim) {
         try {
-            PreparedStatement ps = connectdatabase().prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                result = rs.getInt(1);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return result;
-    }
-
-    public static int getCountStudentUpClaim(String year, String month, int idMajor) {
-        int result = 0;
-        String sql = "select count(tc.idUser), tc.idUser from tblClaim tc inner join tblUser tu on tc.idUser = tu.idUser \n"
-                + "inner join tblMajor tm on tu.idMajor = tm.id\n"
-                + "inner join tblClaimManage tcm on tc.idCM = tcm.idCM \n"
-                + "where \n"
-                + "tc.sendDate like '%" + year + "-" + month + "-%'"
-                + "and tm.id = " + idMajor + " group by tc.idUser";
-        try {
-            PreparedStatement ps = connectdatabase().prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                result++;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return result;
-    }
-
-    public static boolean createClaim(Claim claim) {
-        try {
+            connectdatabase();
             String sql = "insert into tblClaim values(?,?,?,?,?,?,?)";
-            PreparedStatement st = connectdatabase().prepareStatement(sql);
+            PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, claim.getTitle());
             st.setString(2, claim.getContent());
             st.setString(3, claim.getSendDate());
@@ -404,21 +440,23 @@ public class ConnectDB {
             if (st.executeUpdate() > 0) {
                 return true;
             }
-
+            con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }
 
-    public static void main(String[] args) {
-        connectdatabase();
+    public void main(String[] args) {
+//        con;
 //        Claim c = new Claim("1", "1", "2017-02-12", "1", "taincgc", 1, 0);
 //        boolean a = createClaim(c);
 //        System.out.println(a + "");
-        for (Claim c : ConnectDB.getAllClaimOfStudent("dungkv")) {
-            System.out.println(c.getTitle());
-        }
+//        for (Claim c : ConnectDB.getAllClaimOfStudent("dungkv")) {
+//            System.out.println(c.getTitle());
+//        }
 
+//        System.out.println(getCountClaimByMajor("2017",1));
+//        getCountClaimByMonth("2017",1);
     }
 }

@@ -35,13 +35,15 @@ public class StudentsController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    ConnectDB connectDB = new ConnectDB();
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
         HttpSession session = request.getSession();
         if (action.equals("AddClaimPage")) {
-            List<Major> lMajor = ConnectDB.getListMajor();
+            List<Major> lMajor = connectDB.getListMajor();
             session.setAttribute("lMajor", lMajor);
             response.sendRedirect("../student/createclaim.jsp");
 
@@ -57,7 +59,7 @@ public class StudentsController extends HttpServlet {
                 String idU = request.getParameter("Uid");
                 Claim claim = new Claim(title, description, date_send, file, idU, idCM, status);
 
-                if (ConnectDB.createClaim(claim)) {
+                if (connectDB.createClaim(claim)) {
                     sendMessage(response, "Add claim complete successfull!", "../student/createclaim.jsp");
                 } else {
                     sendMessage(response, "Add claim is failed!", "../student/createclaim.jsp");
@@ -74,7 +76,7 @@ public class StudentsController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String id = request.getParameter("id");
         int idC = Integer.parseInt(id);
-        Decision d = ConnectDB.getDecisionOfAClaim(idC);
+        Decision d = connectDB.getDecisionOfAClaim(idC);
         HttpSession session = request.getSession();
         session.setAttribute("beanDecision", d);
         response.sendRedirect("student/detailclaim.jsp");
