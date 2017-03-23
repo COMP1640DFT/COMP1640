@@ -212,7 +212,7 @@ public class ConnectDB {
         String sql = "select c.idClaim, c.title,c.content, c.sendDate,c.filedata, c._status, c.idUser, u.fullName \n"
                 + "from tblClaim c \n"
                 + "join tblUser u on c.idUser = u.idUser \n"
-                + "where c.sendDate <= DATEADD(WEEK,-2,GETDATE()) and _status = 0";
+                + "where c.sendDate <= ADDDATE(NOW(),-14) and _status = 0";
         List<Claim> list = new LinkedList<>();
 
         try {
