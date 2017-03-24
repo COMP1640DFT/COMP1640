@@ -12,15 +12,19 @@ public class Claim {
     private String title;
     private String content;
     private String sendDate;
+    private String createDate;
+    private String endDate;
      private String filedata;
     private String userFullName;
     private String idUser;
     private int idCM;
+    private int idCourse;
     private int status;
     private Decision decision;
     private String className;
     private List<Claim> listClaimWithoutEvidence;
     private List<Claim> listClaimUnresolved;
+    private List<Claim> listClaim;
     private List<ItemSelected> listSelectedMajor;
 
     public List<ItemSelected> getListSelectedMajor() {
@@ -63,6 +67,30 @@ public class Claim {
         this.idCM = idCM;
         this.status = status;
     }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
+    public int getIdCourse() {
+        return idCourse;
+    }
+
+    public void setIdCourse(int idCourse) {
+        this.idCourse = idCourse;
+    }
     
 
     public String getIdUser() {
@@ -75,6 +103,14 @@ public class Claim {
 
     public int getIdCM() {
         return idCM;
+    }
+
+    public List<Claim> getListClaim() {
+        return listClaim;
+    }
+
+    public void setListClaim(List<Claim> listClaim) {
+        this.listClaim = listClaim;
     }
 
     public void setIdCM(int idCM) {

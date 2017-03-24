@@ -39,7 +39,7 @@
         <!-- TS1387507309: Neon - Responsive Admin Template created by Laborator -->
     </head>
     <body class="page-body">
-        <jsp:useBean id="beanAllClaim" class="entity.Claim" scope="session"></jsp:useBean>
+        <jsp:useBean id="beanAllStudentClaim" class="entity.Claim" scope="session"></jsp:useBean>
             <div class="page-container">
 
                 <div class="sidebar-menu">
@@ -133,7 +133,7 @@
                         </thead>
 
                         <tbody>
-                            <c:forEach var="c" items="${beanAllClaim.listClaimUnresolved}">
+                        <c:forEach var="c" items="${beanAllStudentClaim.listClaim}">
                                 <tr>
                                     <td>${c.idClaim}</td>
                                     <td><a href="StudentsController?id=${c.idClaim}&action=viewDecision">${c.title}</a></td>

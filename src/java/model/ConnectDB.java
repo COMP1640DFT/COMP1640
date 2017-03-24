@@ -272,19 +272,45 @@ public class ConnectDB {
         return list;
     }
 
-    public List<Claim> getAllClaimOfStudent(String user) {
+    public List<Claim> getAllClaimManage(){
+        String sql = "select * from tblClaimManage";
+         List<Claim> list = new LinkedList<>();
+
+        try {
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Claim claim = new Claim();
+                claim.setIdClaim(rs.getInt(1));
+                claim.setTitle(rs.getString(2));
+                claim.setCreateDate(rs.getString(3));
+                claim.setEndDate(rs.getString(4));
+                claim.setIdCourse(rs.getInt(5));
+                claim.setStatus(rs.getInt(6));
+                list.add(claim);
+
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+    public List<Claim> getAllClaimOfStudent(String user, int idCM) {
         String sql = "select c.idClaim, c.title,c.content, c.sendDate,c.filedata,cm._status ,u.idUser\n"
                 + "from tblClaim c \n"
                 + "join tblClaimManage cm on c.idCM = cm.idCM\n"
                 + "join tblDecision d on c.idClaim = d.idClaim\n"
                 + "join tblUser u on d.idUser = u.idUser\n"
-                + " where c.idUser = ?";
+                + " where c.idUser = ? and c.idCM = ?";
         List<Claim> list = new LinkedList<>();
 
         try {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, user);
+            ps.setInt(2, idCM);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Claim claim = new Claim();

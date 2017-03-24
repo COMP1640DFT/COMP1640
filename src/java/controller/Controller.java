@@ -144,7 +144,7 @@ public class Controller extends HttpServlet {
         String pass = request.getParameter("password");
         Account acc = connectDB.checkLogin(idUser, pass);
         Claim c = new Claim();
-        c.setListClaimUnresolved(connectDB.getAllClaimOfStudent(idUser));
+        c.setListClaimUnresolved(connectDB.getAllClaimManage());
         if (acc != null) {
             switch (acc.getLever()) {
                 //student

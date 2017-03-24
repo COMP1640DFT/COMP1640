@@ -148,17 +148,23 @@
                         </thead>
 
                         <tbody>
+                             <c:forEach var="c" items="${beanAllClaim.listClaimUnresolved}">
                                 <tr>
                                     <td>${c.idClaim}</td>
-                                    <td><a href=""></a></td>
-                                    <td></td>
-                                    <td>
-                                        
-                                    </td>
-                                    <td>
-                                        <a href="">View</a>|<a href="">Up Claim</a>
+                                    <td>${c.title}</td>
+                                    <td>${c.endDate}</td>
+                                    <c:if test="${c.status == 0}">
+                                        <td><span class="text-danger"><c:out value="Closed"/></span></td>
+                                    </c:if>
+                                    <c:if test="${c.status == 1}">
+                                        <td><c:out value="Open"/></td>
+                                    </c:if>
+                                        <td>
+                                        <a href="StudentsController?idCM=${c.idClaim}&idUser=${idUser}&action=viewAllClaim">View</a>|<a href="">Up Claim</a>
                                     </td>
                                 </tr>
+                            </c:forEach>
+<!--                                
                         </tbody>
                     </table>
                 </div><!-- Footer -->

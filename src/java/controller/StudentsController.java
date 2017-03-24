@@ -36,7 +36,7 @@ public class StudentsController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     ConnectDB connectDB = new ConnectDB();
-    
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -70,6 +70,9 @@ public class StudentsController extends HttpServlet {
         if (action.equals("viewDecision")) {
             viewDecision(request, response);
         }
+        if (action.equals("viewAllClaim")) {
+            viewAllClaim(request, response);
+        }
     }
 
     private void viewDecision(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -79,7 +82,19 @@ public class StudentsController extends HttpServlet {
         Decision d = connectDB.getDecisionOfAClaim(idC);
         HttpSession session = request.getSession();
         session.setAttribute("beanDecision", d);
-        response.sendRedirect("student/detailclaim.jsp");
+        response.sendRedirect("../student/detailclaim.jsp");
+    }
+
+    private void viewAllClaim(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        response.setContentType("text/html;charset=UTF-8");
+        String id = request.getParameter("idCM");
+        String idUser = request.getParameter("idUser");
+        int idC = Integer.parseInt(id);
+        Claim c = new Claim();
+        c.setListClaim(connectDB.getAllClaimOfStudent(idUser,idC));
+        HttpSession session = request.getSession();
+        session.setAttribute("beanAllStudentClaim", c);
+        response.sendRedirect("../student/allClaims.jsp");
     }
 
     private void sendMessage(HttpServletResponse response, String sms, String path) throws ServletException, IOException {
