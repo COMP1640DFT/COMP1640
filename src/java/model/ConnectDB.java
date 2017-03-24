@@ -244,7 +244,7 @@ public class ConnectDB {
                 + "from tblClaim c \n"
                 + "join tblUser u on c.idUser = u.idUser\n"
                 + "join tblMajor m on u.idMajor = m.id \n"
-                + "where c.sendDate <= DATEADD(WEEK,-2,GETDATE()) and _status = 0 and m.id = ?";
+                + "where c.sendDate <= ADDDATE(NOW(),-14) and _status = 0 and m.id = ?";
         List<Claim> list = new LinkedList<>();
 
         try {

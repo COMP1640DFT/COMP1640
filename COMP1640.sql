@@ -137,4 +137,7 @@ join tblUser u on d.idUser = u.idUser
  join tblClaim c on d.idClaim = c.idClaim
  where d.idClaim = 1
 
+ --
+ select * from tblClaimManage
+ select * from tblClaim where idUser = 'dungkv' and idCM = 1
 
