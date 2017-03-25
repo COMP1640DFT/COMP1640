@@ -156,11 +156,13 @@ public class Controller extends HttpServlet {
                     break;
                 //admin
                 case 2:
-                    sendMessage(response, acc.getFullName(), "login.jsp");
+//                    response.sendRedirect("process.jsp");
                     break;
                 //manager
                 case 3:
-                    sendMessage(response, acc.getFullName(), "login.jsp");
+                    
+                     response.sendRedirect("process.jsp");
+                 
                     break;
                 //condinator
                 case 4:

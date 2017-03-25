@@ -5,13 +5,17 @@
  */
 package controller;
 
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.FileRenamePolicy;
 import entity.Claim;
 import entity.Decision;
 import entity.Major;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -36,6 +40,7 @@ public class StudentsController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     ConnectDB connectDB = new ConnectDB();
+    public static String file_name = "";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -49,23 +54,29 @@ public class StudentsController extends HttpServlet {
 
         }
         if (action.equals("createClaim")) {
-            String title = request.getParameter("subject");
-            String description = request.getParameter("description");
+             String idU = request.getParameter("Uid");
+                        MultipartRequest m = new MultipartRequest(request, getServletContext().getRealPath("/files"), 256000000, new FileRenamePolicy() {
+                @Override
+                public File rename(File file) {
+                    file_name = rfile(file, idU).getName();
+                    return rfile(file, idU);
+
+                }
+            });
+            String title = m.getParameter("subject");
+            String description = m.getParameter("description"); 
             if (!title.equals("") && !description.equals("")) {
                 String date_send = new SimpleDateFormat("yyyy/MM/dd").format(Calendar.getInstance().getTime());
-                String file = "";
                 int status = 0;
                 int idCM = 1;
-                String idU = request.getParameter("Uid");
-                Claim claim = new Claim(title, description, date_send, file, idU, idCM, status);
-
+                int idCourse=1;
+                Claim claim = new Claim(title, description, date_send, file_name, idU, idCM, status,idCourse);
                 if (connectDB.createClaim(claim)) {
                     sendMessage(response, "Add claim complete successfull!", "../student/createclaim.jsp");
                 } else {
                     sendMessage(response, "Add claim is failed!", "../student/createclaim.jsp");
                 }
             }
-
         }
         if (action.equals("viewDecision")) {
             viewDecision(request, response);
@@ -104,6 +115,17 @@ public class StudentsController extends HttpServlet {
         out.println("alert('" + sms + "');");
         out.println("location='" + path + "';");
         out.println("</script>");
+    }
+    
+    public File rfile(File file, String uid) {
+        long reqID = (new Date()).getTime();
+        char uniq = 'A';
+        File f = new File(file.getParentFile(), uid + reqID + uniq + "_" + file.getName());
+        while (f.exists()) {
+            uniq++;
+            f = new File(file.getParentFile(), uid + reqID + "_" + file.getName());
+        }
+        return f;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

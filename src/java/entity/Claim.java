@@ -67,6 +67,17 @@ public class Claim {
         this.idCM = idCM;
         this.status = status;
     }
+    
+    public Claim(String title, String content, String sendDate, String filedata, String idUser, int idCM, int status,int idCourse) {
+        this.title = title;
+        this.content = content;
+        this.sendDate = sendDate;
+        this.filedata = filedata;
+        this.idUser = idUser;
+        this.idCM = idCM;
+        this.status = status;
+        this.idCourse=idCourse;
+    }
 
     public String getCreateDate() {
         return createDate;

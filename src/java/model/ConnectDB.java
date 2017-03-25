@@ -454,7 +454,8 @@ public class ConnectDB {
     public boolean createClaim(Claim claim) {
         try {
             connectdatabase();
-            String sql = "insert into tblClaim values(?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO `tblClaim` ( `title`, `content`, `sendDate`, `filedata`, `_status`, `idUser`, `idCourse`, `idCM`) VALUES"
+                    + "(?,?,?,?,?,?,?,?)";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, claim.getTitle());
             st.setString(2, claim.getContent());
@@ -462,7 +463,8 @@ public class ConnectDB {
             st.setString(4, claim.getFiledata());
             st.setInt(5, claim.getStatus());
             st.setString(6, claim.getIdUser());
-            st.setInt(7, claim.getIdCM());
+            st.setInt(7, claim.getIdCourse());
+            st.setInt(8, claim.getIdCM());
             if (st.executeUpdate() > 0) {
                 return true;
             }
@@ -472,6 +474,7 @@ public class ConnectDB {
         }
         return false;
     }
+
 
     public void main(String[] args) {
 //        con;

@@ -43,22 +43,32 @@
     <script type="text/javascript">
         function validate() {
 
-
+            var flag = true;
             var subject = document.getElementById('subject');
             var description = document.getElementById('description');
            
             if (subject.value == "")
             {
-                alert("Claim subject is not null ");
+                return flag = false;
             }
              if (description.value == "")
             {
-                alert("Description is not null");
+               return flag = false;
             }
-            
+            return flag;
         }
+        function move() {
+                var flag = validate();
+                if (flag) {
+                    addclaim.action = "StudentsController?action=createClaim&Uid=${idUser}";
+                    addclaim.submit();
+                } else {
+                    alert("Please, Enter full fields! ");
+                }
+            }
+       
 
-    </script>
+    </script>r
 </head>
 <body class="page-body">
 
@@ -231,7 +241,7 @@
         <br/>
 
         <div class="panel panel-primary" style="padding: 10px">
-            <form  action="StudentsController?action=createClaim&Uid=${idUser}" method="post" class="form-horizontal" onsubmit="validate()">
+            <form  id="addclaim" name="addclaim"  method="POST" class="form-horizontal" enctype="multipart/form-data" onsubmit="move()"   >
                <div class="form-group">
                    <label for="subject" class="col-sm-3 control-label">Subject</label>
                    <div class="col-sm-9">
@@ -244,33 +254,20 @@
                    <textarea rows="8" placeholder="Input your claim description" class="form-control" name="description" id="description"></textarea>
                    </div>
                </div>
-<!--               <div class="form-group">
-                   <label for="faculty" class="col-sm-3 control-label">Faculty</label>
-                   <div class="col-sm-5">
-                   <select name="faculty" id="faculty" class="form-control">
-                       <c:forEach items="${sessionScope['lMajor']}" var="Major">
-                                 <option  value="${Major.id}">${Major.name}</option>
-                                 
-                       </c:forEach>
-                     
-                   </select>
-                   </div>
-               </div>-->
                
                <div class="form-group">
                    <label class="col-sm-3 control-label">Attachments</label>
 
                    <div class="col-sm-5">
 
-                       <input type="file" id="fileS" class="form-control file2 inline btn btn-default" multiple
+                       <input type="file" id="file" name="file" class="form-control file2 inline btn btn-default"
                               data-label="<i class='glyphicon glyphicon-circle-arrow-up'></i> &nbsp;Browse Files"/>
 
                    </div>
                </div>
                <div class="form-group">
                    <div class="col-sm-9 col-sm-offset-3">
-                       <button class="btn btn-success" type="submit"><i
-                               class="glyphicon glyphicon-send"></i> Send claim</button>
+                       <input class="btn btn-success" type="submit" value="Send Claim"/>
 
                        <button class="btn btn-default pull-right" type="reset">Reset</button>
 

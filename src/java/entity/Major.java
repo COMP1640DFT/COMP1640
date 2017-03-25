@@ -5,13 +5,14 @@
  */
 package entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  *
  * @author DaoMinhThien
  */
-public class Major {
+public class Major implements Serializable {
     private int id;
     private String name;
     private List<Major> listMajor;
