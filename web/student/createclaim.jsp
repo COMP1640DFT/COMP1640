@@ -70,6 +70,7 @@
 
     </script>r
 </head>
+<jsp:useBean id="beanCourse" class="entity.Course" scope="session"></jsp:useBean>
 <body class="page-body">
 
 <div class="page-container">
@@ -248,6 +249,7 @@
                        <input type="text" id="subject" name="subject" placeholder="Input your claim subject" class="form-control"/>
                    </div>
                </div>
+                <input type="hidden" value="${beanCourse.id}" name="idCourse"/>
                <div class="form-group">
                    <label for="description" class="col-sm-3 control-label">Description</label>
                    <div class="col-sm-9">

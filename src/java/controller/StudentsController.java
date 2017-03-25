@@ -8,6 +8,7 @@ package controller;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.FileRenamePolicy;
 import entity.Claim;
+import entity.Course;
 import entity.Decision;
 import entity.Major;
 import java.io.File;
@@ -48,28 +49,29 @@ public class StudentsController extends HttpServlet {
         String action = request.getParameter("action");
         HttpSession session = request.getSession();
         if (action.equals("AddClaimPage")) {
-            List<Major> lMajor = connectDB.getListMajor();
-            session.setAttribute("lMajor", lMajor);
+            String idCourse = request.getParameter("idC");
+            Course course = new Course();
+            course.setId(Integer.parseInt(idCourse));
+            session.setAttribute("beanCourse", course);
             response.sendRedirect("../student/createclaim.jsp");
 
         }
         if (action.equals("createClaim")) {
-             String idU = request.getParameter("Uid");
+             final String idU = request.getParameter("Uid");
                         MultipartRequest m = new MultipartRequest(request, getServletContext().getRealPath("/files"), 256000000, new FileRenamePolicy() {
                 @Override
                 public File rename(File file) {
                     file_name = rfile(file, idU).getName();
                     return rfile(file, idU);
-
                 }
             });
             String title = m.getParameter("subject");
             String description = m.getParameter("description"); 
             if (!title.equals("") && !description.equals("")) {
-                String date_send = new SimpleDateFormat("yyyy/MM/dd").format(Calendar.getInstance().getTime());
+                String date_send = new SimpleDateFormat("yyyy/MM/dd").format(Calendar.getInstance().getTime()); 
                 int status = 0;
                 int idCM = 1;
-                int idCourse=1;
+                int idCourse= Integer.parseInt(m.getParameter("idCourse"));
                 Claim claim = new Claim(title, description, date_send, file_name, idU, idCM, status,idCourse);
                 if (connectDB.createClaim(claim)) {
                     sendMessage(response, "Add claim complete successfull!", "../student/createclaim.jsp");

@@ -272,13 +272,17 @@ public class ConnectDB {
         return list;
     }
 
-    public List<Claim> getAllClaimManage(){
-        String sql = "select * from tblClaimManage";
+    public List<Claim> getAllClaimManage(int idMajor){
+        String sql = "SELECT * \n" +
+                    "FROM tblClaimManage tcm\n" +
+                    "INNER JOIN tblCourse tc ON tcm.idCourse = tc.id\n" +
+                    "INNER JOIN tblMajor tm ON tm.id = tc.idMajor WHERE idMajor = ?";
          List<Claim> list = new LinkedList<>();
 
         try {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, idMajor);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Claim claim = new Claim();
