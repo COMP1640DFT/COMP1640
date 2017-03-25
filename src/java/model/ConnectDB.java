@@ -298,11 +298,8 @@ public class ConnectDB {
         return list;
     }
     public List<Claim> getAllClaimOfStudent(String user, int idCM) {
-        String sql = "select c.idClaim, c.title,c.content, c.sendDate,c.filedata,cm._status ,u.idUser\n"
+        String sql = "select c.idClaim, c.title,c.content, c.sendDate,c.filedata,c._status ,c.idUser\n"
                 + "from tblClaim c \n"
-                + "join tblClaimManage cm on c.idCM = cm.idCM\n"
-                + "join tblDecision d on c.idClaim = d.idClaim\n"
-                + "join tblUser u on d.idUser = u.idUser\n"
                 + " where c.idUser = ? and c.idCM = ?";
         List<Claim> list = new LinkedList<>();
 
