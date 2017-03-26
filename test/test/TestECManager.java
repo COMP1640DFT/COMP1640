@@ -70,7 +70,7 @@ public class TestECManager {
     public void getAllStudentUpClaiminFebruary() {
         String year = "2017";
         int idMajor = 1;
-        String month = "03";
+        String month = "02";
 
         List<Statistic> allStdUpClm = connectDB.getAllClaim(year, idMajor);
 

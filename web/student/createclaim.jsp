@@ -71,6 +71,7 @@
     </script>r
 </head>
 <jsp:useBean id="beanCourse" class="entity.Course" scope="session"></jsp:useBean>
+<jsp:useBean id="beanCM" class="entity.ClaimManage" scope="session"></jsp:useBean>
 <body class="page-body">
 
 <div class="page-container">
@@ -128,8 +129,8 @@
 
 
                         Welcome: <strong>${idUser} (${fullName})</strong>
-
-
+                    
+                    
                     </li>
 
                 </ul>
@@ -250,6 +251,7 @@
                    </div>
                </div>
                 <input type="hidden" value="${beanCourse.id}" name="idCourse"/>
+                <input type="hidden" value="${beanCM.id}" name="idCM"/>
                <div class="form-group">
                    <label for="description" class="col-sm-3 control-label">Description</label>
                    <div class="col-sm-9">

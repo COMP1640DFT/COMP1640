@@ -309,7 +309,7 @@
                         </div>
                     </div>
 
-                    <div class="mail-reply">
+<!--                    <div class="mail-reply">
 
                         <div class="fake-form owner">
                             New the her nor case that lady paid read. Invitation friendship travelling eat everything
@@ -343,7 +343,7 @@
                             </form>
                         </div>
 
-                    </div>
+                    </div>-->
 
                 </div>
             </div>

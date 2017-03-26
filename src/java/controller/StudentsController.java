@@ -8,6 +8,7 @@ package controller;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.FileRenamePolicy;
 import entity.Claim;
+import entity.ClaimManage;
 import entity.Course;
 import entity.Decision;
 import entity.Major;
@@ -50,9 +51,13 @@ public class StudentsController extends HttpServlet {
         HttpSession session = request.getSession();
         if (action.equals("AddClaimPage")) {
             String idCourse = request.getParameter("idC");
+            String idClaimM = request.getParameter("idCM");
             Course course = new Course();
+            ClaimManage cm = new ClaimManage();
+            cm.setId(Integer.parseInt(idClaimM));
             course.setId(Integer.parseInt(idCourse));
             session.setAttribute("beanCourse", course);
+            session.setAttribute("beanCM", cm);
             response.sendRedirect("../student/createclaim.jsp");
 
         }
@@ -67,10 +72,11 @@ public class StudentsController extends HttpServlet {
             });
             String title = m.getParameter("subject");
             String description = m.getParameter("description"); 
+            
             if (!title.equals("") && !description.equals("")) {
                 String date_send = new SimpleDateFormat("yyyy/MM/dd").format(Calendar.getInstance().getTime()); 
                 int status = 0;
-                int idCM = 1;
+                int idCM = Integer.parseInt(m.getParameter("idCM"));
                 int idCourse= Integer.parseInt(m.getParameter("idCourse"));
                 Claim claim = new Claim(title, description, date_send, file_name, idU, idCM, status,idCourse);
                 if (connectDB.createClaim(claim)) {
