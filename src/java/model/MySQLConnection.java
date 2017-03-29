@@ -5,6 +5,7 @@
  */
 package model;
 
+import entity.Claim;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -46,6 +47,8 @@ public class MySQLConnection {
     
     public static void main(String[] args) {
 //        createDatabase("TOPUP");
-        show();
+//        show();
+        ConnectDB c = new ConnectDB();
+        System.out.println(c.getMajor(1));
     }
 }

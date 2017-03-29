@@ -144,11 +144,11 @@ public class Controller extends HttpServlet {
         String pass = request.getParameter("password");
         Account acc = connectDB.checkLogin(idUser, pass);
         Claim c = new Claim();
-        c.setListClaimUnresolved(connectDB.getAllClaimManage(acc.getIdMajor()));
         if (acc != null) {
             switch (acc.getLever()) {
                 //student
                 case 1:
+                    c.setListClaimUnresolved(connectDB.getAllClaimManage(acc.getIdMajor()));
                     session.setAttribute("idUser", acc.getIdUser());
                     session.setAttribute("fullName", acc.getFullName());
                     session.setAttribute("beanAllClaim", c);
@@ -160,13 +160,19 @@ public class Controller extends HttpServlet {
                     break;
                 //manager
                 case 3:
-                    
-                     response.sendRedirect("process.jsp");
-                 
+
+                    response.sendRedirect("process.jsp");
+
                     break;
                 //condinator
                 case 4:
-                    sendMessage(response, acc.getFullName(), "login.jsp");
+                    c.setListClaim(connectDB.getAllClaimOfStudentInAFaculty(acc.getIdMajor()));
+                    Major m = connectDB.getMajor(acc.getIdMajor());
+                    session.setAttribute("idUser", acc.getIdUser());
+                    session.setAttribute("fullName", acc.getFullName());
+                    session.setAttribute("beanClaimInFaculty", c);
+                    session.setAttribute("majorName", m);
+                    response.sendRedirect("coordinator/allclaim.jsp");
                     break;
             }
         } else {
@@ -268,10 +274,10 @@ public class Controller extends HttpServlet {
             for (Statistic st : listTotal) {
                 if (st.getYear().substring(5, 7).equals(month[i])) {
                     if (listNameUser.size() > 0) {
-                        for (int j = 0; j< listNameUser.size();j++) {
+                        for (int j = 0; j < listNameUser.size(); j++) {
                             if (!listNameUser.get(j).equals(st.getUser())) {
                                 listNameUser.add(st.getUser());
-                                
+
                             }
                         }
                     } else {

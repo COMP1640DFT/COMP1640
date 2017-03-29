@@ -125,12 +125,7 @@ join tblUser u on c.idUser = u.idUser
 where c.sendDate <= DATEADD(WEEK,-2,GETDATE()) and _status = 0
 
 --
-select c.idClaim, c.title,c.content, c.sendDate,c.filedata,cm._status ,u.idUser
-from tblClaim c 
-join tblClaimManage cm on c.idCM = cm.idCM
-join tblDecision d on c.idClaim = d.idClaim
-join tblUser u on d.idUser = u.idUser
- where c.idUser = 'dungkv'
+
  ---
  select d.idClaim,c.title,d.content,d.sendDate,d._status,u.fullName,d.idUser from tblDecision d
  join tblUser u on d.idUser = u.idUser 
@@ -141,3 +136,4 @@ join tblUser u on d.idUser = u.idUser
  select * from tblClaimManage
  select * from tblClaim where idUser = 'dungkv' and idCM = 1
 
+ select * from tblClaim c join tblUser u on c.idUser = u.idUser where u.idMajor = 1

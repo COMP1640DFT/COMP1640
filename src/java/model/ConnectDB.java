@@ -272,12 +272,12 @@ public class ConnectDB {
         return list;
     }
 
-    public List<Claim> getAllClaimManage(int idMajor){
-        String sql = "SELECT * \n" +
-                    "FROM tblClaimManage tcm\n" +
-                    "INNER JOIN tblSubject ts ON tcm.idSubject = ts.id\n" +
-                    "INNER JOIN tblMajor tm ON tm.id = ts.idMajor WHERE idMajor = ?";
-         List<Claim> list = new LinkedList<>();
+    public List<Claim> getAllClaimManage(int idMajor) {
+        String sql = "SELECT * \n"
+                + "FROM tblClaimManage tcm\n"
+                + "INNER JOIN tblSubject ts ON tcm.idSubject = ts.id\n"
+                + "INNER JOIN tblMajor tm ON tm.id = ts.idMajor WHERE idMajor = ?";
+        List<Claim> list = new LinkedList<>();
 
         try {
             connectdatabase();
@@ -301,6 +301,7 @@ public class ConnectDB {
         }
         return list;
     }
+
     public List<Claim> getAllClaimOfStudent(String user, int idCM) {
         String sql = "select c.idClaim, c.title,c.content, c.sendDate,c.filedata,c._status ,c.idUser\n"
                 + "from tblClaim c \n"
@@ -312,6 +313,35 @@ public class ConnectDB {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, user);
             ps.setInt(2, idCM);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Claim claim = new Claim();
+                claim.setIdClaim(rs.getInt(1));
+                claim.setTitle(rs.getString(2));
+                claim.setContent(rs.getString(3));
+                claim.setSendDate(rs.getString(4));
+                claim.setFiledata(rs.getString(5));
+                claim.setStatus(rs.getInt(6));
+                claim.setIdUser(rs.getString(7));
+                list.add(claim);
+
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+
+    public List<Claim> getAllClaimOfStudentInAFaculty(int majorID) {
+        String sql = " select  c.idClaim, c.title,c.content, c.sendDate,c.filedata,c._status ,c.idUser "
+                + "from tblClaim c join tblUser u "
+                + "on c.idUser = u.idUser where u.idMajor = ?";
+        List<Claim> list = new LinkedList<>();
+        try {
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, majorID);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Claim claim = new Claim();
@@ -378,6 +408,26 @@ public class ConnectDB {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
+    }
+
+    public Major getMajor(int id) {
+        String sql = " select * from tblMajor where id = ?";
+        Major m = null;
+        try {
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                m = new Major();
+                m.setId(rs.getInt(1));
+                m.setName(rs.getString(2));
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return m;
     }
 
     public List<Major> getCountClaimByMajor(String year) {
@@ -475,7 +525,6 @@ public class ConnectDB {
         }
         return false;
     }
-
 
     public void main(String[] args) {
 //        con;

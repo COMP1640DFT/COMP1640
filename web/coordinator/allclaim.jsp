@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,7 +39,8 @@
     <!-- TS1387507309: Neon - Responsive Admin Template created by Laborator -->
 </head>
 <body class="page-body">
-
+<jsp:useBean id="beanClaimInFaculty" class="entity.Claim" scope="session"></jsp:useBean>
+<jsp:useBean id="majorName" class="entity.Major" scope="session"></jsp:useBean>
 <div class="page-container">
 
     <div class="sidebar-menu">
@@ -89,8 +91,8 @@
                     <!-- Profile Info -->
                     <li class="profile-info dropdown">
                         <table>
-                        <tr><td>Welcome : </td><td><strong>Phan Huyền Trang (minaphan)</strong></td></tr>
-                        <tr><td> Faculty:</td><td>  <strong>Information Technology</strong></td></tr>
+                        <tr><td>Welcome : </td><td><strong>${fullName} (${idUser})</strong></td></tr>
+                        <tr><td> Faculty:</td><td>  <strong>${majorName.name}</strong></td></tr>
                         </table>
                     </li>
                 </ul>
@@ -221,122 +223,33 @@
                 <tr>
                     <th>#</th>
                     <th>Subject</th>
-                    <th>EC Coordinator</th>
+                    <th>Student user</th>
                     <th>File</th>
                     <th>Status</th>
                 </tr>
                 </thead>
 
                 <tbody>
-                <tr>
-                    <td>
-                        1
-                    </td>
-                    <td>
-                        <a href="details.html">My mark in C# has problem </a>
-                        <p class="text-danger">Remaining time: 13 days 4 hours</p>
-                    </td>
-                    <td>
-                        thiemdm
-                    </td>
-                    <td>
-                        Yes
-                    </td>
-                    <td>
-                        <span class="text-success">Open</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        2
-                    </td>
-                    <td>
-                        <a href="#">My mark in C# has problem </a>
-
-                    </td>
-                    <td>
-                        thiemdm
-                    </td>
-                    <td>
-                        Phan Huyen Trang (16h ago)
-                    </td>
-                    <td>
-                        <span class="text-danger">Closed</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        3
-                    </td>
-                    <td>
-                        <a href="#">My mark in C# has problem </a>
-
-                    </td>
-                    <td>
-                        thiemdm
-                    </td>
-                    <td>
-                        Yes
-                    </td>
-                    <td>
-                        <span class="text-danger">Closed</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        4
-                    </td>
-                    <td>
-                        <a href="#">My mark in C# has problem </a>
-
-                    </td>
-                    <td>
-                        thiemdm
-                    </td>
-                    <td>
-                        No
-                    </td>
-                    <td>
-                        <span class="text-danger">Closed</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        5
-                    </td>
-                    <td>
-                        <a href="#">My mark in C# has problem </a>
-
-                    </td>
-                    <td>
-                        thiemdm
-                    </td>
-                    <td>
-                        No
-                    </td>
-                    <td>
-                        <span class="text-danger">Closed</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        6
-                    </td>
-                    <td>
-                        <a href="#">My mark in C# has problem </a>
-
-                    </td>
-                    <td>
-                        thiemdm
-                    </td>
-                    <td>
-                        Yes
-                    </td>
-                    <td>
-                        <span class="text-danger">Closed</span>
-                    </td>
-                </tr>
-                </tbody>
+                        <c:forEach var="c" items="${beanClaimInFaculty.listClaim}">
+                                <tr>
+                                    <td>${c.idClaim}</td>
+                                    <td><a href="#">${c.title}</a></td>
+                                    <td>${c.idUser}</td>
+                                     <c:if test="${c.filedata == ''}">
+                                        <td><span class="text-danger"><c:out value="No"/></span></td>
+                                    </c:if>
+                                        <c:if test="${c.filedata != ''}">
+                                        <td><span class="text-danger"><c:out value="Yes"/></span></td>
+                                    </c:if>
+                                    <c:if test="${c.status == 0}">
+                                        <td><span class="text-danger"><c:out value="Closed"/></span></td>
+                                    </c:if>
+                                    <c:if test="${c.status == 1}">
+                                        <td><c:out value="Open"/></td>
+                                    </c:if>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
             </table>
         </div><!-- Footer -->
 

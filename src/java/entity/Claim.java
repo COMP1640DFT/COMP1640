@@ -14,7 +14,7 @@ public class Claim {
     private String sendDate;
     private String createDate;
     private String endDate;
-     private String filedata;
+    private String filedata;
     private String userFullName;
     private String idUser;
     private int idCM;
@@ -151,8 +151,7 @@ public class Claim {
     public void setListClaimUnresolved(List<Claim> listClaimUnresolved) {
         this.listClaimUnresolved = listClaimUnresolved;
     }
-
-    
+ 
     public int getIdClaim() {
         return idClaim;
     }
