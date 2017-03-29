@@ -275,8 +275,8 @@ public class ConnectDB {
     public List<Claim> getAllClaimManage(int idMajor){
         String sql = "SELECT * \n" +
                     "FROM tblClaimManage tcm\n" +
-                    "INNER JOIN tblCourse tc ON tcm.idCourse = tc.id\n" +
-                    "INNER JOIN tblMajor tm ON tm.id = tc.idMajor WHERE idMajor = ?";
+                    "INNER JOIN tblSubject ts ON tcm.idSubject = ts.id\n" +
+                    "INNER JOIN tblMajor tm ON tm.id = ts.idMajor WHERE idMajor = ?";
          List<Claim> list = new LinkedList<>();
 
         try {

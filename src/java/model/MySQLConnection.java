@@ -19,8 +19,8 @@ public class MySQLConnection {
         Connection con = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-             con = DriverManager.getConnection(
-                    "jdbc:mysql://sql12.freemysqlhosting.net/sql12164947", "sql12164947", "WWjZBrTXmg");
+            con = DriverManager.getConnection(
+                    "jdbc:mysql://sql12.freemysqlhosting.net/sql12166279", "sql12166279", "GHUfuAUa7Y");
 //here sonoo is database name, root is username and password  
             
         } catch (Exception e) {
@@ -33,7 +33,7 @@ public class MySQLConnection {
         
         try{
             Statement stmt = getConnection().createStatement();
-            ResultSet rs = stmt.executeQuery("select * from tblCourse c inner join tblMajor m on c.idMajor = m.id ");
+            ResultSet rs = stmt.executeQuery("select * from tblSubject c inner join tblMajor m on c.idMajor = m.id ");
             while (rs.next()) {
                 System.out.println(rs.getInt(1) + "  " + rs.getString(2) +"-" +rs.getString(5));
             }
