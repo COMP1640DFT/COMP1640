@@ -37,9 +37,9 @@
 
         <!-- TS1387507309: Neon - Responsive Admin Template created by Laborator -->
         <script>
-         
-         var select = $('select')[0];
-         select.selectedIndex =0;
+
+            var select = $('select')[0];
+            select.selectedIndex = 0;
         </script>
     </head>
     <body class="page-body">
@@ -75,9 +75,6 @@
 
                         <li>
                             <a href="index.html"><i class="glyphicon glyphicon-home"></i> Home</a>
-                        </li>
-                        <li>
-                            <a href="create.html"><i class="glyphicon glyphicon-plus-sign"></i> Create a claim</a>
                         </li>
                         <li><a href="#"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
 
@@ -267,36 +264,31 @@
                             <div class="mail-attachments">
 
                                 <h4>
-                                    <i class="entypo-attach"></i> Attachments <span>(2)</span>
+                                    <i class="entypo-attach"></i> Attachments <span></span>
                                 </h4>
 
-                                <ul>
-                                    <li>
-                                        <a href="#" class="thumb">
-                                            <img src="../assets/images/attach-1.png" class="img-rounded"/>
-                                        </a>
+                                <c:if test="${claimD.filedata != ''}">
+                                    <ul>
+                                        <li>
+                                            <a href="../files/${claimD.filedata}" class="thumb">
+                                                <img src="http://placehold.it/350x150?text=File" class="img-rounded"/>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </c:if>
 
-                                        <a href="#" class="name">
-                                            IMG_007.jpg
-                                            <span>14KB</span>
-                                        </a>
-
-                                        <div class="links">
-                                            <a href="../img/m/demo.pdf"  target="_blank">View</a> -
-                                            <a href="#">Download</a>
-                                        </div>
-                                    </li>
-
-
-
-                                </ul>
                             </div>
 
                             <div class="mail-reply">
-                                <div class="fake-form coordinator">
-                                    ${decision.content}
-                                    <p><strong>${decision.fullNameEC}</strong>   ${decision.sendDate}</p>
-                                </div>
+                                <c:choose>
+                                    <c:when test="${claimD.status==1}">
+                                        <div class="fake-form coordinator">
+                                            ${decision.content}
+                                            <p><strong>${decision.fullNameEC}</strong>   ${decision.sendDate}</p>
+                                        </div>
+                                    </c:when>
+                                </c:choose>
+
                                 <div class="fake-form">
                                     <form action="CondinatiorController?action=AddMessage" method="post">
                                         <div class="form-group">

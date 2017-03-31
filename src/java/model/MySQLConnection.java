@@ -10,6 +10,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.mail.MessagingException;
 
 /**
  *
@@ -50,5 +53,6 @@ public class MySQLConnection {
 //        show();
         ConnectDB c = new ConnectDB();
         System.out.println(c.getMajor(1));
+        System.out.println(""+c.getAllClaim("2017", 1).size());
     }
 }

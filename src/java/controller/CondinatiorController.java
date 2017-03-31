@@ -12,12 +12,17 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.mail.MessagingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.ConnectDB;
+import model.Mail;
 
 /**
  *
@@ -75,6 +80,12 @@ public class CondinatiorController extends HttpServlet {
                     if (connectDB.createDecision(decision)) {
                         session.setAttribute("decision", decision);
                         connectDB.updateClaim(1, claim.getIdClaim());
+
+                        String mailtext = "Hello " + acc.getFullName() + "(" + acc.getIdUser() + ")"
+                                + "\n The decision of your claim (" + claim.getTitle() + ") finished.";
+                        Account stdAcc = connectDB.getAccoutnByid(claim.getIdUser());
+                        mail(stdAcc.getEmail(), mailtext);
+                        sendMessage(response, "Add claim complete successfull!", "../student/createclaim.jsp");
                         response.sendRedirect("../coordinator/detailclaim.jsp");
                     } else {
 
@@ -96,6 +107,10 @@ public class CondinatiorController extends HttpServlet {
                         Decision decision = new Decision(claim.getIdClaim(), message, date_send, Integer.parseInt(selectedStatus), acc.getIdUser());
                         decision.setFullNameEC(acc.getFullName());
                         session.setAttribute("decision", decision);
+                        Account stdAcc = connectDB.getAccoutnByid(claim.getIdUser());
+                        String mailtext = "Hello " + stdAcc.getFullName() + "(" + stdAcc.getIdUser() + ")"
+                                + "\n The decision of your claim  (" + claim.getTitle() + ") update finished.";
+                        mail(stdAcc.getEmail(), mailtext);
                         response.sendRedirect("../coordinator/detailclaim.jsp");
                     } else {
 
@@ -109,6 +124,15 @@ public class CondinatiorController extends HttpServlet {
         }
     }
 
+    private void mail(String email, String mailtext) {
+        Mail mail = new Mail();
+        try {
+            mail.sendMail(email, mailtext);
+        } catch (MessagingException ex) {
+            Logger.getLogger(StudentsController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     private void sendMessage(HttpServletResponse response, String sms, String path) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
@@ -119,7 +143,6 @@ public class CondinatiorController extends HttpServlet {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-
     /**
      * Handles the HTTP <code>GET</code> method.
      *

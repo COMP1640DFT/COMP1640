@@ -297,7 +297,8 @@ public class Controller extends HttpServlet {
         s.setListItemMajor(listMajor);
         s.setMajor(major);
         s.setYear(year);
-
+        s.setListItemTableClaim(listTotal);
+        
         session.setAttribute("beanStatistic", s);
         response.sendRedirect("statisticsChart.jsp");
     }

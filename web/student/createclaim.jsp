@@ -70,7 +70,7 @@
 
     </script>r
 </head>
-<jsp:useBean id="beanCourse" class="entity.Course" scope="session"></jsp:useBean>
+<jsp:useBean id="beanSubject" class="entity.Subject" scope="session"></jsp:useBean>
 <jsp:useBean id="beanCM" class="entity.ClaimManage" scope="session"></jsp:useBean>
 <body class="page-body">
 
@@ -103,9 +103,6 @@
         <ul id="main-menu" class="">
             <li >
                 <a href=""><i class="glyphicon glyphicon-home"></i> Home</a>
-            </li>
-            <li class="active">
-                <a href="StudentsController?action=AddClaimPage"><i class="glyphicon glyphicon-plus-sign"></i> Create a claim</a>
             </li>
             <li><a href="#"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
 
@@ -250,7 +247,7 @@
                        <input type="text" id="subject" name="subject" placeholder="Input your claim subject" class="form-control"/>
                    </div>
                </div>
-                <input type="hidden" value="${beanCourse.id}" name="idCourse"/>
+                <input type="hidden" value="${beanSubject.id}" name="idSubject"/>
                 <input type="hidden" value="${beanCM.id}" name="idCM"/>
                <div class="form-group">
                    <label for="description" class="col-sm-3 control-label">Description</label>

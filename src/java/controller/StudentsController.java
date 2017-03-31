@@ -7,9 +7,10 @@ package controller;
 
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.FileRenamePolicy;
+import entity.Account;
 import entity.Claim;
 import entity.ClaimManage;
-import entity.Course;
+import entity.Subject;
 import entity.Decision;
 import entity.Major;
 import java.io.File;
@@ -19,12 +20,16 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.mail.MessagingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.ConnectDB;
+import model.Mail;
 
 /**
  *
@@ -50,13 +55,13 @@ public class StudentsController extends HttpServlet {
         String action = request.getParameter("action");
         HttpSession session = request.getSession();
         if (action.equals("AddClaimPage")) {
-            String idCourse = request.getParameter("idC");
+            String idSubject = request.getParameter("idC");
             String idClaimM = request.getParameter("idCM");
-            Course course = new Course();
+            Subject subject = new Subject();
             ClaimManage cm = new ClaimManage();
             cm.setId(Integer.parseInt(idClaimM));
-            course.setId(Integer.parseInt(idCourse));
-            session.setAttribute("beanCourse", course);
+            subject.setId(Integer.parseInt(idSubject));
+            session.setAttribute("beanSubject", subject);
             session.setAttribute("beanCM", cm);
             response.sendRedirect("../student/createclaim.jsp");
 
@@ -78,9 +83,20 @@ public class StudentsController extends HttpServlet {
                 String date_send = new SimpleDateFormat("yyyy/MM/dd").format(Calendar.getInstance().getTime()); 
                 int status = 0;
                 int idCM = Integer.parseInt(m.getParameter("idCM"));
-                int idCourse= Integer.parseInt(m.getParameter("idCourse"));
-                Claim claim = new Claim(title, description, date_send, file_name, idU, idCM, status,idCourse);
+                int idSubject= Integer.parseInt(m.getParameter("idSubject"));
+                Claim claim = new Claim(title, description, date_send, file_name, idU, idCM, status,idSubject);
                 if (connectDB.createClaim(claim)) {
+                    List<Account> accountecco = connectDB.getListEccoor(idCM);
+                    Mail mail = new Mail();
+                    for (Account ec : accountecco) {
+                        String mailtext = "Hello "+ ec.getFullName() + "("+ ec.getIdUser() +")"
+                                +"\n You have new claim of the student.";
+                        try {
+                            mail.sendMail(ec.getEmail(), mailtext);
+                        } catch (MessagingException ex) {
+                            Logger.getLogger(StudentsController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
                     sendMessage(response, "Add claim complete successfull!", "../student/createclaim.jsp");
                 } else {
                     sendMessage(response, "Add claim is failed!", "../student/createclaim.jsp");
@@ -100,8 +116,10 @@ public class StudentsController extends HttpServlet {
         String id = request.getParameter("id");
         int idC = Integer.parseInt(id);
         Decision d = connectDB.getDecisionOfAClaim(idC);
+        Claim c = connectDB.getClaimById(idC);
         HttpSession session = request.getSession();
         session.setAttribute("beanDecision", d);
+        session.setAttribute("beanClaim", c);
         response.sendRedirect("../student/detailclaim.jsp");
     }
 

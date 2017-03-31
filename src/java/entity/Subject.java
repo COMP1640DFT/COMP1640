@@ -9,7 +9,7 @@ package entity;
  *
  * @author DaoMinhThien
  */
-public class Course {
+public class Subject {
     private int id;
     private String name;
     private int idMajor;

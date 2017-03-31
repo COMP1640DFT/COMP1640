@@ -235,17 +235,17 @@
                                     <td>${c.idClaim}</td>
                                     <td><a href="CondinatiorController?action=viewClaimDetail&idclaim=${c.idClaim}&idUser=${idUser}">${c.title}</a></td>
                                     <td>${c.idUser}</td>
-                                     <c:if test="${c.filedata == ''}">
+                                    <c:if test="${c.filedata == ''}">
                                         <td><span class="text-danger"><c:out value="No"/></span></td>
                                     </c:if>
                                         <c:if test="${c.filedata != ''}">
                                         <td><span class="text-danger"><c:out value="Yes"/></span></td>
                                     </c:if>
                                     <c:if test="${c.status == 0}">
-                                        <td><span class="text-danger"><c:out value="Closed"/></span></td>
+                                        <td><span class="text-danger"><c:out value="Waiting"/></span></td>
                                     </c:if>
                                     <c:if test="${c.status == 1}">
-                                        <td><c:out value="Open"/></td>
+                                        <td><c:out value="Done"/></td>
                                     </c:if>
                                 </tr>
                             </c:forEach>

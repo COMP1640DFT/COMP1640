@@ -39,6 +39,7 @@
     </head>
     <body class="page-body">
         <jsp:useBean id="beanDecision" class="entity.Decision" scope="session"></jsp:useBean>
+        <jsp:useBean id="beanClaim" class="entity.Claim" scope="session"></jsp:useBean>
             <div class="page-container">
 
                 <div class="sidebar-menu">
@@ -69,9 +70,6 @@
 
                         <li>
                             <a href="index.html"><i class="glyphicon glyphicon-home"></i> Home</a>
-                        </li>
-                        <li>
-                            <a href="create.html"><i class="glyphicon glyphicon-plus-sign"></i> Create a claim</a>
                         </li>
                         <li><a href="#"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
 
@@ -218,22 +216,25 @@
                             <div class="mail-header">
                                 <!-- title -->
                                 <div class="mail-title">
-                                    ${beanDecision.claimTitle}
-                                    <p>
+                                    ${beanClaim.title}
+<!--                                    <p>
                                         <span class="text-danger">Remaining time: 13 days 4 hours</span>
 
-                                    </p>
+                                    </p>-->
 
                                 </div>
 
                                 <!-- links -->
                                 <div class="mail-links">
 
-
                                     <span>Status: <span class="label label-success">Open</span></span>
 
                                 </div>
+                                <br/><br/>
+
+                                <p>${beanClaim.title}</p>
                             </div>
+
 
                             <div class="mail-info">
 
@@ -248,7 +249,7 @@
                                 </div>
 
                                 <div class="mail-date">
-                                    07:51 AM - 15 December
+                                    ${beanDecision.sendDate}
                                 </div>
 
                             </div>
@@ -263,42 +264,13 @@
                             <div class="mail-attachments">
 
                                 <h4>
-                                    <i class="entypo-attach"></i> Attachments <span>(2)</span>
+                                    <i class="entypo-attach"></i> Attachments <span></span>
                                 </h4>
 
                                 <ul>
-                                    <li>
-                                        <a href="#" class="thumb">
-                                            <img src="../assets/images/attach-1.png" class="img-rounded"/>
+                                    <a href="../files/${beanClaim.filedata}" class="thumb">
+                                            <img src="http://placehold.it/350x150?text=File" class="img-rounded"/>
                                         </a>
-
-                                        <a href="#" class="name">
-                                            IMG_007.jpg
-                                            <span>14KB</span>
-                                        </a>
-
-                                        <div class="links">
-                                            <a href="#">View</a> -
-                                            <a href="#">Download</a>
-                                        </div>
-                                    </li>
-
-
-                                    <li>
-                                        <a href="#" class="thumb download">
-                                            <img src="assets/images/attach-2.png" class="img-rounded"/>
-                                        </a>
-
-                                        <a href="#" class="name">
-                                            IMG_008.jpg
-                                            <span>12KB</span>
-                                        </a>
-
-                                        <div class="links">
-                                            <a href="#">View</a> -
-                                            <a href="#">Download</a>
-                                        </div>
-                                    </li>
                                 </ul>
 
                                 <form action="" method="post">

@@ -17,12 +17,15 @@ public class Statistic {
     private String year;
     private String major;
     private String user;
+    private String titleClaim;
+    private String nameSubject;
    
     private List<Statistic>  listStatisticAllMajor;
     private List<Statistic>  listNumOfStudent;
     private List<Statistic>  listNumOfClaim;
     private List<ItemSelected> listItemYear;
     private List<ItemSelected> listItemMajor;
+    private List<Statistic> listItemTableClaim;
 
     public String getTitle() {
         return title;
@@ -105,6 +108,31 @@ public class Statistic {
     public void setUser(String user) {
         this.user = user;
     }
+
+    public String getTitleClaim() {
+        return titleClaim;
+    }
+
+    public void setTitleClaim(String titleClaim) {
+        this.titleClaim = titleClaim;
+    }
+
+    public String getNameSubject() {
+        return nameSubject;
+    }
+
+    public void setNameSubject(String nameSubject) {
+        this.nameSubject = nameSubject;
+    }
+
+    public List<Statistic> getListItemTableClaim() {
+        return listItemTableClaim;
+    }
+
+    public void setListItemTableClaim(List<Statistic> listItemTableClaim) {
+        this.listItemTableClaim = listItemTableClaim;
+    }
+    
     
     
 }

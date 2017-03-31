@@ -177,14 +177,37 @@ public class ConnectDB {
         }
         return claim;
     }
+    
+    public Claim getClaimById(int id) {
+        String sql = "select idClaim,title,content,sendDate,filedata,idUser from tblClaim where idClaim = ?";
+        Claim claim = null;
+
+        try {
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                claim = new Claim();
+                claim.setIdClaim(rs.getInt(1));
+                claim.setTitle(rs.getString(2));
+                claim.setContent(rs.getString(3));
+                claim.setSendDate(rs.getString(4));
+                claim.setFiledata(rs.getString(5));
+                claim.setIdUser(rs.getString(6));
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return claim;
+    }
 
     //Get all student send claim without evidence
     public List<Claim> getStudentUpClaimWithOutEvidence() {
         List<Claim> list = new LinkedList<>();
-        String sql = "select c.idClaim, c.title, c.sendDate, u.fullName, cl.name from tblClaim c \n"
+        String sql = "select c.idClaim, c.title, c.sendDate, u.fullName from tblClaim c \n"
                 + "inner join tblUser u on c.idUser = u.idUser \n"
-                + "inner join tblClassDetail cd on u.idUser = cd.idUser\n"
-                + "inner join tblClass cl on cd.idClass = cl.id\n"
                 + "where c.filedata = ''";
         try {
             connectdatabase();
@@ -196,7 +219,6 @@ public class ConnectDB {
                 c.setTitle(rs.getString(2));
                 c.setSendDate(rs.getDate(3).toString());
                 c.setUserFullName(rs.getString(4));
-                c.setClassName(rs.getString(5));
                 list.add(c);
             }
             con.close();
@@ -208,11 +230,9 @@ public class ConnectDB {
 
     public List<Claim> getStudentUpClaimWithOutEvidenceInMajor(int id) {
         List<Claim> list = new LinkedList<>();
-        String sql = "select c.idClaim, c.title, c.sendDate, u.fullName, cl.name from tblClaim c \n"
+        String sql = "select c.idClaim, c.title, c.sendDate, u.fullName from tblClaim c \n"
                 + "inner join tblUser u on c.idUser = u.idUser \n"
-                + "inner join tblClassDetail cd on u.idUser = cd.idUser\n"
-                + "inner join tblClass cl on cd.idClass = cl.id\n"
-                + "inner join tblMajor m on cl.idMajor = m.id\n"
+                + "inner join tblMajor m on u.idMajor = m.id\n"
                 + "where c.filedata = '' and m.id = ?";
         try {
             connectdatabase();
@@ -225,7 +245,6 @@ public class ConnectDB {
                 c.setTitle(rs.getString(2));
                 c.setSendDate(rs.getDate(3).toString());
                 c.setUserFullName(rs.getString(4));
-                c.setClassName(rs.getString(5));
                 list.add(c);
             }
             con.close();
@@ -318,7 +337,7 @@ public class ConnectDB {
                 claim.setTitle(rs.getString(2));
                 claim.setCreateDate(rs.getString(3));
                 claim.setEndDate(rs.getString(4));
-                claim.setIdCourse(rs.getInt(5));
+                claim.setIdSubject(rs.getInt(5));
                 claim.setStatus(rs.getInt(6));
                 list.add(claim);
 
@@ -514,9 +533,10 @@ public class ConnectDB {
 
     public List<Statistic> getAllClaim(String year, int idMajor) {
         List<Statistic> list = new ArrayList<>();
-        String sql = "select tm.id, tm.name, tc.sendDate, tc.idUser from tblClaim tc inner join tblUser tu on tc.idUser = tu.idUser \n"
+        String sql = "select tm.id, tm.name, tc.sendDate, tc.idUser,tc.title, ts._name from tblClaim tc inner join tblUser tu on tc.idUser = tu.idUser \n"
                 + "inner join tblMajor tm on tu.idMajor = tm.id\n"
                 + "inner join tblClaimManage tcm on tc.idCM = tcm.idCM \n"
+                + "inner join tblSubject ts on ts.id = tc.idSubject\n"
                 + "where \n"
                 + "tc.sendDate between '" + year + "-01-01' and '" + year + "-12-31'\n"
                 + "and tm.id = " + idMajor;
@@ -530,6 +550,8 @@ public class ConnectDB {
                 s.setTitle(rs.getString(2));
                 s.setYear(rs.getString(3));
                 s.setUser(rs.getString(4));
+                s.setTitleClaim(rs.getString(5));
+                s.setNameSubject(rs.getString(6));
                 list.add(s);
             }
             con.close();
@@ -572,7 +594,7 @@ public class ConnectDB {
             st.setString(4, claim.getFiledata());
             st.setInt(5, claim.getStatus());
             st.setString(6, claim.getIdUser());
-            st.setInt(7, claim.getIdCourse());
+            st.setInt(7, claim.getIdSubject());
             st.setInt(8, claim.getIdCM());
             if (st.executeUpdate() > 0) {
                 return true;
@@ -637,6 +659,32 @@ public class ConnectDB {
         }
         return false;
     }
+     
+    public List<Account> getListEccoor(int idMajor){
+        List<Account> list = new ArrayList<>();
+        String sql = "select * from tblUser where idMajor = ? and lever=4 ";
+        try {
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, idMajor);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Account acc = new Account();
+                acc.setIdUser(rs.getString(1));
+                acc.setFullName(rs.getString(3));
+                acc.setDob(rs.getString(4));
+                acc.setEmail(rs.getString(5));
+                acc.setPhoneNumber(rs.getString(6));
+                acc.setIdAcademy(rs.getInt(7));
+                acc.setIdMajor(rs.getInt(8));
+                acc.setLever(rs.getInt(9));
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    } 
     
 
     public void main(String[] args) {

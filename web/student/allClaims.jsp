@@ -71,9 +71,6 @@
                         <li class="active">
                             <a href=""><i class="glyphicon glyphicon-home"></i> Home</a>
                         </li>
-                        <li>
-                            <a href="StudentsController?action=AddClaimPage"><i class="glyphicon glyphicon-plus-sign"></i> Create a claim</a>
-                        </li>
                         <li><a href="#"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
 
 
@@ -117,8 +114,8 @@
                                 <option value="expired">Expired</option>
                             </select>
                         </div>
-                        <a href="create.html" class="btn btn-default" style="float: right;margin-top: 20px"><i
-                                class="glyphicon glyphicon-plus-sign"></i> New</a>
+<!--                        <a href="StudentsController?action=AddClaimPage&idC=${c.idCourse}&idCM=${c.idClaim}" class="btn btn-default" style="float: right;margin-top: 20px"><i
+                                class="glyphicon glyphicon-plus-sign"></i> New</a>-->
                     </form>
 
                     <table class="table  table-responsive">
@@ -127,7 +124,7 @@
                                 <th>#</th>
                                 <th>Subject</th>
                                 <th>EC Coordinator</th>
-                                <th>Last reply</th>
+                                <th>File</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -138,14 +135,17 @@
                                     <td>${c.idClaim}</td>
                                     <td><a href="StudentsController?id=${c.idClaim}&action=viewDecision">${c.title}</a></td>
                                     <td>${c.idUser}</td>
-                                    <td>
-                                        Phan Huyen Trang (16h ago)
-                                    </td>
+                                    <c:if test="${c.filedata == ''}">
+                                        <td><span class="text-danger"><c:out value="No"/></span></td>
+                                    </c:if>
+                                        <c:if test="${c.filedata != ''}">
+                                        <td><span class="text-danger"><c:out value="Yes"/></span></td>
+                                    </c:if>
                                     <c:if test="${c.status == 0}">
-                                        <td><span class="text-danger"><c:out value="Closed"/></span></td>
+                                        <td><span class="text-danger"><c:out value="Waiting"/></span></td>
                                     </c:if>
                                     <c:if test="${c.status == 1}">
-                                        <td><c:out value="Open"/></td>
+                                        <td><c:out value="Done"/></td>
                                     </c:if>
                                 </tr>
                             </c:forEach>

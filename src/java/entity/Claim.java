@@ -18,7 +18,7 @@ public class Claim {
     private String userFullName;
     private String idUser;
     private int idCM;
-    private int idCourse;
+    private int idSubject;
     private int status;
     private Decision decision;
     private String className;
@@ -68,7 +68,7 @@ public class Claim {
         this.status = status;
     }
     
-    public Claim(String title, String content, String sendDate, String filedata, String idUser, int idCM, int status,int idCourse) {
+    public Claim(String title, String content, String sendDate, String filedata, String idUser, int idCM, int status,int idSubject) {
         this.title = title;
         this.content = content;
         this.sendDate = sendDate;
@@ -76,7 +76,7 @@ public class Claim {
         this.idUser = idUser;
         this.idCM = idCM;
         this.status = status;
-        this.idCourse=idCourse;
+        this.idSubject=idSubject;
     }
 
     public String getCreateDate() {
@@ -95,12 +95,12 @@ public class Claim {
         this.createDate = createDate;
     }
 
-    public int getIdCourse() {
-        return idCourse;
+    public int getIdSubject() {
+        return idSubject;
     }
 
-    public void setIdCourse(int idCourse) {
-        this.idCourse = idCourse;
+    public void setIdSubject(int idSubject) {
+        this.idSubject = idSubject;
     }
     
 

@@ -102,7 +102,6 @@
                         <thead>
                         <th>Claim ID</th>
                         <th>Student Name</th>
-                        <th>Class</th>
                         <th>Claim Title</th>
                         <th>Send Date</th>
                         </thead>
@@ -111,7 +110,6 @@
                         <tr>
                             <td>${c.idClaim}</td>
                             <td>${c.userFullName}</td>
-                            <td>${c.className}</td>
                             <td>${c.title}</td>
                             <td>${c.sendDate}</td>
                         </tr>
