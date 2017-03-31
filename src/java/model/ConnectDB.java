@@ -659,6 +659,22 @@ public class ConnectDB {
         }
         return false;
     }
+       public boolean updateFileofClaim(String file, int idClaim){
+        try {
+        connectdatabase();
+        String sql="Update tblClaim set  filedata=? where idClaim=?";
+         PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, file);
+            st.setInt(2, idClaim);
+            if (st.executeUpdate() > 0) {
+                return true;
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
      
     public List<Account> getListEccoor(int idMajor){
         List<Account> list = new ArrayList<>();

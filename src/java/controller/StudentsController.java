@@ -67,30 +67,30 @@ public class StudentsController extends HttpServlet {
 
         }
         if (action.equals("createClaim")) {
-             final String idU = request.getParameter("Uid");
-                        MultipartRequest m = new MultipartRequest(request, getServletContext().getRealPath("/files"), 256000000, new FileRenamePolicy() {
+            final String idU = request.getParameter("Uid");
+            MultipartRequest m = new MultipartRequest(request, getServletContext().getRealPath("/files"), 256000000, new FileRenamePolicy() {
                 @Override
                 public File rename(File file) {
                     file_name = rfile(file, idU).getName();
-                    System.out.println("-----------"+rfile(file, idU).getPath());
+                    System.out.println("-----------" + rfile(file, idU).getPath());
                     return rfile(file, idU);
                 }
             });
             String title = m.getParameter("subject");
-            String description = m.getParameter("description"); 
-            
+            String description = m.getParameter("description");
+
             if (!title.equals("") && !description.equals("")) {
-                String date_send = new SimpleDateFormat("yyyy/MM/dd").format(Calendar.getInstance().getTime()); 
+                String date_send = new SimpleDateFormat("yyyy/MM/dd").format(Calendar.getInstance().getTime());
                 int status = 0;
                 int idCM = Integer.parseInt(m.getParameter("idCM"));
-                int idSubject= Integer.parseInt(m.getParameter("idSubject"));
-                Claim claim = new Claim(title, description, date_send, file_name, idU, idCM, status,idSubject);
+                int idSubject = Integer.parseInt(m.getParameter("idSubject"));
+                Claim claim = new Claim(title, description, date_send, file_name, idU, idCM, status, idSubject);
                 if (connectDB.createClaim(claim)) {
                     List<Account> accountecco = connectDB.getListEccoor(idCM);
                     Mail mail = new Mail();
                     for (Account ec : accountecco) {
-                        String mailtext = "Hello "+ ec.getFullName() + "("+ ec.getIdUser() +")"
-                                +"\n You have new claim of the student.";
+                        String mailtext = "Hello " + ec.getFullName() + "(" + ec.getIdUser() + ")"
+                                + "\n You have new claim of the student.";
                         try {
                             mail.sendMail(ec.getEmail(), mailtext);
                         } catch (MessagingException ex) {
@@ -108,6 +108,28 @@ public class StudentsController extends HttpServlet {
         }
         if (action.equals("viewAllClaim")) {
             viewAllClaim(request, response);
+        }
+        if (action.equals("updateFile")) {
+            final String idU = (String) session.getAttribute("idUser");
+            Claim claim = (Claim) session.getAttribute("beanClaim");
+            MultipartRequest m = new MultipartRequest(request, getServletContext().getRealPath("/files"), 256000000, new FileRenamePolicy() {
+                @Override
+                public File rename(File file) {
+                    file_name = rfile(file, idU).getName();
+                    return rfile(file, idU);
+                }
+            });
+            if (!file_name.equals("")) {
+                if (connectDB.updateFileofClaim(file_name, claim.getIdClaim())) {
+                    sendMessage(response, "Update file complete successfull!", "../student/detailclaim.jsp");
+                } else {
+                    sendMessage(response, "Update file failed!", "../student/detailclaim.jsp");
+                }
+            }
+            else{
+                 sendMessage(response, "If you want update file, you must select file want update!", "../student/detailclaim.jsp");
+            }
+
         }
     }
 
@@ -129,7 +151,7 @@ public class StudentsController extends HttpServlet {
         String idUser = request.getParameter("idUser");
         int idC = Integer.parseInt(id);
         Claim c = new Claim();
-        c.setListClaim(connectDB.getAllClaimOfStudent(idUser,idC));
+        c.setListClaim(connectDB.getAllClaimOfStudent(idUser, idC));
         HttpSession session = request.getSession();
         session.setAttribute("beanAllStudentClaim", c);
         response.sendRedirect("../student/allClaims.jsp");
@@ -143,7 +165,7 @@ public class StudentsController extends HttpServlet {
         out.println("location='" + path + "';");
         out.println("</script>");
     }
-    
+
     public File rfile(File file, String uid) {
         long reqID = (new Date()).getTime();
         char uniq = 'A';

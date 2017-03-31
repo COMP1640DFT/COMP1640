@@ -273,12 +273,12 @@
                                         </a>
                                 </ul>
 
-                                <form action="" method="post">
+                                <form action="StudentsController?action=updateFile" method="post" enctype="multipart/form-data" >
                                     <div class="form-group">
                                        
                                             
                                        
-                                        <input type="file" class="form-control file2 inline btn btn-default" multiple
+                                        <input type="file" id="file" name="file" class="form-control file2 inline btn btn-default" multiple
                                                data-label="<i class='glyphicon glyphicon-circle-arrow-up'></i> &nbsp;Select file"/>
                                         
                                         </div>
