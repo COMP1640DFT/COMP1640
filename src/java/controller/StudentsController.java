@@ -57,12 +57,14 @@ public class StudentsController extends HttpServlet {
         if (action.equals("AddClaimPage")) {
             String idSubject = request.getParameter("idC");
             String idClaimM = request.getParameter("idCM");
+            String idMajor = request.getParameter("idM");
             Subject subject = new Subject();
             ClaimManage cm = new ClaimManage();
             cm.setId(Integer.parseInt(idClaimM));
             subject.setId(Integer.parseInt(idSubject));
             session.setAttribute("beanSubject", subject);
             session.setAttribute("beanCM", cm);
+            session.setAttribute("idMajor", idMajor);
             response.sendRedirect("../student/createclaim.jsp");
 
         }
@@ -78,6 +80,7 @@ public class StudentsController extends HttpServlet {
             });
             String title = m.getParameter("subject");
             String description = m.getParameter("description");
+            int idMajor = Integer.parseInt(m.getParameter("idM"));
 
             if (!title.equals("") && !description.equals("")) {
                 String date_send = new SimpleDateFormat("yyyy/MM/dd").format(Calendar.getInstance().getTime());
@@ -86,7 +89,7 @@ public class StudentsController extends HttpServlet {
                 int idSubject = Integer.parseInt(m.getParameter("idSubject"));
                 Claim claim = new Claim(title, description, date_send, file_name, idU, idCM, status, idSubject);
                 if (connectDB.createClaim(claim)) {
-                    List<Account> accountecco = connectDB.getListEccoor(idCM);
+                    List<Account> accountecco = connectDB.getListEccoor(idMajor);
                     Mail mail = new Mail();
                     for (Account ec : accountecco) {
                         String mailtext = "Hello " + ec.getFullName() + "(" + ec.getIdUser() + ")"

@@ -55,6 +55,6 @@ public class TestStudent {
     public void getAllClaimOfClaimManage(){
         int idClaimManage =1;
         String idUser = "taicngc";
-        assertEquals("Total all claim of user id taincgc ", 3, connectDB.getAllClaimOfStudent("taincgc", idClaimManage).size());
+        assertEquals("Total all claim of user id taincgc ", 0, connectDB.getAllClaimOfStudent("taincgc", idClaimManage).size());
     }
 }

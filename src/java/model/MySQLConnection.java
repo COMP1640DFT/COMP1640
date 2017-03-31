@@ -53,6 +53,5 @@ public class MySQLConnection {
 //        show();
         ConnectDB c = new ConnectDB();
         System.out.println(c.getMajor(1));
-        System.out.println(""+c.getAllClaim("2017", 1).size());
     }
 }

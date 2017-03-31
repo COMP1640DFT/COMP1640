@@ -115,7 +115,7 @@ public class ConnectDB {
     }
     
     public List<Claim> getAllClaim() {
-        String sql = "select c.idClaim,c.title,c.content,c.sendDate,c.filedata,c.idUser,c.idCM,d.idUser from tblClaim c join tblDecision d on c.idClaim=d.idClaim";
+        String sql = "select c.idClaim,c.title,c.content,c.sendDate,c.filedata,c.idUser,c.idCM from tblClaim c";
         Claim claim = null;
         Decision s = null;
         List<Claim> lClaim = new ArrayList<>();
@@ -132,11 +132,7 @@ public class ConnectDB {
                 claim.setFiledata(rs.getString(5));
                 claim.setIdUser(rs.getString(6));
                 claim.setIdCM(rs.getInt(7));
-                s = new Decision();
-                s.setIdUser(rs.getString(8));
-                claim.setDecision(s);
                 lClaim.add(claim);
-
             }
             con.close();
         } catch (SQLException ex) {
@@ -146,9 +142,8 @@ public class ConnectDB {
     }
 
     public Claim getClaimByIdClaim(int id) {
-        String sql = "select c.idClaim,c.title,c.content,c.sendDate,c.filedata,c.idUser,c.idCM,d.idUser,d.content,u.fullName from tblClaim c join tblDecision d on c.idClaim=d.idClaim join tblUser u on u.idUser=c.idUser  where c.idClaim=?";
+        String sql = "select c.idClaim,c.title,c.content,c.sendDate,c.filedata,c.idUser,c.idCM,u.fullName from tblClaim c join tblUser u on u.idUser=c.idUser  where c.idClaim=?";
         Claim claim = null;
-        Decision s = null;
 
         try {
             connectdatabase();
@@ -164,11 +159,7 @@ public class ConnectDB {
                 claim.setFiledata(rs.getString(5));
                 claim.setIdUser(rs.getString(6));
                 claim.setIdCM(rs.getInt(7));
-                s = new Decision();
-                s.setIdUser(rs.getString(8));
-                s.setContent(rs.getString(9));
-                claim.setUserFullName(rs.getString(10));
-                claim.setDecision(s);
+                claim.setUserFullName(rs.getString(8));
 
             }
             con.close();
@@ -176,6 +167,28 @@ public class ConnectDB {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
         return claim;
+    }
+    
+    public Decision getDecissionById(int id){
+        String sql = "select d.idUser,d.content,u.fullName from tblDecision d join tblUser u on u.idUser=d.idUser  where d.idClaim=?";
+        Decision s = null;
+
+        try {
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                s = new Decision();
+                s.setIdUser(rs.getString(1));
+                s.setContent(rs.getString(2));
+                s.setFullNameEC(rs.getString(3));
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return s;
     }
     
     public Claim getClaimById(int id) {
@@ -678,7 +691,7 @@ public class ConnectDB {
      
     public List<Account> getListEccoor(int idMajor){
         List<Account> list = new ArrayList<>();
-        String sql = "select * from tblUser where idMajor = ? and lever=4 ";
+        String sql = "select * from tblUser where idMajor = ? and lever = 4 ";
         try {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
@@ -694,6 +707,7 @@ public class ConnectDB {
                 acc.setIdAcademy(rs.getInt(7));
                 acc.setIdMajor(rs.getInt(8));
                 acc.setLever(rs.getInt(9));
+                list.add(acc);
             }
             con.close();
         } catch (SQLException ex) {

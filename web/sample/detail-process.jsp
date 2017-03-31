@@ -9,18 +9,19 @@
         <link rel="stylesheet" href="../css/bootstrap-theme.css">
     </head>
     <body>
+        <jsp:useBean id="ClaimDetail" class="entity.Claim" scope="session"></jsp:useBean>
+        <jsp:useBean id="DecisionDetail" class="entity.Decision" scope="session"></jsp:useBean>
         <% Claim c = (Claim) session.getAttribute("ClaimDetail");%>
 
-        <h1><%=c.getTitle()%></h1>
+        <h1>${ClaimDetail.title}</h1>
         <hr/>
-        <h3>Feedback from: <strong><%=c.getIdUser()%> (<%=c.getUserFullName()%>)</strong></h3>
+        <h3>Feedback from: <strong>${ClaimDetail.idUser} (${ClaimDetail.userFullName})</strong></h3>
         <p>
-            <%=c.getContent()%>
+            ${ClaimDetail.content}
         </p>
-        <a href="demo.pdf" target="_blank"><img src="http://placehold.it/350x150?text=Mina Phan" class="img-thumbnail"></a>
-        <a href="Agile-Manifesto.pdf" target="_blank"><img src="http://placehold.it/350x150? text=Mina Phan" class="img-thumbnail"></a>
+        <a href="../files/${ClaimDetail.filedata}" target="_blank"><img src="http://placehold.it/350x150?text=Mina Phan" class="img-thumbnail"></a>
         <hr/>
-        <h3>Reply from: <strong><%=c.getDecision().getIdUser()%></strong></h3>
-        <p><%=c.getDecision().getContent()%></p>
+        <h3>Reply from: <strong>${DecisionDetail.idUser}</strong></h3>
+        <p>${DecisionDetail.content}</p>
     </body>
 </html>

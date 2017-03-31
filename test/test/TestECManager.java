@@ -48,22 +48,26 @@ public class TestECManager {
     //
     @Test
     public void getAllClaim() {
-        assertEquals("Total all claim", 7, connectDB.getAllClaim().size());
+        int totalClaim = 11;
+        assertEquals("Total all claim", totalClaim, connectDB.getAllClaim().size());
     }
 
     @Test
     public void getAllClaimbyTwoWeek() {
+        int totalClaim = 1;
         assertEquals("Total all claim 2 after week", 1, connectDB.getAllClaimUnresolvedAfterTwoWeek().size());
     }
 
     @Test
     public void getAllClaimbyTwoWeekById() {
-        assertEquals("Total all claim 2 after week by Major", 1, connectDB.getAllClaimUnresolvedAfterTwoWeekInMajor(1).size());
+        int idMajor = 1;
+        int totalClaim = 0;
+        assertEquals("Total all claim 2 after week by Major", totalClaim, connectDB.getAllClaimUnresolvedAfterTwoWeekInMajor(idMajor).size());
     }
 
     @Test
     public void getAllMajor() {
-        assertEquals("All major: ", 3, connectDB.getListMajor().size());
+        assertEquals("All major: ", 2, connectDB.getListMajor().size());
     }
 
     @Test

@@ -249,6 +249,7 @@
                </div>
                 <input type="hidden" value="${beanSubject.id}" name="idSubject"/>
                 <input type="hidden" value="${beanCM.id}" name="idCM"/>
+                <input type="hidden" value="${idMajor}" name="idM"/>
                <div class="form-group">
                    <label for="description" class="col-sm-3 control-label">Description</label>
                    <div class="col-sm-9">
@@ -261,7 +262,7 @@
 
                    <div class="col-sm-5">
 
-                       <input type="file" id="file" name="file" class="form-control file2 inline btn btn-default"
+                       <input type="file" id="file" name="file" class="form-control file2 inline btn btn-default" multiple
                               data-label="<i class='glyphicon glyphicon-circle-arrow-up'></i> &nbsp;Browse Files"/>
 
                    </div>

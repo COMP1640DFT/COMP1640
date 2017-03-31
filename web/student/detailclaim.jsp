@@ -266,12 +266,13 @@
                                 <h4>
                                     <i class="entypo-attach"></i> Attachments <span></span>
                                 </h4>
-
+                                <c:if test="${beanClaim.filedata != ''}">
                                 <ul>
                                     <a href="../files/${beanClaim.filedata}" class="thumb">
                                             <img src="http://placehold.it/350x150?text=File" class="img-rounded"/>
                                         </a>
                                 </ul>
+                                </c:if>
 
                                 <form action="StudentsController?action=updateFile" method="post" enctype="multipart/form-data" >
                                     <div class="form-group">

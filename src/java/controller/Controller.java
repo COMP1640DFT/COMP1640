@@ -7,6 +7,7 @@ package controller;
 
 import entity.Account;
 import entity.Claim;
+import entity.Decision;
 import entity.ItemSelected;
 import entity.Major;
 import entity.Statistic;
@@ -67,8 +68,9 @@ public class Controller extends HttpServlet {
         if (action.equals("viewDetail")) {
             String id = request.getParameter("id");
             Claim claim = connectDB.getClaimByIdClaim(Integer.parseInt(id));
-
+            Decision d = connectDB.getDecissionById(Integer.parseInt(id));
             session.setAttribute("ClaimDetail", claim);
+            session.setAttribute("DecisionDetail", d);
             response.sendRedirect("sample/detail-process.jsp");
         }
 
@@ -150,6 +152,7 @@ public class Controller extends HttpServlet {
                 case 1:
                     c.setListClaimUnresolved(connectDB.getAllClaimManage(acc.getIdMajor()));
                     session.setAttribute("idUser", acc.getIdUser());
+                    session.setAttribute("idMajor", acc.getIdMajor());
                     session.setAttribute("fullName", acc.getFullName());
                     session.setAttribute("beanAllClaim", c);
                     response.sendRedirect("student/index.jsp");
@@ -160,9 +163,7 @@ public class Controller extends HttpServlet {
                     break;
                 //manager
                 case 3:
-
-                    response.sendRedirect("process.jsp");
-
+                    response.sendRedirect("Controller?action=viewC");
                     break;
                 //condinator
                 case 4:
