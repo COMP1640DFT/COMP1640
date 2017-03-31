@@ -233,7 +233,7 @@
                         <c:forEach var="c" items="${beanClaimInFaculty.listClaim}">
                                 <tr>
                                     <td>${c.idClaim}</td>
-                                    <td><a href="#">${c.title}</a></td>
+                                    <td><a href="CondinatiorController?action=viewClaimDetail&idclaim=${c.idClaim}&idUser=${idUser}">${c.title}</a></td>
                                     <td>${c.idUser}</td>
                                      <c:if test="${c.filedata == ''}">
                                         <td><span class="text-danger"><c:out value="No"/></span></td>

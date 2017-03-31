@@ -10,7 +10,7 @@ package entity;
  * @author user
  */
 public class Decision {
-    private String idClaim;
+    private int idClaim;
     private String content;
     private String sendDate;
     private int status;
@@ -21,7 +21,7 @@ public class Decision {
     public Decision() {
     }
 
-    public Decision(String idClaim, String content, String sendDate, int status, String idUser) {
+    public Decision(int idClaim, String content, String sendDate, int status, String idUser) {
         this.idClaim = idClaim;
         this.content = content;
         this.sendDate = sendDate;
@@ -29,11 +29,11 @@ public class Decision {
         this.idUser = idUser;
     }
 
-    public String getIdClaim() {
+    public int getIdClaim() {
         return idClaim;
     }
 
-    public void setIdClaim(String idClaim) {
+    public void setIdClaim(int idClaim) {
         this.idClaim = idClaim;
     }
 

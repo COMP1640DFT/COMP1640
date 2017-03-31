@@ -86,6 +86,34 @@ public class ConnectDB {
 
     }
 
+    public Account getAccoutnByid(String idUser) {
+        Account acc = null;
+        String sql = "select * from tblUser where idUser=? ";
+        try {
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, idUser);
+         
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                acc = new Account();
+                acc.setIdUser(rs.getString(1));
+                acc.setFullName(rs.getString(3));
+                acc.setDob(rs.getString(4));
+                acc.setEmail(rs.getString(5));
+                acc.setPhoneNumber(rs.getString(6));
+                acc.setIdAcademy(rs.getInt(7));
+                acc.setIdMajor(rs.getInt(8));
+                acc.setLever(rs.getInt(9));
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return acc;
+
+    }
+    
     public List<Claim> getAllClaim() {
         String sql = "select c.idClaim,c.title,c.content,c.sendDate,c.filedata,c.idUser,c.idCM,d.idUser from tblClaim c join tblDecision d on c.idClaim=d.idClaim";
         Claim claim = null;
@@ -362,6 +390,36 @@ public class ConnectDB {
         return list;
     }
 
+    public Claim getClaimOfStudentInAFacultyByIdClaim(int majorID, int idclaim) {
+        String sql = " select  c.idClaim, c.title,c.content, c.sendDate,c.filedata,c._status ,c.idUser,u.fullName "
+                + "from tblClaim c join tblUser u "
+                + "on c.idUser = u.idUser where u.idMajor =? and c.idClaim = ? ";
+        Claim claim = new Claim();
+        try {
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, majorID);
+            ps.setInt(2, idclaim);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+
+                claim.setIdClaim(rs.getInt(1));
+                claim.setTitle(rs.getString(2));
+                claim.setContent(rs.getString(3));
+                claim.setSendDate(rs.getString(4));
+                claim.setFiledata(rs.getString(5));
+                claim.setStatus(rs.getInt(6));
+                claim.setIdUser(rs.getString(7));
+                claim.setUserFullName(rs.getString(8));
+
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return claim;
+    }
+
     public Decision getDecisionOfAClaim(int claimID) {
         String sql = " select c.title,d.content,d.sendDate,d._status,u.fullName,d.idUser from tblDecision d\n"
                 + " join tblUser u on d.idUser = u.idUser \n"
@@ -505,7 +563,7 @@ public class ConnectDB {
     public boolean createClaim(Claim claim) {
         try {
             connectdatabase();
-            String sql = "INSERT INTO `tblClaim` ( `title`, `content`, `sendDate`, `filedata`, `_status`, `idUser`, `idCourse`, `idCM`) VALUES"
+            String sql = "INSERT INTO tblClaim ( title, content,sendDate, filedata, _status, idUser, idSubject, idCM) VALUES"
                     + "(?,?,?,?,?,?,?,?)";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, claim.getTitle());
@@ -525,6 +583,61 @@ public class ConnectDB {
         }
         return false;
     }
+    public boolean createDecision(Decision d){
+        try {
+        connectdatabase();
+        String sql="Insert into tblDecision (idClaim,content,sendDate, _status,idUser) values(?,?,?,?,?)";
+         PreparedStatement st = con.prepareStatement(sql);
+            st.setInt(1, d.getIdClaim());
+            st.setString(2, d.getContent());
+            st.setString(3, d.getSendDate());
+            st.setInt(4, d.getStatus());
+            st.setString(5, d.getIdUser());
+           
+            if (st.executeUpdate() > 0) {
+                return true;
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    public boolean updateDecision(int status, String content, int idClaim){
+        try {
+        connectdatabase();
+        String sql="Update tblDecision set content=?, _status=? where idClaim=?";
+         PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, content);
+            st.setInt(2, status);
+            st.setInt(3, idClaim);
+            if (st.executeUpdate() > 0) {
+                return true;
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    
+     public boolean updateClaim(int status, int idClaim){
+        try {
+        connectdatabase();
+        String sql="Update tblClaim set  _status=? where idClaim=?";
+         PreparedStatement st = con.prepareStatement(sql);
+            st.setInt(1, status);
+            st.setInt(2, idClaim);
+            if (st.executeUpdate() > 0) {
+                return true;
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    
 
     public void main(String[] args) {
 //        con;

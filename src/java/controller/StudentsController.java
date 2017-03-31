@@ -67,6 +67,7 @@ public class StudentsController extends HttpServlet {
                 @Override
                 public File rename(File file) {
                     file_name = rfile(file, idU).getName();
+                    System.out.println("-----------"+rfile(file, idU).getPath());
                     return rfile(file, idU);
                 }
             });

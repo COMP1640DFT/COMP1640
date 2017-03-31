@@ -8,6 +8,10 @@
         <servlet-name>StudentsController</servlet-name>
         <servlet-class>controller.StudentsController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CondinatiorController</servlet-name>
+        <servlet-class>controller.CondinatiorController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Controller</servlet-name>
         <url-pattern>/Controller</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>StudentsController</servlet-name>
         <url-pattern>/student/StudentsController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CondinatiorController</servlet-name>
+        <url-pattern>/coordinator/CondinatiorController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
