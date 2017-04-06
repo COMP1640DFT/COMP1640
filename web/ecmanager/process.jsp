@@ -243,49 +243,21 @@
                             <th>Student ID</th>
                             <th>EC Coordinator</th>
                             <th>Contents</th>
+                            <th>Faculty</th>
+                            <th>Assessment</th>
+                            <th>Item</th>
                             <th>Datetime</th>
 
                             </thead>
-                            <tfoot>
-                            <th>Student ID</th>
-                            <th>EC Coordinator</th>
-                            <th>Contents</th>
-                            <th>Datetime</th>
-                            </tfoot>
                             <tbody>
                             <tr>
                                 <td>trang_lay</td>
                                 <td>dung123</td>
                                 <td><a href="sample/detail-process.html" class="btn-reader">Manifesto for Agile Software
                                     Development</a></td>
-                                <td>2017-01-03 08:00</td>
-                            </tr>
-                            <tr>
-                                <td>trang_lay</td>
-                                <td>dung123</td>
-                                <td><a href="sample/detail-process.html" class="btn-reader">Manifesto for Agile Software
-                                    Development</a></td>
-                                <td>2017-01-03 08:00</td>
-                            </tr>
-                            <tr>
-                                <td>trang_lay</td>
-                                <td>dung123</td>
-                                <td><a href="sample/detail-process.html" class="btn-reader">Manifesto for Agile Software
-                                    Development</a></td>
-                                <td>2017-01-03 08:00</td>
-                            </tr>
-                            <tr>
-                                <td>trang_lay</td>
-                                <td>dung123</td>
-                                <td><a href="sample/detail-process.html" class="btn-reader">Manifesto for Agile Software
-                                    Development</a></td>
-                                <td>2017-01-03 08:00</td>
-                            </tr>
-                            <tr>
-                                <td>trang_lay</td>
-                                <td>dung123</td>
-                                <td><a href="sample/detail-process.html" class="btn-reader">Manifesto for Agile Software
-                                    Development</a></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                 <td>2017-01-03 08:00</td>
                             </tr>
                             </tbody>

@@ -17,13 +17,13 @@ public class Account {
     private String email;
     private String phoneNumber;
     private int idAcademy;
-    private int idMajor;
+    private int idFaculty;
     private int lever;
 
     public Account() {
     }
 
-    public Account(String idUser, String _passWord, String fullName, String dob, String email, String phoneNumber, int idAcademy, int idMajor, int lever) {
+    public Account(String idUser, String _passWord, String fullName, String dob, String email, String phoneNumber, int idAcademy, int idFaculty, int lever) {
         this.idUser = idUser;
         this._passWord = _passWord;
         this.fullName = fullName;
@@ -31,7 +31,7 @@ public class Account {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.idAcademy = idAcademy;
-        this.idMajor = idMajor;
+        this.idFaculty = idFaculty;
         this.lever = lever;
     }
 
@@ -91,12 +91,12 @@ public class Account {
         this.idAcademy = idAcademy;
     }
 
-    public int getIdMajor() {
-        return idMajor;
+    public int getIdFaculty() {
+        return idFaculty;
     }
 
-    public void setIdMajor(int idMajor) {
-        this.idMajor = idMajor;
+    public void setIdFaculty(int idFaculty) {
+        this.idFaculty = idFaculty;
     }
 
     public int getLever() {

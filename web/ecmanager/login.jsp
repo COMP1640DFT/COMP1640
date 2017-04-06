@@ -9,11 +9,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!--<link rel="stylesheet" href="css/bootstrap-theme.min.css">-->
-    <link rel="stylesheet" href="css/bootstrap-material-design.min.css">
-    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="../assets/css/bootstrap-material-design.min.css">
+    <link rel="stylesheet" href="../assets/css/custom.css">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans:400,700&amp;subset=vietnamese" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
 
@@ -59,11 +59,11 @@
 
 
 </div>
-<script src="js/jquery-3.1.1.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<script src="../assets/js/jquery-3.1.1.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
 
-<script src="js/material.min.js"></script>
-<script src="js/ripple.min.js"></script>
+<script src="../assets/js/material.min.js"></script>
+<script src="../assets/js/ripple.min.js"></script>
 <script>
     $("#menu-toggle").click(function (e) {
         e.preventDefault();

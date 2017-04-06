@@ -8,7 +8,7 @@ package model;
 import entity.Account;
 import entity.Claim;
 import entity.Decision;
-import entity.Major;
+import entity.Faculty;
 import entity.Statistic;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -75,7 +75,7 @@ public class ConnectDB {
                 acc.setEmail(rs.getString(5));
                 acc.setPhoneNumber(rs.getString(6));
                 acc.setIdAcademy(rs.getInt(7));
-                acc.setIdMajor(rs.getInt(8));
+                acc.setIdFaculty(rs.getInt(8));
                 acc.setLever(rs.getInt(9));
             }
             con.close();
@@ -103,7 +103,7 @@ public class ConnectDB {
                 acc.setEmail(rs.getString(5));
                 acc.setPhoneNumber(rs.getString(6));
                 acc.setIdAcademy(rs.getInt(7));
-                acc.setIdMajor(rs.getInt(8));
+                acc.setIdFaculty(rs.getInt(8));
                 acc.setLever(rs.getInt(9));
             }
             con.close();
@@ -115,7 +115,7 @@ public class ConnectDB {
     }
     
     public List<Claim> getAllClaim() {
-        String sql = "select c.idClaim,c.title,c.content,c.sendDate,c.filedata,c.idUser,c.idCM from tblClaim c";
+        String sql = "select c.idClaim,c.title,c.content,c.sendDate,c.envidence,c.idUser,c.idCM from tblClaim c";
         Claim claim = null;
         Decision s = null;
         List<Claim> lClaim = new ArrayList<>();
@@ -142,7 +142,7 @@ public class ConnectDB {
     }
 
     public Claim getClaimByIdClaim(int id) {
-        String sql = "select c.idClaim,c.title,c.content,c.sendDate,c.filedata,c.idUser,c.idCM,u.fullName from tblClaim c join tblUser u on u.idUser=c.idUser  where c.idClaim=?";
+        String sql = "select c.idClaim,c.title,c.content,c.sendDate,c.envidence,c.idUser,c.idCM,u.fullName from tblClaim c join tblUser u on u.idUser=c.idUser  where c.idClaim=?";
         Claim claim = null;
 
         try {
@@ -192,7 +192,7 @@ public class ConnectDB {
     }
     
     public Claim getClaimById(int id) {
-        String sql = "select idClaim,title,content,sendDate,filedata,idUser from tblClaim where idClaim = ?";
+        String sql = "select idClaim,title,content,sendDate,envidence,idUser from tblClaim where idClaim = ?";
         Claim claim = null;
 
         try {
@@ -221,7 +221,7 @@ public class ConnectDB {
         List<Claim> list = new LinkedList<>();
         String sql = "select c.idClaim, c.title, c.sendDate, u.fullName from tblClaim c \n"
                 + "inner join tblUser u on c.idUser = u.idUser \n"
-                + "where c.filedata = ''";
+                + "where c.envidence = ''";
         try {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
@@ -245,8 +245,8 @@ public class ConnectDB {
         List<Claim> list = new LinkedList<>();
         String sql = "select c.idClaim, c.title, c.sendDate, u.fullName from tblClaim c \n"
                 + "inner join tblUser u on c.idUser = u.idUser \n"
-                + "inner join tblMajor m on u.idMajor = m.id\n"
-                + "where c.filedata = '' and m.id = ?";
+                + "inner join tblFaculty m on u.idFaculty = m.id\n"
+                + "where c.envidence = '' and m.id = ?";
         try {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
@@ -269,7 +269,7 @@ public class ConnectDB {
 
     // Get all claim unresolved after 14 days
     public List<Claim> getAllClaimUnresolvedAfterTwoWeek() {
-        String sql = "select c.idClaim, c.title,c.content, c.sendDate,c.filedata, c._status, c.idUser, u.fullName \n"
+        String sql = "select c.idClaim, c.title,c.content, c.sendDate,c.envidence, c._status, c.idUser, u.fullName \n"
                 + "from tblClaim c \n"
                 + "join tblUser u on c.idUser = u.idUser \n"
                 + "where c.sendDate <= ADDDATE(NOW(),-14) and _status = 0";
@@ -300,10 +300,10 @@ public class ConnectDB {
     }
 
     public List<Claim> getAllClaimUnresolvedAfterTwoWeekInMajor(int id) {
-        String sql = "select c.idClaim, c.title,c.content, c.sendDate,c.filedata, c._status, c.idUser, u.fullName \n"
+        String sql = "select c.idClaim, c.title,c.content, c.sendDate,c.envidence, c._status, c.idUser, u.fullName \n"
                 + "from tblClaim c \n"
                 + "join tblUser u on c.idUser = u.idUser\n"
-                + "join tblMajor m on u.idMajor = m.id \n"
+                + "join tblFaculty m on u.idFaculty = m.id \n"
                 + "where c.sendDate <= ADDDATE(NOW(),-14) and _status = 0 and m.id = ?";
         List<Claim> list = new LinkedList<>();
 
@@ -332,17 +332,17 @@ public class ConnectDB {
         return list;
     }
 
-    public List<Claim> getAllClaimManage(int idMajor) {
+    public List<Claim> getAllClaimManage(int idFaculty) {
         String sql = "SELECT * \n"
                 + "FROM tblClaimManage tcm\n"
-                + "INNER JOIN tblSubject ts ON tcm.idSubject = ts.id\n"
-                + "INNER JOIN tblMajor tm ON tm.id = ts.idMajor WHERE idMajor = ?";
+                + "INNER JOIN tblADetail tad ON tcm.idItemAssessment = tad.id\n"
+                + "INNER JOIN tblFaculty tf ON tf.id = ts.idFaculty WHERE idFaculty = ?";
         List<Claim> list = new LinkedList<>();
 
         try {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, idMajor);
+            ps.setInt(1, idFaculty);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Claim claim = new Claim();
@@ -350,7 +350,7 @@ public class ConnectDB {
                 claim.setTitle(rs.getString(2));
                 claim.setCreateDate(rs.getString(3));
                 claim.setEndDate(rs.getString(4));
-                claim.setIdSubject(rs.getInt(5));
+                claim.setidItemAssessment(rs.getInt(5));
                 claim.setStatus(rs.getInt(6));
                 list.add(claim);
 
@@ -363,7 +363,7 @@ public class ConnectDB {
     }
 
     public List<Claim> getAllClaimOfStudent(String user, int idCM) {
-        String sql = "select c.idClaim, c.title,c.content, c.sendDate,c.filedata,c._status ,c.idUser\n"
+        String sql = "select c.idClaim, c.title,c.content, c.sendDate,c.envidence,c._status ,c.idUser\n"
                 + "from tblClaim c \n"
                 + " where c.idUser = ? and c.idCM = ?";
         List<Claim> list = new LinkedList<>();
@@ -394,9 +394,9 @@ public class ConnectDB {
     }
 
     public List<Claim> getAllClaimOfStudentInAFaculty(int majorID) {
-        String sql = " select  c.idClaim, c.title,c.content, c.sendDate,c.filedata,c._status ,c.idUser "
+        String sql = " select  c.idClaim, c.title,c.content, c.sendDate,c.envidence,c._status ,c.idUser "
                 + "from tblClaim c join tblUser u "
-                + "on c.idUser = u.idUser where u.idMajor = ?";
+                + "on c.idUser = u.idUser where u.idFaculty = ?";
         List<Claim> list = new LinkedList<>();
         try {
             connectdatabase();
@@ -423,9 +423,9 @@ public class ConnectDB {
     }
 
     public Claim getClaimOfStudentInAFacultyByIdClaim(int majorID, int idclaim) {
-        String sql = " select  c.idClaim, c.title,c.content, c.sendDate,c.filedata,c._status ,c.idUser,u.fullName "
+        String sql = " select  c.idClaim, c.title,c.content, c.sendDate,c.envidence,c._status ,c.idUser,u.fullName "
                 + "from tblClaim c join tblUser u "
-                + "on c.idUser = u.idUser where u.idMajor =? and c.idClaim = ? ";
+                + "on c.idUser = u.idUser where u.idFaculty =? and c.idClaim = ? ";
         Claim claim = new Claim();
         try {
             connectdatabase();
@@ -480,15 +480,15 @@ public class ConnectDB {
         return d;
     }
 
-    public List<Major> getListMajor() {
-        List<Major> list = new LinkedList<>();
-        String sql = "select * from tblMajor";
+    public List<Faculty> getListMajor() {
+        List<Faculty> list = new LinkedList<>();
+        String sql = "select * from tblFaculty";
         try {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Major m = new Major();
+                Faculty m = new Faculty();
                 m.setId(rs.getInt(1));
                 m.setName(rs.getString(2));
                 list.add(m);
@@ -500,16 +500,16 @@ public class ConnectDB {
         return list;
     }
 
-    public Major getMajor(int id) {
-        String sql = " select * from tblMajor where id = ?";
-        Major m = null;
+    public Faculty getMajor(int id) {
+        String sql = " select * from tblFaculty where id = ?";
+        Faculty m = null;
         try {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                m = new Major();
+                m = new Faculty();
                 m.setId(rs.getInt(1));
                 m.setName(rs.getString(2));
             }
@@ -520,10 +520,10 @@ public class ConnectDB {
         return m;
     }
 
-    public List<Major> getCountClaimByMajor(String year) {
-        List<Major> list = new ArrayList<>();
+    public List<Faculty> getCountClaimByMajor(String year) {
+        List<Faculty> list = new ArrayList<>();
         String sql = "select tm.id, tm.name from tblClaim tc inner join tblUser tu on tc.idUser = tu.idUser \n"
-                + "inner join tblMajor tm on tu.idMajor = tm.id\n"
+                + "inner join tblFaculty tm on tu.idFaculty = tm.id\n"
                 + "inner join tblClaimManage tcm on tc.idCM = tcm.idCM \n"
                 + "where \n"
                 + "tcm.createDate between '" + year + "-01-01' and '" + year + "-12-31'\n";
@@ -532,7 +532,7 @@ public class ConnectDB {
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Major m = new Major();
+                Faculty m = new Faculty();
                 m.setId(rs.getInt(1));
                 m.setName(rs.getString(2));
                 list.add(m);
@@ -544,15 +544,15 @@ public class ConnectDB {
         return list;
     }
 
-    public List<Statistic> getAllClaim(String year, int idMajor) {
+    public List<Statistic> getAllClaim(String year, int idFaculty) {
         List<Statistic> list = new ArrayList<>();
         String sql = "select tm.id, tm.name, tc.sendDate, tc.idUser,tc.title, ts._name from tblClaim tc inner join tblUser tu on tc.idUser = tu.idUser \n"
-                + "inner join tblMajor tm on tu.idMajor = tm.id\n"
+                + "inner join tblFaculty tm on tu.idFaculty = tm.id\n"
                 + "inner join tblClaimManage tcm on tc.idCM = tcm.idCM \n"
-                + "inner join tblSubject ts on ts.id = tc.idSubject\n"
+                + "inner join tblAssessment ts on ts.id = tc.idSubject\n"
                 + "where \n"
                 + "tc.sendDate between '" + year + "-01-01' and '" + year + "-12-31'\n"
-                + "and tm.id = " + idMajor;
+                + "and tm.id = " + idFaculty;
         try {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
@@ -574,14 +574,14 @@ public class ConnectDB {
         return list;
     }
 
-//    public List<Statistic> getCountStudentUpClaim(String year, String month, int idMajor) {
+//    public List<Statistic> getCountStudentUpClaim(String year, String month, int idFaculty) {
 //        List<Statistic> list = new ArrayList<>();
 //        String sql = "select count(tc.idUser), tc.idUser from tblClaim tc inner join tblUser tu on tc.idUser = tu.idUser \n"
-//                + "inner join tblMajor tm on tu.idMajor = tm.id\n"
+//                + "inner join tblFaculty tm on tu.idFaculty = tm.id\n"
 //                + "inner join tblClaimManage tcm on tc.idCM = tcm.idCM \n"
 //                + "where \n"
 //                + "tc.sendDate between '" + year + "-01-01' and '" + year + "-12-31'\n"
-//                + "and tm.id = " + idMajor + " group by tc.idUser";
+//                + "and tm.id = " + idFaculty + " group by tc.idUser";
 //        try {
 //            connectdatabase();
 //            PreparedStatement ps = con.prepareStatement(sql);
@@ -598,8 +598,8 @@ public class ConnectDB {
     public boolean createClaim(Claim claim) {
         try {
             connectdatabase();
-            String sql = "INSERT INTO tblClaim ( title, content,sendDate, filedata, _status, idUser, idSubject, idCM) VALUES"
-                    + "(?,?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO tblClaim ( title, content,sendDate, envidence, _status, idUser, idCM) VALUES"
+                    + "(?,?,?,?,?,?,?)";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, claim.getTitle());
             st.setString(2, claim.getContent());
@@ -607,8 +607,7 @@ public class ConnectDB {
             st.setString(4, claim.getFiledata());
             st.setInt(5, claim.getStatus());
             st.setString(6, claim.getIdUser());
-            st.setInt(7, claim.getIdSubject());
-            st.setInt(8, claim.getIdCM());
+            st.setInt(7, claim.getIdCM());
             if (st.executeUpdate() > 0) {
                 return true;
             }
@@ -675,7 +674,7 @@ public class ConnectDB {
        public boolean updateFileofClaim(String file, int idClaim){
         try {
         connectdatabase();
-        String sql="Update tblClaim set  filedata=? where idClaim=?";
+        String sql="Update tblClaim set  envidence=? where idClaim=?";
          PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, file);
             st.setInt(2, idClaim);
@@ -689,13 +688,13 @@ public class ConnectDB {
         return false;
     }
      
-    public List<Account> getListEccoor(int idMajor){
+    public List<Account> getListEccoor(int idFaculty){
         List<Account> list = new ArrayList<>();
-        String sql = "select * from tblUser where idMajor = ? and lever = 4 ";
+        String sql = "select * from tblUser where idFaculty = ? and lever = 4 ";
         try {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, idMajor);
+            ps.setInt(1, idFaculty);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Account acc = new Account();
@@ -705,7 +704,7 @@ public class ConnectDB {
                 acc.setEmail(rs.getString(5));
                 acc.setPhoneNumber(rs.getString(6));
                 acc.setIdAcademy(rs.getInt(7));
-                acc.setIdMajor(rs.getInt(8));
+                acc.setIdFaculty(rs.getInt(8));
                 acc.setLever(rs.getInt(9));
                 list.add(acc);
             }

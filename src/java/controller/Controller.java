@@ -9,7 +9,7 @@ import entity.Account;
 import entity.Claim;
 import entity.Decision;
 import entity.ItemSelected;
-import entity.Major;
+import entity.Faculty;
 import entity.Statistic;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -89,9 +89,9 @@ public class Controller extends HttpServlet {
         if (idmajor == null) {
             idmajor = "1";
         }
-        List<Major> listM = connectDB.getListMajor();
+        List<Faculty> listM = connectDB.getListMajor();
         List<ItemSelected> listMajor = new ArrayList<>();
-        for (Major listM1 : listM) {
+        for (Faculty listM1 : listM) {
             ItemSelected item = new ItemSelected();
             item.setData(listM1.getName());
             item.setValue(listM1.getId() + "");
@@ -120,9 +120,9 @@ public class Controller extends HttpServlet {
         if (idmajor == null) {
             idmajor = "1";
         }
-        List<Major> listM = connectDB.getListMajor();
+        List<Faculty> listM = connectDB.getListMajor();
         List<ItemSelected> listMajor = new ArrayList<>();
-        for (Major listM1 : listM) {
+        for (Faculty listM1 : listM) {
             ItemSelected item = new ItemSelected();
             item.setData(listM1.getName());
             item.setValue(listM1.getId() + "");
@@ -150,9 +150,9 @@ public class Controller extends HttpServlet {
             switch (acc.getLever()) {
                 //student
                 case 1:
-                    c.setListClaimUnresolved(connectDB.getAllClaimManage(acc.getIdMajor()));
+                    c.setListClaimUnresolved(connectDB.getAllClaimManage(acc.getIdFaculty()));
                     session.setAttribute("idUser", acc.getIdUser());
-                    session.setAttribute("idMajor", acc.getIdMajor());
+                    session.setAttribute("idMajor", acc.getIdFaculty());
                     session.setAttribute("fullName", acc.getFullName());
                     session.setAttribute("beanAllClaim", c);
                     response.sendRedirect("student/index.jsp");
@@ -167,8 +167,8 @@ public class Controller extends HttpServlet {
                     break;
                 //condinator
                 case 4:
-                    c.setListClaim(connectDB.getAllClaimOfStudentInAFaculty(acc.getIdMajor()));
-                    Major m = connectDB.getMajor(acc.getIdMajor());
+                    c.setListClaim(connectDB.getAllClaimOfStudentInAFaculty(acc.getIdFaculty()));
+                    Faculty m = connectDB.getMajor(acc.getIdFaculty());
                     session.setAttribute("idUser", acc.getIdUser());
                     session.setAttribute("fullName", acc.getFullName());
                     session.setAttribute("beanClaimInFaculty", c);
@@ -193,7 +193,7 @@ public class Controller extends HttpServlet {
     }
 
     private void viewStaticsChart(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        List<Major> listM = connectDB.getListMajor();
+        List<Faculty> listM = connectDB.getListMajor();
         String[] month = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
         String year = request.getParameter("year");
         String idmajor = request.getParameter("idmajor");
@@ -226,7 +226,7 @@ public class Controller extends HttpServlet {
 
         //chart2
         List<Statistic> listS = new ArrayList<>();
-        for (Major listM1 : listM) {
+        for (Faculty listM1 : listM) {
             ItemSelected item = new ItemSelected();
             item.setData(listM1.getName());
             item.setValue(listM1.getId() + "");
@@ -243,8 +243,8 @@ public class Controller extends HttpServlet {
             listS.add(s);
         }
 
-        List<Major> dataCount = connectDB.getCountClaimByMajor(year);
-        for (Major dataCount1 : dataCount) {
+        List<Faculty> dataCount = connectDB.getCountClaimByMajor(year);
+        for (Faculty dataCount1 : dataCount) {
             for (Statistic s : listS) {
                 if (s.getTitle().equals(dataCount1.getName())) {
                     s.setData(s.getData() + 1);

@@ -50,7 +50,7 @@ public class CondinatiorController extends HttpServlet {
             String idclaim = request.getParameter("idclaim");
             String idUser = request.getParameter("idUser");
             Account account = connectDB.getAccoutnByid(idUser);
-            Claim claim = connectDB.getClaimOfStudentInAFacultyByIdClaim(account.getIdMajor(), Integer.parseInt(idclaim));
+            Claim claim = connectDB.getClaimOfStudentInAFacultyByIdClaim(account.getIdFaculty(), Integer.parseInt(idclaim));
             Decision decision = connectDB.getDecisionOfAClaim(Integer.parseInt(idclaim));
             if (decision != null) {
 

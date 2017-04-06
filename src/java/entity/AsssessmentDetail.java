@@ -9,10 +9,10 @@ package entity;
  *
  * @author DaoMinhThien
  */
-public class Subject {
+public class AsssessmentDetail {
     private int id;
-    private String name;
-    private int idMajor;
+    private int idAssessment;
+    private int idItem;
 
     public int getId() {
         return id;
@@ -22,21 +22,24 @@ public class Subject {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public int getIdAssessment() {
+        return idAssessment;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setIdAssessment(int idAssessment) {
+        this.idAssessment = idAssessment;
     }
 
-    public int getIdMajor() {
-        return idMajor;
+    public int getIdItem() {
+        return idItem;
     }
 
-    public void setIdMajor(int idMajor) {
-        this.idMajor = idMajor;
+    public void setIdItem(int idItem) {
+        this.idItem = idItem;
     }
     
     
+    
+            
+           
 }

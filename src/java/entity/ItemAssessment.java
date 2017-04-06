@@ -5,18 +5,13 @@
  */
 package entity;
 
-import java.io.Serializable;
-import java.util.List;
-
 /**
  *
  * @author DaoMinhThien
  */
-public class Major implements Serializable {
+public class ItemAssessment {
     private int id;
     private String name;
-    private List<Major> listMajor;
-    
 
     public int getId() {
         return id;
@@ -33,12 +28,6 @@ public class Major implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-
-    public List<Major> getListMajor() {
-        return listMajor;
-    }
-
-    public void setListMajor(List<Major> listMajor) {
-        this.listMajor = listMajor;
-    }
+    
+    
 }

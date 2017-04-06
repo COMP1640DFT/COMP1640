@@ -222,9 +222,9 @@
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>Subject</th>
+                    <th>Title</th>
                     <th>Student user</th>
-                    <th>File</th>
+                    <th>Evidence</th>
                     <th>Status</th>
                 </tr>
                 </thead>
