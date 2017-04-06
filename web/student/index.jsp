@@ -69,7 +69,7 @@
                     <ul id="main-menu" class="">
 
                         <li class="active">
-                            <a href=""><i class="glyphicon glyphicon-home"></i> All Claims</a>
+                            <a href="StudentsController?action=viewAllCM"><i class="glyphicon glyphicon-home"></i> All Claims</a>
                         </li>
                         <li><a href="#"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
 

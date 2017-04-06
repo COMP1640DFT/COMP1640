@@ -40,7 +40,7 @@
 </head>
 <body class="page-body">
 <jsp:useBean id="beanClaimInFaculty" class="entity.Claim" scope="session"></jsp:useBean>
-<jsp:useBean id="majorName" class="entity.Major" scope="session"></jsp:useBean>
+<jsp:useBean id="majorName" class="entity.Faculty" scope="session"></jsp:useBean>
 <div class="page-container">
 
     <div class="sidebar-menu">
@@ -70,7 +70,7 @@
         <ul id="main-menu" class="">
 
             <li class="active">
-                <a href="../student/index.html"><i class="glyphicon glyphicon-home"></i> Home</a>
+                <a href="CoordinatorController?action=viewAllClaim"><i class="glyphicon glyphicon-home"></i> Home</a>
             </li>
             <li><a href="#"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
 
@@ -225,6 +225,9 @@
                     <th>Title</th>
                     <th>Student user</th>
                     <th>Evidence</th>
+                    <th>Faculty</th>
+                    <th>Assessment</th>
+                    <th>Item</th>
                     <th>Status</th>
                 </tr>
                 </thead>
@@ -233,7 +236,7 @@
                         <c:forEach var="c" items="${beanClaimInFaculty.listClaim}">
                                 <tr>
                                     <td>${c.idClaim}</td>
-                                    <td><a href="CondinatiorController?action=viewClaimDetail&idclaim=${c.idClaim}&idUser=${idUser}">${c.title}</a></td>
+                                    <td><a href="CoordinatorController?action=viewClaimDetail&idclaim=${c.idClaim}&idUser=${idUser}">${c.title}</a></td>
                                     <td>${c.idUser}</td>
                                     <c:if test="${c.filedata == ''}">
                                         <td><span class="text-danger"><c:out value="No"/></span></td>

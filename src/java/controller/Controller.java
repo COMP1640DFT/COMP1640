@@ -48,10 +48,7 @@ public class Controller extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
         HttpSession session = request.getSession();
-        if (action.equals("checklogin")) {
-            Account acc = checkLogin(request, response, session);
-            session.setAttribute("session_Account", acc);
-        }
+        
         if (action.equals("viewstatistic")) {
             viewStatistic(request, response);
         }
@@ -141,47 +138,7 @@ public class Controller extends HttpServlet {
         response.sendRedirect("statistics.jsp");
     }
 
-    private Account checkLogin(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
-        String idUser = request.getParameter("username");
-        String pass = request.getParameter("password");
-        Account acc = connectDB.checkLogin(idUser, pass);
-        Claim c = new Claim();
-        if (acc != null) {
-            switch (acc.getLever()) {
-                //student
-                case 1:
-                    c.setListClaimUnresolved(connectDB.getAllClaimManage(acc.getIdFaculty()));
-                    session.setAttribute("idUser", acc.getIdUser());
-                    session.setAttribute("idMajor", acc.getIdFaculty());
-                    session.setAttribute("fullName", acc.getFullName());
-                    session.setAttribute("beanAllClaim", c);
-                    response.sendRedirect("student/index.jsp");
-                    break;
-                //admin
-                case 2:
-//                    response.sendRedirect("process.jsp");
-                    break;
-                //manager
-                case 3:
-                    response.sendRedirect("Controller?action=viewC");
-                    break;
-                //condinator
-                case 4:
-                    c.setListClaim(connectDB.getAllClaimOfStudentInAFaculty(acc.getIdFaculty()));
-                    Faculty m = connectDB.getMajor(acc.getIdFaculty());
-                    session.setAttribute("idUser", acc.getIdUser());
-                    session.setAttribute("fullName", acc.getFullName());
-                    session.setAttribute("beanClaimInFaculty", c);
-                    session.setAttribute("majorName", m);
-                    response.sendRedirect("coordinator/allclaim.jsp");
-                    break;
-            }
-        } else {
-            String mes = "UserName or PassWord is wrong!";
-            sendMessage(response, mes, "login.jsp");
-        }
-        return acc;
-    }
+    
 
     private void sendMessage(HttpServletResponse response, String sms, String path) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");

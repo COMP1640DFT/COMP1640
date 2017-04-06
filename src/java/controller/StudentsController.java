@@ -68,6 +68,9 @@ public class StudentsController extends HttpServlet {
             response.sendRedirect("../student/createclaim.jsp");
 
         }
+        if (action.equals("viewAllCM")){
+            viewAllClaimManage(request, response, session);
+        }
         if (action.equals("createClaim")) {
             final String idU = request.getParameter("Uid");
             MultipartRequest m = new MultipartRequest(request, getServletContext().getRealPath("/files"), 256000000, new FileRenamePolicy() {
@@ -128,9 +131,8 @@ public class StudentsController extends HttpServlet {
                 } else {
                     sendMessage(response, "Update file failed!", "../student/detailclaim.jsp");
                 }
-            }
-            else{
-                 sendMessage(response, "If you want update file, you must select file want update!", "../student/detailclaim.jsp");
+            } else {
+                sendMessage(response, "If you want update file, you must select file want update!", "../student/detailclaim.jsp");
             }
 
         }
@@ -158,6 +160,17 @@ public class StudentsController extends HttpServlet {
         HttpSession session = request.getSession();
         session.setAttribute("beanAllStudentClaim", c);
         response.sendRedirect("../student/allClaims.jsp");
+    }
+
+    private void viewAllClaimManage(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
+        Account acc = (Account) session.getAttribute("account");
+        Claim c = new Claim();
+        c.setListClaimUnresolved(connectDB.getAllClaimManage(acc.getIdFaculty()));
+        session.setAttribute("idUser", acc.getIdUser());
+        session.setAttribute("idMajor", acc.getIdFaculty());
+        session.setAttribute("fullName", acc.getFullName());
+        session.setAttribute("beanAllClaim", c);
+        response.sendRedirect("index.jsp");
     }
 
     private void sendMessage(HttpServletResponse response, String sms, String path) throws ServletException, IOException {

@@ -9,8 +9,12 @@
         <servlet-class>controller.StudentsController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CondinatiorController</servlet-name>
-        <servlet-class>controller.CondinatiorController</servlet-class>
+        <servlet-name>CoordinatorController</servlet-name>
+        <servlet-class>controller.CoordinatorController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoginController</servlet-name>
+        <servlet-class>controller.LoginController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Controller</servlet-name>
@@ -21,8 +25,12 @@
         <url-pattern>/student/StudentsController</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>CondinatiorController</servlet-name>
-        <url-pattern>/coordinator/CondinatiorController</url-pattern>
+        <servlet-name>CoordinatorController</servlet-name>
+        <url-pattern>/coordinator/CoordinatorController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginController</servlet-name>
+        <url-pattern>/LoginController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -115,7 +115,7 @@ public class ConnectDB {
     }
     
     public List<Claim> getAllClaim() {
-        String sql = "select c.idClaim,c.title,c.content,c.sendDate,c.envidence,c.idUser,c.idCM from tblClaim c";
+        String sql = "select c.idClaim,c.title,c.content,c.sendDate,c.evidence,c.idUser,c.idCM from tblClaim c";
         Claim claim = null;
         Decision s = null;
         List<Claim> lClaim = new ArrayList<>();
@@ -142,7 +142,7 @@ public class ConnectDB {
     }
 
     public Claim getClaimByIdClaim(int id) {
-        String sql = "select c.idClaim,c.title,c.content,c.sendDate,c.envidence,c.idUser,c.idCM,u.fullName from tblClaim c join tblUser u on u.idUser=c.idUser  where c.idClaim=?";
+        String sql = "select c.idClaim,c.title,c.content,c.sendDate,c.evidence,c.idUser,c.idCM,u.fullName from tblClaim c join tblUser u on u.idUser=c.idUser  where c.idClaim=?";
         Claim claim = null;
 
         try {
@@ -221,7 +221,7 @@ public class ConnectDB {
         List<Claim> list = new LinkedList<>();
         String sql = "select c.idClaim, c.title, c.sendDate, u.fullName from tblClaim c \n"
                 + "inner join tblUser u on c.idUser = u.idUser \n"
-                + "where c.envidence = ''";
+                + "where c.evidence = ''";
         try {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
@@ -246,7 +246,7 @@ public class ConnectDB {
         String sql = "select c.idClaim, c.title, c.sendDate, u.fullName from tblClaim c \n"
                 + "inner join tblUser u on c.idUser = u.idUser \n"
                 + "inner join tblFaculty m on u.idFaculty = m.id\n"
-                + "where c.envidence = '' and m.id = ?";
+                + "where c.evidence = '' and m.id = ?";
         try {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
@@ -269,7 +269,7 @@ public class ConnectDB {
 
     // Get all claim unresolved after 14 days
     public List<Claim> getAllClaimUnresolvedAfterTwoWeek() {
-        String sql = "select c.idClaim, c.title,c.content, c.sendDate,c.envidence, c._status, c.idUser, u.fullName \n"
+        String sql = "select c.idClaim, c.title,c.content, c.sendDate,c.evidence, c._status, c.idUser, u.fullName \n"
                 + "from tblClaim c \n"
                 + "join tblUser u on c.idUser = u.idUser \n"
                 + "where c.sendDate <= ADDDATE(NOW(),-14) and _status = 0";
@@ -300,7 +300,7 @@ public class ConnectDB {
     }
 
     public List<Claim> getAllClaimUnresolvedAfterTwoWeekInMajor(int id) {
-        String sql = "select c.idClaim, c.title,c.content, c.sendDate,c.envidence, c._status, c.idUser, u.fullName \n"
+        String sql = "select c.idClaim, c.title,c.content, c.sendDate,c.evidence, c._status, c.idUser, u.fullName \n"
                 + "from tblClaim c \n"
                 + "join tblUser u on c.idUser = u.idUser\n"
                 + "join tblFaculty m on u.idFaculty = m.id \n"
@@ -363,7 +363,7 @@ public class ConnectDB {
     }
 
     public List<Claim> getAllClaimOfStudent(String user, int idCM) {
-        String sql = "select c.idClaim, c.title,c.content, c.sendDate,c.envidence,c._status ,c.idUser\n"
+        String sql = "select c.idClaim, c.title,c.content, c.sendDate,c.evidence,c._status ,c.idUser\n"
                 + "from tblClaim c \n"
                 + " where c.idUser = ? and c.idCM = ?";
         List<Claim> list = new LinkedList<>();
@@ -394,7 +394,7 @@ public class ConnectDB {
     }
 
     public List<Claim> getAllClaimOfStudentInAFaculty(int majorID) {
-        String sql = " select  c.idClaim, c.title,c.content, c.sendDate,c.envidence,c._status ,c.idUser "
+        String sql = " select  c.idClaim, c.title,c.content, c.sendDate,c.evidence,c._status ,c.idUser "
                 + "from tblClaim c join tblUser u "
                 + "on c.idUser = u.idUser where u.idFaculty = ?";
         List<Claim> list = new LinkedList<>();
@@ -423,7 +423,7 @@ public class ConnectDB {
     }
 
     public Claim getClaimOfStudentInAFacultyByIdClaim(int majorID, int idclaim) {
-        String sql = " select  c.idClaim, c.title,c.content, c.sendDate,c.envidence,c._status ,c.idUser,u.fullName "
+        String sql = " select  c.idClaim, c.title,c.content, c.sendDate,c.evidence,c._status ,c.idUser,u.fullName "
                 + "from tblClaim c join tblUser u "
                 + "on c.idUser = u.idUser where u.idFaculty =? and c.idClaim = ? ";
         Claim claim = new Claim();

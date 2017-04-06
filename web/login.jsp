@@ -65,7 +65,7 @@
             <div class="col-sm-6" style="margin-left: auto;margin-right: auto">
                 <div class="panel panel-primary panel-inverse" id="login-panel">
                    <div class="panel-body">
-                        <form action="Controller?action=checklogin" method="post">
+                        <form action="LoginController?action=checklogin" method="post">
                             <h2 style="margin-bottom: 50px">Who are you?</h2>
                             <div class="form-group">
                                 <input class="form-control" id="username" name="username" type="text" required placeholder="Username"/>

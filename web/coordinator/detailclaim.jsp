@@ -290,7 +290,7 @@
                                 </c:choose>
 
                                 <div class="fake-form">
-                                    <form action="CondinatiorController?action=AddMessage" method="post">
+                                    <form action="CoordinatorController?action=AddMessage" method="post">
                                         <div class="form-group">
                                             <label for="message">Status:</label>
                                             <select style="margin-top: 10px;"addMessage name="selectStatus" id="selectStatus"  >                          

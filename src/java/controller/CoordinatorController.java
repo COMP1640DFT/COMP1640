@@ -8,6 +8,7 @@ package controller;
 import entity.Account;
 import entity.Claim;
 import entity.Decision;
+import entity.Faculty;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
@@ -28,7 +29,7 @@ import model.Mail;
  *
  * @author user
  */
-public class CondinatiorController extends HttpServlet {
+public class CoordinatorController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -63,6 +64,9 @@ public class CondinatiorController extends HttpServlet {
             session.setAttribute("acc", account);
 
             response.sendRedirect("../coordinator/detailclaim.jsp");
+        }
+        if (action.equals("viewAllClaim")){
+            viewAllClaim(request, response, session);
         }
         if (action.equals("AddMessage")) {
             String btntext = session.getAttribute("textbtn").toString();
@@ -122,6 +126,18 @@ public class CondinatiorController extends HttpServlet {
             }
 
         }
+    }
+
+    private void viewAllClaim(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
+        Claim c = new Claim();
+        Account acc = (Account) session.getAttribute("account");
+        c.setListClaim(connectDB.getAllClaimOfStudentInAFaculty(acc.getIdFaculty()));
+        Faculty m = connectDB.getMajor(acc.getIdFaculty());
+        session.setAttribute("idUser", acc.getIdUser());
+        session.setAttribute("fullName", acc.getFullName());
+        session.setAttribute("beanClaimInFaculty", c);
+        session.setAttribute("majorName", m);
+        response.sendRedirect("allclaim.jsp");
     }
 
     private void mail(String email, String mailtext) {
