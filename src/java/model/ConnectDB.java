@@ -365,6 +365,39 @@ public class ConnectDB {
         }
         return list;
     }
+  public List<Claim> getAllClaimManageFilterByStatus(int idFaculty, int stt) {
+        String sql = "select tcm.idCM, tcm.title, tcm.createdate, tcm.enddate, tcm._status, ta._name, tia.name \n"
+                + "from tblClaimManage tcm\n"
+                + "join tblADetail tad on tcm.idItemAssessment = tad.id\n"
+                + "join tblAssessment ta on ta.id = tad.idAssesment\n"
+                + "join tblFaculty tf on tf.id = ta.idFaculty\n"
+                + "join tblItemA tia on tad.idItem = tia.id  where ta.idFaculty = ? and tcm._status = ?";
+        List<Claim> list = new LinkedList<>();
+
+        try {
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, idFaculty);
+            ps.setInt(2, stt);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Claim claim = new Claim();
+                claim.setIdClaim(rs.getInt(1));
+                claim.setTitle(rs.getString(2));
+                claim.setCreateDate(rs.getString(3));
+                claim.setEndDate(rs.getString(4));
+                claim.setStatus(rs.getInt(5));
+                claim.setAssessmentName(rs.getString(6));
+                claim.setItemAssessmentName(rs.getString(7));
+                list.add(claim);
+
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
 
     public List<Claim> getAllClaimManage() {
         String sql = "select tcm.idCM, tcm.title, tcm.createdate, tcm.enddate, tcm._status, tf.name, ta._name, tia.name from tblClaimManage tcm join tblADetail tad on tcm.idItemAssessment = tad.id \n"
