@@ -205,19 +205,19 @@
         <br/>
 
         <div class="panel panel-primary">
-            <form class="form-inline" style="padding: 10px">
+            <form class="form-inline" action="CoordinatorController?action=viewAllClaimFilterByStatus" method="post" style="padding: 10px">
                 <div class="form-group">
                     <label for="status">Filter by status: </label>
                     <select id="status" class="form-control" name="status">
-                        <option value="open">Open</option>
-                        <option value="closed">Closed</option>
-                        <option value="expired">Expired</option>
+                        <option value="Waiting">Waiting</option>
+                        <option value="Done">Done</option>
+                        <option value="Expired">Expired</option>
                     </select>
+                   
                 </div>
-                <a href="../student/create.html" class="btn btn-default" style="float: right;margin-top: 20px"><i
-                        class="glyphicon glyphicon-plus-sign"></i> New</a>
+                <input type="submit" style="margin-top: 20px" href="" class="btn btn-default" value="Search"/>
             </form>
-
+            
             <table class="table  table-responsive">
                 <thead>
                 <tr>
@@ -244,6 +244,9 @@
                                         <c:if test="${c.filedata != ''}">
                                         <td><span class="text-danger"><c:out value="Yes"/></span></td>
                                     </c:if>
+                                     <td>${c.facultyName}</td>
+                                     <td>${c.assessmentName}</td>
+                                     <td>${c.itemAssessmentName}</td>
                                     <c:if test="${c.status == 0}">
                                         <td><span class="text-danger"><c:out value="Waiting"/></span></td>
                                     </c:if>

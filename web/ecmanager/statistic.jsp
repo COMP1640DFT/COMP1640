@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,7 +39,7 @@
     <!-- TS1387507309: Neon - Responsive Admin Template created by Laborator -->
 </head>
 <body class="page-body">
-
+<jsp:useBean id="beanClaim" class="entity.Claim" scope="session"></jsp:useBean>
 <div class="page-container">
 
     <div class="sidebar-menu">
@@ -265,57 +266,56 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-sm-12">
-                        <form class="form-inline" action="#" method="get">
+                         <form class="form-inline" action="Controller?action=viewstatisticwithfilter" method="post">
                             <div class="form-group">
                                 <label><strong>Filter: &nbsp;&nbsp;&nbsp;&nbsp;</strong></label>
                             </div>
-                            <div class="form-group">
-                                <label for="option3">Option 1 </label>
-                                <select id="option3" name="option1">
-                                    <option value="1">value 1</option>
-                                    <option value="2">value 2</option>
+                             <div class="form-group">
+                                <label for="option2">Major</label>
+                                <select id="option2" name="idmajor">
+                                <c:forEach var="m" items="${beanClaim.listSelectedMajor}">
+                                    <c:choose>
+                                        <c:when test="${m.selected==true}">
+                                            <option selected value="${m.value}">${m.data}</option>
+                                        </c:when>    
+                                        <c:otherwise>
+                                            <option value="${m.value}">${m.data}</option>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    
+                                </c:forEach>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label for="option4">Option 2 </label>
-                                <select id="option4" name="option2">
-                                    <option value="1">value 1</option>
-                                    <option value="2">value 2</option>
-                                </select>
-                            </div>
+                            <div class="form-group"><input type="submit" value="Search"/></div>
                         </form>
                     </div>
                 </div>
                 <div class="clearfix"></div>
-                <div class="col-sm-12">
-                    <h3>Title 1</h3>
-                    <table class="table table-bordered table-striped datatable dataTable">
+                 <div class="col-sm-12">
+                    <h3>Student up claim without evidence</h3>
+                    <table class="dataTable table table-bordered table table-responsive responsive">
                         <thead>
+                        <th>Claim ID</th>
                         <th>Student Name</th>
                         <th>Claim Title</th>
-                        <th>Faculty</th>
-                        <th>Assessment</th>
-                        <th>Item</th>
                         <th>Send Date</th>
                         </thead>
                         <tbody>
+                        <c:forEach var="c" items="${beanClaim.listClaimWithoutEvidence}">
                         <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                            <td>data 5</td>
+                            <td>${c.idClaim}</td>
+                            <td>${c.userFullName}</td>
+                            <td>${c.title}</td>
+                            <td>${c.sendDate}</td>
                         </tr>
-
-
+                        </c:forEach>
                         </tbody>
                     </table>
                 </div>
                 <div class="clearfix"></div>
                 <div class="col-sm-12">
-                    <h3>Title 2</h3>
-                    <table class="table table-bordered table-striped datatable dataTable">
+                    <h3>Claim unresolved after two weeks</h3>
+                    <table class="dataTable table table-bordered table table-responsive">
                         <thead>
                         <th>Claim ID</th>
                         <th>Title</th>
@@ -324,17 +324,25 @@
                         <th>Send Date</th>
                         <th>Status</th>
                         <th>User</th>
+                        <th>Full Name</th>
                         </thead>
+                       
                         <tbody>
+                       
+                        <c:forEach var="cl" items="${beanClaim.listClaimUnresolved}">
                         <tr>
-                            <td>data 1</td>
-                            <td>data 2</td>
-                            <td>data 3</td>
-                            <td>data 4</td>
-                            <td>data 5</td>
-                            <td>data 6</td>
-                            <td>data 7</td>
+                            <td>${cl.idClaim}</td>
+                            <td>${cl.title}</td>
+                            <td>${cl.content}</td>
+                            <td>${cl.filedata}</td>
+                            <td>${cl.sendDate}</td>
+                            <c:if test="${cl.status == 0}">
+                                <td><c:out value="Waiting"/></td>
+                            </c:if>
+                            <td>${cl.idUser}</td>
+                            <td>${cl.userFullName}</td>
                         </tr>
+                        </c:forEach>
 
 
                         </tbody>

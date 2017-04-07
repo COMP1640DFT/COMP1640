@@ -104,7 +104,7 @@ public class Controller extends HttpServlet {
         claim.setListClaimUnresolved(connectDB.getAllClaimUnresolvedAfterTwoWeek());
         claim.setListSelectedMajor(listMajor);
         session.setAttribute("beanClaim", claim);
-        response.sendRedirect("statistics.jsp");
+        response.sendRedirect("statistic.jsp");
     }
 
     private void viewStatisticWithFilter(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -135,7 +135,7 @@ public class Controller extends HttpServlet {
         claim.setListClaimUnresolved(connectDB.getAllClaimUnresolvedAfterTwoWeekInMajor(idM));
         claim.setListSelectedMajor(listMajor);
         session.setAttribute("beanClaim", claim);
-        response.sendRedirect("statistics.jsp");
+        response.sendRedirect("statistic.jsp");
     }
 
     

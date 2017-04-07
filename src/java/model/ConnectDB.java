@@ -93,7 +93,7 @@ public class ConnectDB {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, idUser);
-         
+
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 acc = new Account();
@@ -113,7 +113,7 @@ public class ConnectDB {
         return acc;
 
     }
-    
+
     public List<Claim> getAllClaim() {
         String sql = "select c.idClaim,c.title,c.content,c.sendDate,c.evidence,c.idUser,c.idCM from tblClaim c";
         Claim claim = null;
@@ -168,8 +168,8 @@ public class ConnectDB {
         }
         return claim;
     }
-    
-    public Decision getDecissionById(int id){
+
+    public Decision getDecissionById(int id) {
         String sql = "select d.idUser,d.content,u.fullName from tblDecision d join tblUser u on u.idUser=d.idUser  where d.idClaim=?";
         Decision s = null;
 
@@ -190,7 +190,7 @@ public class ConnectDB {
         }
         return s;
     }
-    
+
     public Claim getClaimById(int id) {
         String sql = "select idClaim,title,content,sendDate,envidence,idUser from tblClaim where idClaim = ?";
         Claim claim = null;
@@ -394,9 +394,14 @@ public class ConnectDB {
     }
 
     public List<Claim> getAllClaimOfStudentInAFaculty(int majorID) {
-        String sql = " select  c.idClaim, c.title,c.content, c.sendDate,c.evidence,c._status ,c.idUser "
-                + "from tblClaim c join tblUser u "
-                + "on c.idUser = u.idUser where u.idFaculty = ?";
+        String sql = " select  c.idClaim, c.title,c.content, c.sendDate,c.evidence,c._status ,u.idUser, f.name, a._name,ia.name \n"
+                + "from tblClaim c \n"
+                + "join tblUser u on c.idUser = u.idUser \n"
+                + "join tblFaculty f on u.idFaculty = f.id\n"
+                + "join tblAssessment a on f.id = a.id\n"
+                + "join tblADetail ad on a.id = ad.id\n"
+                + "join tblItemA ia on ad.idItem = ia.id\n"
+                + "where u.idFaculty = ?";
         List<Claim> list = new LinkedList<>();
         try {
             connectdatabase();
@@ -412,6 +417,9 @@ public class ConnectDB {
                 claim.setFiledata(rs.getString(5));
                 claim.setStatus(rs.getInt(6));
                 claim.setIdUser(rs.getString(7));
+                claim.setFacultyName(rs.getString(8));
+                claim.setAssessmentName(rs.getString(9));
+                claim.setItemAssessmentName(rs.getString(10));
                 list.add(claim);
 
             }
@@ -421,7 +429,43 @@ public class ConnectDB {
         }
         return list;
     }
+     public List<Claim> getAllClaimOfStudentInAFacultyFilterByStatus(int majorID, int stt) {
+        String sql = " select  c.idClaim, c.title,c.content, c.sendDate,c.evidence,c._status ,u.idUser, f.name, a._name,ia.name \n"
+                + "from tblClaim c \n"
+                + "join tblUser u on c.idUser = u.idUser \n"
+                + "join tblFaculty f on u.idFaculty = f.id\n"
+                + "join tblAssessment a on f.id = a.id\n"
+                + "join tblADetail ad on a.id = ad.id\n"
+                + "join tblItemA ia on ad.idItem = ia.id\n"
+                + "where u.idFaculty = ? and c._status = ?";
+        List<Claim> list = new LinkedList<>();
+        try {
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, majorID);
+            ps.setInt(2, stt);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Claim claim = new Claim();
+                claim.setIdClaim(rs.getInt(1));
+                claim.setTitle(rs.getString(2));
+                claim.setContent(rs.getString(3));
+                claim.setSendDate(rs.getString(4));
+                claim.setFiledata(rs.getString(5));
+                claim.setStatus(rs.getInt(6));
+                claim.setIdUser(rs.getString(7));
+                claim.setFacultyName(rs.getString(8));
+                claim.setAssessmentName(rs.getString(9));
+                claim.setItemAssessmentName(rs.getString(10));
+                list.add(claim);
 
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
     public Claim getClaimOfStudentInAFacultyByIdClaim(int majorID, int idclaim) {
         String sql = " select  c.idClaim, c.title,c.content, c.sendDate,c.evidence,c._status ,c.idUser,u.fullName "
                 + "from tblClaim c join tblUser u "
@@ -617,17 +661,18 @@ public class ConnectDB {
         }
         return false;
     }
-    public boolean createDecision(Decision d){
+
+    public boolean createDecision(Decision d) {
         try {
-        connectdatabase();
-        String sql="Insert into tblDecision (idClaim,content,sendDate, _status,idUser) values(?,?,?,?,?)";
-         PreparedStatement st = con.prepareStatement(sql);
+            connectdatabase();
+            String sql = "Insert into tblDecision (idClaim,content,sendDate, _status,idUser) values(?,?,?,?,?)";
+            PreparedStatement st = con.prepareStatement(sql);
             st.setInt(1, d.getIdClaim());
             st.setString(2, d.getContent());
             st.setString(3, d.getSendDate());
             st.setInt(4, d.getStatus());
             st.setString(5, d.getIdUser());
-           
+
             if (st.executeUpdate() > 0) {
                 return true;
             }
@@ -637,11 +682,12 @@ public class ConnectDB {
         }
         return false;
     }
-    public boolean updateDecision(int status, String content, int idClaim){
+
+    public boolean updateDecision(int status, String content, int idClaim) {
         try {
-        connectdatabase();
-        String sql="Update tblDecision set content=?, _status=? where idClaim=?";
-         PreparedStatement st = con.prepareStatement(sql);
+            connectdatabase();
+            String sql = "Update tblDecision set content=?, _status=? where idClaim=?";
+            PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, content);
             st.setInt(2, status);
             st.setInt(3, idClaim);
@@ -654,12 +700,12 @@ public class ConnectDB {
         }
         return false;
     }
-    
-     public boolean updateClaim(int status, int idClaim){
+
+    public boolean updateClaim(int status, int idClaim) {
         try {
-        connectdatabase();
-        String sql="Update tblClaim set  _status=? where idClaim=?";
-         PreparedStatement st = con.prepareStatement(sql);
+            connectdatabase();
+            String sql = "Update tblClaim set  _status=? where idClaim=?";
+            PreparedStatement st = con.prepareStatement(sql);
             st.setInt(1, status);
             st.setInt(2, idClaim);
             if (st.executeUpdate() > 0) {
@@ -671,11 +717,12 @@ public class ConnectDB {
         }
         return false;
     }
-       public boolean updateFileofClaim(String file, int idClaim){
+
+    public boolean updateFileofClaim(String file, int idClaim) {
         try {
-        connectdatabase();
-        String sql="Update tblClaim set  envidence=? where idClaim=?";
-         PreparedStatement st = con.prepareStatement(sql);
+            connectdatabase();
+            String sql = "Update tblClaim set  envidence=? where idClaim=?";
+            PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, file);
             st.setInt(2, idClaim);
             if (st.executeUpdate() > 0) {
@@ -687,8 +734,8 @@ public class ConnectDB {
         }
         return false;
     }
-     
-    public List<Account> getListEccoor(int idFaculty){
+
+    public List<Account> getListEccoor(int idFaculty) {
         List<Account> list = new ArrayList<>();
         String sql = "select * from tblUser where idFaculty = ? and lever = 4 ";
         try {
@@ -713,8 +760,7 @@ public class ConnectDB {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
-    } 
-    
+    }
 
     public void main(String[] args) {
 //        con;

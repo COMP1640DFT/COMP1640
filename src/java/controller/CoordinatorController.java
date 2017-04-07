@@ -68,6 +68,9 @@ public class CoordinatorController extends HttpServlet {
         if (action.equals("viewAllClaim")){
             viewAllClaim(request, response, session);
         }
+        if (action.equals("viewAllClaimFilterByStatus")){
+            viewAllClaimFilterByStatus(request, response, session);
+        }
         if (action.equals("AddMessage")) {
             String btntext = session.getAttribute("textbtn").toString();
             if (btntext.equals("Send")) {
@@ -132,6 +135,25 @@ public class CoordinatorController extends HttpServlet {
         Claim c = new Claim();
         Account acc = (Account) session.getAttribute("account");
         c.setListClaim(connectDB.getAllClaimOfStudentInAFaculty(acc.getIdFaculty()));
+        Faculty m = connectDB.getMajor(acc.getIdFaculty());
+        session.setAttribute("idUser", acc.getIdUser());
+        session.setAttribute("fullName", acc.getFullName());
+        session.setAttribute("beanClaimInFaculty", c);
+        session.setAttribute("majorName", m);
+        response.sendRedirect("allclaim.jsp");
+    }
+    private void viewAllClaimFilterByStatus(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
+        Claim c = new Claim();
+        int idStt = 0;
+        String status = request.getParameter("status");
+        if(status.equals("Done")) {
+            idStt = 1;
+        }
+        if(status.equals("Expired")) {
+            idStt = 2;
+        }
+        Account acc = (Account) session.getAttribute("account");
+        c.setListClaim(connectDB.getAllClaimOfStudentInAFacultyFilterByStatus(acc.getIdFaculty(),idStt));
         Faculty m = connectDB.getMajor(acc.getIdFaculty());
         session.setAttribute("idUser", acc.getIdUser());
         session.setAttribute("fullName", acc.getFullName());

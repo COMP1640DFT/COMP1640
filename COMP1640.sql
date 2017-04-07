@@ -136,4 +136,5 @@ where c.sendDate <= DATEADD(WEEK,-2,GETDATE()) and _status = 0
  select * from tblClaimManage
  select * from tblClaim where idUser = 'dungkv' and idCM = 1
 
- select * from tblClaim c join tblUser u on c.idUser = u.idUser where u.idMajor = 1
+ select name from tblMajor where id = 1
+ select  c.idClaim, c.title,c.content, c.sendDate,c.filedata,c._status ,u.idUser from tblClaim c join tblUser u on c.idUser = u.idUser where u.idMajor = 2

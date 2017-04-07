@@ -17,6 +17,9 @@ public class Claim {
     private String filedata;
     private String userFullName;
     private String idUser;
+    private String facultyName;
+    private String assessmentName;
+    private String itemAssessmentName;
     private int idCM;
     private int idItemAssessment;
     private int status;
@@ -26,7 +29,7 @@ public class Claim {
     private List<Claim> listClaimUnresolved;
     private List<Claim> listClaim;
     private List<ItemSelected> listSelectedMajor;
-
+    
     public List<ItemSelected> getListSelectedMajor() {
         return listSelectedMajor;
     }
@@ -111,6 +114,39 @@ public class Claim {
     public void setIdUser(String idUser) {
         this.idUser = idUser;
     }
+
+    public String getFacultyName() {
+        return facultyName;
+    }
+
+    public void setFacultyName(String facultyName) {
+        this.facultyName = facultyName;
+    }
+
+    public String getAssessmentName() {
+        return assessmentName;
+    }
+
+    public void setAssessmentName(String assessmentName) {
+        this.assessmentName = assessmentName;
+    }
+
+    public String getItemAssessmentName() {
+        return itemAssessmentName;
+    }
+
+    public void setItemAssessmentName(String itemAssessmentName) {
+        this.itemAssessmentName = itemAssessmentName;
+    }
+
+    public int getIdItemAssessment() {
+        return idItemAssessment;
+    }
+
+    public void setIdItemAssessment(int idItemAssessment) {
+        this.idItemAssessment = idItemAssessment;
+    }
+    
 
     public int getIdCM() {
         return idCM;
