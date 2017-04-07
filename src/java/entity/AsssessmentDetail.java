@@ -5,6 +5,8 @@
  */
 package entity;
 
+import java.util.List;
+
 /**
  *
  * @author DaoMinhThien
@@ -13,6 +15,8 @@ public class AsssessmentDetail {
     private int id;
     private int idAssessment;
     private int idItem;
+    
+    private List<ItemSelected> list;
 
     public int getId() {
         return id;
@@ -37,6 +41,15 @@ public class AsssessmentDetail {
     public void setIdItem(int idItem) {
         this.idItem = idItem;
     }
+
+    public List<ItemSelected> getList() {
+        return list;
+    }
+
+    public void setList(List<ItemSelected> list) {
+        this.list = list;
+    }
+    
     
     
     

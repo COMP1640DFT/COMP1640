@@ -42,7 +42,10 @@ public class LoginController extends HttpServlet {
         HttpSession session = request.getSession();
         if (action.equals("checklogin")) {
             Account acc = checkLogin(request, response, session);
-            session.setAttribute("session_Account", acc);
+        }
+        if(action.equals("logout")){
+            session.removeAttribute("account");
+            response.sendRedirect("../login.jsp");
         }
     }
     
@@ -60,11 +63,11 @@ public class LoginController extends HttpServlet {
                     break;
                 //admin
                 case 2:
-//                    response.sendRedirect("process.jsp");
+                    response.sendRedirect("admin/AdminController?action=adminViewAll");
                     break;
                 //manager
                 case 3:
-                    response.sendRedirect("Controller?action=viewC");
+                    response.sendRedirect("ecmanager/Controller?action=viewC");
                     break;
                 //condinator
                 case 4:

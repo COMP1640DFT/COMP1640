@@ -69,20 +69,13 @@
 
 
         <ul id="main-menu" class="">
-
             <li class="active">
-                <a href="index.html"><i class="glyphicon glyphicon-home"></i> Home</a>
+                <a href=""><i class="glyphicon glyphicon-info-sign"></i>  View Process</a>
             </li>
             <li>
-                <a href="process.html"><i class="glyphicon glyphicon-info-sign"></i>  View Process</a>
+                <a href="Controller?action=viewstatistic"><i class="glyphicon glyphicon-dashboard"></i>  View Statistics</a>
             </li>
-            <li>
-                <a href="statistics.html"><i class="glyphicon glyphicon-dashboard"></i>  View Statistics</a>
-            </li>
-            <li>
-                <a href="about-us.html"><i class="glyphicon glyphicon-bookmark"></i>  About Us</a>
-            </li>
-            <li><a href="#"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
+            <li><a href="../logout.jsp"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
 
 
         </ul>

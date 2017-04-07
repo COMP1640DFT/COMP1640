@@ -4,6 +4,7 @@
     Author     : minamaurer
 --%>
 
+<%@page import="entity.Account"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
@@ -42,6 +43,10 @@
             select.selectedIndex = 0;
         </script>
     </head>
+    <% Account c = (Account) session.getAttribute("account");%>
+<% if(c.getLever()!=4){%>
+    <jsp:forward page="../logout.jsp"></jsp:forward>
+<%}%>
     <body class="page-body">
         <jsp:useBean id="claimD" class="entity.Claim" scope="session"></jsp:useBean>
         <jsp:useBean id="decision" class="entity.Decision" scope="session"></jsp:useBean>

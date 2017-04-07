@@ -4,6 +4,7 @@
     Author     : minamaurer
 --%>
 
+<%@page import="entity.Account"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
@@ -38,8 +39,15 @@
 
     <!-- TS1387507309: Neon - Responsive Admin Template created by Laborator -->
 </head>
+
 <body class="page-body">
 <jsp:useBean id="beanClaim" class="entity.Claim" scope="session"></jsp:useBean>
+<jsp:useBean id="beanStatistic" class="entity.Statistic" scope="session"></jsp:useBean>
+<jsp:useBean id="account" class="entity.Account" scope="session"></jsp:useBean>
+<% if(account.getLever()!=3){%>
+    <jsp:forward page="../logout.jsp"></jsp:forward>
+<%}%>
+
 <div class="page-container">
 
     <div class="sidebar-menu">
@@ -69,19 +77,13 @@
 
         <ul id="main-menu" class="">
 
+            <li>
+                <a href="Controller?action=viewC"><i class="glyphicon glyphicon-info-sign"></i>  View Process</a>
+            </li>
             <li class="active">
-                <a href="index.html"><i class="glyphicon glyphicon-home"></i> Home</a>
+                <a href="Controller?action=viewstatistic"><i class="glyphicon glyphicon-dashboard"></i>  View Statistics</a>
             </li>
-            <li>
-                <a href="process.html"><i class="glyphicon glyphicon-info-sign"></i>  View Process</a>
-            </li>
-            <li>
-                <a href="statistics.html"><i class="glyphicon glyphicon-dashboard"></i>  View Statistics</a>
-            </li>
-            <li>
-                <a href="about-us.html"><i class="glyphicon glyphicon-bookmark"></i>  About Us</a>
-            </li>
-            <li><a href="#"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
+            <li><a href="../logout.jsp"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
 
 
         </ul>
@@ -99,7 +101,7 @@
                     <!-- Profile Info -->
                     <li class="profile-info dropdown">
                         <!-- add class "pull-right" if you want to place this from right -->
-                        Welcome: <strong>Phan Huyền Trang (minaphan)</strong>
+                        Welcome: <strong> ${account.fullName} (${account.idUser})</strong>
                     </li>
                 </ul>
 
@@ -214,50 +216,112 @@
 
             </div>
             <div class="panel-body">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <form class="form-inline" action="#" method="get">
-                            <div class="form-group">
-                                <label><strong>Filter: &nbsp;&nbsp;&nbsp;&nbsp;</strong></label>
-                            </div>
-                            <div class="form-group">
-                                <label for="option1">Option 1 </label>
-                                <select id="option1" name="option1">
-                                    <option value="1">value 1</option>
-                                    <option value="2">value 2</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="option2">Option 2 </label>
-                                <select id="option2" name="option2">
-                                    <option value="1">value 1</option>
-                                    <option value="2">value 2</option>
-                                </select>
-                            </div>
-                        </form>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <form class="form-inline" action="Controller?action=viewstatistic" method="POST">
+                                    <div class="form-group">
+                                        <label><strong>Filter: &nbsp;&nbsp;&nbsp;&nbsp;</strong></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="option1">Year</label>
+                                        <select id="option1" name="year">
+                                        <c:forEach var="y" items="${beanStatistic.listItemYear}">
+                                            <c:choose>
+                                                <c:when test="${y.selected==true}">
+                                                    <option selected value="${y.value}">${y.data}</option>
+                                                </c:when>    
+                                                <c:otherwise>
+                                                    <option value="${y.value}">${y.data}</option>
+                                                </c:otherwise>
+                                            </c:choose>
+
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="option2">Major</label>
+                                    <select id="option2" name="idmajor">
+                                        <c:forEach var="m" items="${beanStatistic.listItemMajor}">
+                                            <c:choose>
+                                                <c:when test="${m.selected==true}">
+                                                    <option selected value="${m.value}">${m.data}</option>
+                                                </c:when>    
+                                                <c:otherwise>
+                                                    <option value="${m.value}">${m.data}</option>
+                                                </c:otherwise>
+                                            </c:choose>
+
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <div class="form-group"><input type="submit" value="Search"/></div>
+                            </form>
+                        </div>
                     </div>
-                </div>
-                <div class="clearfix"></div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <h3 class="text-center">Title 1</h3>
-                        <canvas id="myChart1" width="400" height="300"></canvas>
-                    </div>
-                    <div class="col-sm-6">
-                        <h3 class="text-center">Title 2</h3>
-                        <div style="width: 350px; height: 350px;margin-left: auto;margin-right: auto">
-                            <canvas id="myChart2" width="300" height="300"></canvas>
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="row">
+                            <div class="clearfix"></div>
+                            <div class="col-sm-12">
+                                <h3 class="text-center">Student up claim in ${beanStatistic.year} of ${beanStatistic.major}</h3>
+                                <table class="dataTable table table-bordered table table-responsive responsive">
+                                    <thead>
+                                    <th>Claim title</th>
+                                    <th>Date</th>
+                                    <th>Subject</th>
+                                    <th>User</th>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach var="c" items="${beanStatistic.listItemTableClaim}">
+                                            <tr>
+                                                <td>${c.titleClaim}</td>
+                                                <td>${c.year}</td>
+                                                <td>${c.nameSubject}</td>
+                                                <td>${c.user}</td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-sm-12">
+                                <h3 class="text-center">Number of claims in ${beanStatistic.year} of ${beanStatistic.major}</h3>
+                                <canvas id="myChart1" style="width: 100%;height:400px"></canvas>
+                            </div>
+                        </div>
+                        <br/><br/>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h3 class="text-center">Number of student up claims in ${beanStatistic.year} of ${beanStatistic.major}</h3>
+                                <canvas id="myChart3" style="width: 100%;height:400px"></canvas>
+                            </div>
                         </div>
 
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <h3 class="text-center">Title 3</h3>
-                            <canvas id="myChart3" style="width: 100%;height:400px"></canvas>
+                        <br/><br/><br/>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="col-sm-12">
+                                    <h3 class="text-center">All claims in ${beanStatistic.year}</h3>
+                                    <table class="dataTable table table-bordered table table-responsive responsive">
+                                        <thead>
+                                        <th>Major</th>
+                                        <th>Total claims</th>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach var="c" items="${beanStatistic.listStatisticAllMajor}">
+                                                <tr>
+                                                    <td>${c.title}</td>
+                                                    <td>${c.data}</td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <canvas id="myChart2" style="width: 100%;height:400px"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
         </div>
         <div class="col-sm-12 panel panel-dark">
             <div class="page-header">
@@ -365,7 +429,7 @@
 <script src="../assets/js/jquery.dataTables.min.js" id="script-resource-7"></script>
 <script src="../assets/js/dataTables.bootstrap.js" id="script-resource-11"></script>
 <script src="../assets/js/select2/select2.min.js" id="script-resource-12"></script>
-<script src="../assets/js/Chart.min.js" id="script-resource-13"></script>
+<script src="../js/Chart.min.js" id="script-resource-13"></script>
 <script src="../assets/js/api.js" id="script-resource-6"></script>
 <script src="../assets/js/custom.js" id="script-resource-8"></script>
 <script src="../assets/js/demo.js" id="script-resource-9"></script>
@@ -377,85 +441,90 @@
     });
     $(document).ready(function () {
         var ctx = document.getElementById("myChart1");
-        var data = [12, 19, 3, 5, 2, 3, 6, 7, 8];
-        var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange", "Orange", "Orange", "Orange"],
-                datasets: [{
-                    label: '# of Votes',
-                    data: data,
-                    backgroundColor: "#758EA7",
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
+                    var data = [12, 19, 3, 5, 2, 3, 6, 7, 8];
+                    var myChart = new Chart(ctx, {
+                    type: 'bar',
+                            data: {
+                            labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+                                    datasets: [{
+                                    label: '# of claims',
+                                            data: [<c:forEach var="m" items="${beanStatistic.listNumOfClaim}">
+                ${m.data},
+            </c:forEach>],
+                                            backgroundColor: "#758EA7",
+                                            borderWidth: 0
+                                    }]
+                            },
+                            options: {
+                            scales: {
+                            yAxes: [{
+                            ticks: {
                             beginAtZero: true
-                        }
-                    }]
-                }
-            }
-        });
-
-
-        var ctx2 = document.getElementById("myChart2");
-        var data2 = {
-            labels: [
-                "Red",
-                "Blue",
-                "Yellow"
-            ],
-            datasets: [
-                {
-                    data: [300, 50, 100],
-                    backgroundColor: [
-                        "#9c3a4e",
-                        "#1a4466",
-                        "#a0a0a0"
+                            }
+                            }]
+                            }
+                            }
+                    });
+                    var ctx2 = document.getElementById("myChart2");
+                    var data2 = {
+                    labels: [
+            <c:forEach var="m" items="${beanStatistic.listStatisticAllMajor}">
+                    "${m.title}",
+            </c:forEach>
                     ],
-                    hoverBackgroundColor: [
-                        "#FF6384",
-                        "#36A2EB",
-                        "#FFCE56"
-                    ]
-                }]
-        };
-        var myPieChart = new Chart(ctx2, {
-            type: 'pie',
-            data: data2,
-            options: {}
-        });
-        var ctx3 = document.getElementById('myChart3');
-        var myChart3 = new Chart(ctx3, {
-            type: 'bar',
-            data: {
-                labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange", "Orange", "Orange", "Orange"],
-                datasets: [{
-                    label: '# of Votes',
-                    data: data,
-                    backgroundColor: "#7A8E59",
-                    borderColor: "#44572f",
-                    borderWidth: 3
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
+                            datasets: [
+                            {
+                            data: [<c:forEach var="m" items="${beanStatistic.listStatisticAllMajor}">
+                ${m.data},
+            </c:forEach>],
+                                    backgroundColor: [
+                                            "#9c3a4e",
+                                            "#1a4466"
+                                    ],
+                                    hoverBackgroundColor: [
+                                            "#FF6384",
+                                            "#36A2EB"
+                                    ]
+                            }]
+                    };
+                    var myPieChart = new Chart(ctx2, {
+                    type: 'pie',
+                            data: data2,
+                            options: {}
+                    });
+                    var ctx3 = document.getElementById('myChart3');
+                    var myChart3 = new Chart(ctx3, {
+                    type: 'bar',
+                            data: {
+                            labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+                                    datasets: [{
+                                    label: '# of student up claims',
+                                            data: [<c:forEach var="s" items="${beanStatistic.listNumOfStudent}">
+                ${s.data},
+            </c:forEach>],
+                                            backgroundColor: "#7A8E59",
+                                            borderColor: "#44572f",
+                                            borderWidth: 3
+                                    }]
+                            },
+                            options: {
+                            scales: {
+                            yAxes: [{
+                            ticks: {
                             beginAtZero: true
-                        }
-                    }]
-                }
-            }
+                            }
+                            }]
+                            }
+                            }
+                    });
+
+
+$('.dataTable').DataTable({
+            searching: false, responsive: true, dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
         });
-
-
-        $('.dataTable').DataTable({
-            searching: false});
-
 
     });
 

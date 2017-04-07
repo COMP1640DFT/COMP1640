@@ -51,6 +51,7 @@ public class Controller extends HttpServlet {
         
         if (action.equals("viewstatistic")) {
             viewStatistic(request, response);
+            viewStaticsChart(request, response);
         }
         if (action.equals("viewstatisticwithfilter")) {
             viewStatisticWithFilter(request, response);
@@ -258,7 +259,6 @@ public class Controller extends HttpServlet {
         s.setListItemTableClaim(listTotal);
         
         session.setAttribute("beanStatistic", s);
-        response.sendRedirect("statisticsChart.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
