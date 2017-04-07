@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -207,7 +207,7 @@
                 <div class="panel-body">
                     <div class="col-sm-12">
                         <h2 class="panel-heading text-center" style="padding: 0">Claim infomation</h2>
-                        <form class="form-inline" action="#" method="get">
+<!--                        <form class="form-inline" action="#" method="get">
                             <div class="form-group">
                                 <label for="option3">Faculty: </label>
                                 <select id="option3" class="form-control" name="option1">
@@ -226,7 +226,7 @@
                                 <label style="visibility: hidden ">...</label>
                                 <button type="submit" class="btn btn-success form-control"><i class="glyphicon glyphicon-search"></i> Search</button>
                             </div>
-                        </form>
+                        </form>-->
                         <div class="clearfix" style="margin-bottom: 20px"></div>
                     </div>
                     <div class="clearfix"></div>
@@ -243,16 +243,17 @@
 
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>trang_lay</td>
-                                <td>dung123</td>
-                                <td><a href="sample/detail-process.html" class="btn-reader">Manifesto for Agile Software
-                                    Development</a></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                <td>2017-01-03 08:00</td>
-                            </tr>
+                            <c:forEach items="${sessionScope['listClaim']}" var="cl">
+                                        <tr>
+                                            <td>${cl.idClaim}</td>
+                                            <td>${cl.iUserECCoor}</td>
+                                            <td><a href="Controller?action=viewDetail&id=${cl.idClaim}" class="btn-reader">${cl.content}</a></td>
+                                            <td>${cl.facultyName}</td>
+                                            <td>${cl.assessmentName}</td>
+                                            <td>${cl.itemAssessmentName}</td>
+                                            <td>${cl.sendDate}</td>
+                                        </tr>
+                                    </c:forEach>
                             </tbody>
                         </table>
                     </div>

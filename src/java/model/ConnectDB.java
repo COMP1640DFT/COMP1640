@@ -116,7 +116,12 @@ public class ConnectDB {
     }
 
     public List<Claim> getAllClaim() {
-        String sql = "select c.idClaim,c.title,c.content,c.sendDate,c.evidence,c.idUser,c.idCM from tblClaim c";
+        String sql = "select c.idClaim,u.idUser,c.content,f.name ,asm._name,im.name,c.sendDate from tblClaim c join tblClaimManage cm on c.idCM=cm.idCM \n"
+                + "join tblADetail ad on cm.idItemAssessment=ad.id \n"
+                + "join  tblItemA im on ad.idItem= im.id\n"
+                + "join  tblAssessment  asm on asm.id= ad.idAssesment\n"
+                + "join tblFaculty f on f.id=asm.idFaculty\n"
+                + "join tblUser u on u.idFaculty= f.id";
         Claim claim = null;
         Decision s = null;
         List<Claim> lClaim = new ArrayList<>();
@@ -127,12 +132,12 @@ public class ConnectDB {
             while (rs.next()) {
                 claim = new Claim();
                 claim.setIdClaim(rs.getInt(1));
-                claim.setTitle(rs.getString(2));
+                claim.setiUserECCoor(rs.getString(2));
                 claim.setContent(rs.getString(3));
-                claim.setSendDate(rs.getString(4));
-                claim.setFiledata(rs.getString(5));
-                claim.setIdUser(rs.getString(6));
-                claim.setIdCM(rs.getInt(7));
+                claim.setFacultyName(rs.getString(4));
+                claim.setAssessmentName(rs.getString(5));
+                claim.setItemAssessmentName(rs.getString(6));
+                claim.setSendDate(rs.getString(7));
                 lClaim.add(claim);
             }
             con.close();
@@ -362,12 +367,12 @@ public class ConnectDB {
         }
         return list;
     }
-    
+
     public List<Claim> getAllClaimManage() {
-        String sql = "select tcm.idCM, tcm.title, tcm.createdate, tcm.enddate, tcm._status, tf.name, ta._name, tia.name from tblClaimManage tcm join tblADetail tad on tcm.idItemAssessment = tad.id \n" +
-"                            join tblAssessment ta on ta.id = tad.idAssesment\n" +
-"                            join tblFaculty tf on tf.id = ta.idFaculty\n" +
-"                            join tblItemA tia on tad.idItem = tia.id ";
+        String sql = "select tcm.idCM, tcm.title, tcm.createdate, tcm.enddate, tcm._status, tf.name, ta._name, tia.name from tblClaimManage tcm join tblADetail tad on tcm.idItemAssessment = tad.id \n"
+                + "                            join tblAssessment ta on ta.id = tad.idAssesment\n"
+                + "                            join tblFaculty tf on tf.id = ta.idFaculty\n"
+                + "                            join tblItemA tia on tad.idItem = tia.id ";
         List<Claim> list = new LinkedList<>();
 
         try {
@@ -393,20 +398,20 @@ public class ConnectDB {
         }
         return list;
     }
-    
-    public List<ItemSelected> getAllAssessmentDetail(){
+
+    public List<ItemSelected> getAllAssessmentDetail() {
         List<ItemSelected> list = new ArrayList<>();
-        String sql ="select tad.id, ta._name, tia.name, tf.name from tblADetail tad join tblAssessment ta on ta.id = tad.idAssesment\n" +
-"                            join tblFaculty tf on tf.id = ta.idFaculty\n" +
-"                            join tblItemA tia on tad.idItem = tia.id "    ;
+        String sql = "select tad.id, ta._name, tia.name, tf.name from tblADetail tad join tblAssessment ta on ta.id = tad.idAssesment\n"
+                + "                            join tblFaculty tf on tf.id = ta.idFaculty\n"
+                + "                            join tblItemA tia on tad.idItem = tia.id ";
         try {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 ItemSelected item = new ItemSelected();
-                item.setValue(rs.getInt(1)+"");
-                item.setData(rs.getString(3)+" -- "+rs.getString(2));
+                item.setValue(rs.getInt(1) + "");
+                item.setData(rs.getString(3) + " -- " + rs.getString(2));
                 list.add(item);
 
             }
@@ -416,8 +421,8 @@ public class ConnectDB {
         }
         return list;
     }
-    
-    public boolean insertClaimM(Claim c){
+
+    public boolean insertClaimM(Claim c) {
         try {
             connectdatabase();
             String sql = "INSERT INTO tblClaimManage ( title, createDate, endDate, idItemAssessment, _status) VALUES"
@@ -668,16 +673,16 @@ public class ConnectDB {
 
     public List<Statistic> getAllClaim(String year, int idFaculty) {
         List<Statistic> list = new ArrayList<>();
-        String sql = "select tm.id, tm.name, tc.sendDate, tc.idUser,tc.title, ta._name from tblClaim tc inner join tblUser tu on tc.idUser = tu.idUser \n" +
-"                inner join tblFaculty tm on tu.idFaculty = tm.id\n" +
-"                inner join tblClaimManage tcm on tc.idCM = tcm.idCM\n" +
-"                inner join tblADetail tad on tcm.idItemAssessment = tad.id \n" +
-"				join tblAssessment ta on ta.id = tad.idAssesment\n" +
-"				join tblFaculty tf on tf.id = ta.idFaculty\n" +
-"				join tblItemA tia on tad.idItem = tia.id\n" +
-"                where\n" +
-"                tc.sendDate between '"+year+"-01-01' and '"+year+"-12-31'\n" +
-"                and tf.id = " + idFaculty;
+        String sql = "select tm.id, tm.name, tc.sendDate, tc.idUser,tc.title, ta._name from tblClaim tc inner join tblUser tu on tc.idUser = tu.idUser \n"
+                + "                inner join tblFaculty tm on tu.idFaculty = tm.id\n"
+                + "                inner join tblClaimManage tcm on tc.idCM = tcm.idCM\n"
+                + "                inner join tblADetail tad on tcm.idItemAssessment = tad.id \n"
+                + "				join tblAssessment ta on ta.id = tad.idAssesment\n"
+                + "				join tblFaculty tf on tf.id = ta.idFaculty\n"
+                + "				join tblItemA tia on tad.idItem = tia.id\n"
+                + "                where\n"
+                + "                tc.sendDate between '" + year + "-01-01' and '" + year + "-12-31'\n"
+                + "                and tf.id = " + idFaculty;
         try {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
