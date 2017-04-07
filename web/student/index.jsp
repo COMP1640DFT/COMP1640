@@ -140,19 +140,24 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Subject</th>
-                                <th>Close Date</th>
-                                <th>Status</th>
+                                <th>Title</th>
+                                <th>Create Date</th>
+                                <th>End Date</th>
+                                <th>Assessment Name</th>
+                                <th>Item of Assessment</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                             <c:forEach var="c" items="${beanAllClaim.listClaimUnresolved}">
+                            <c:forEach var="c" items="${beanAllClaim.listClaim}">
                                 <tr>
                                     <td>${c.idClaim}</td>
                                     <td>${c.title}</td>
+                                    <td>${c.createDate}</td>
                                     <td>${c.endDate}</td>
+                                    <td>${c.assessmentName}</td>
+                                    <td>${c.itemAssessmentName}</td>
                                     <c:if test="${c.status == 0}">
                                         <td><span class="text-danger"><c:out value="Closed"/></span></td>
                                     </c:if>
@@ -160,7 +165,8 @@
                                         <td><c:out value="Open"/></td>
                                     </c:if>
                                         <td>
-                                        <a href="StudentsController?idCM=${c.idClaim}&idUser=${idUser}&action=viewAllClaim">View</a>|<a href="StudentsController?action=AddClaimPage&idC=${c.idSubject}&idCM=${c.idClaim}&idM=${idMajor}">Up Claim</a>
+                                          
+                                        <a href="StudentsController?idCM=${c.idClaim}&idUser=${idUser}&action=viewAllClaim">View</a>|<a href="#">Up Claim</a>
                                     </td>
                                 </tr>
                             </c:forEach>

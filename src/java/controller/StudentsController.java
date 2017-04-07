@@ -165,7 +165,7 @@ public class StudentsController extends HttpServlet {
     private void viewAllClaimManage(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
         Account acc = (Account) session.getAttribute("account");
         Claim c = new Claim();
-        c.setListClaimUnresolved(connectDB.getAllClaimManage(acc.getIdFaculty()));
+        c.setListClaim(connectDB.getAllClaimManage(acc.getIdFaculty()));
         session.setAttribute("idUser", acc.getIdUser());
         session.setAttribute("idMajor", acc.getIdFaculty());
         session.setAttribute("fullName", acc.getFullName());

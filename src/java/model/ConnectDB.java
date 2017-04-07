@@ -334,10 +334,12 @@ public class ConnectDB {
     }
 
     public List<Claim> getAllClaimManage(int idFaculty) {
-        String sql = "SELECT * \n"
-                + "FROM tblClaimManage tcm\n"
-                + "INNER JOIN tblADetail tad ON tcm.idItemAssessment = tad.id\n"
-                + "INNER JOIN tblFaculty tf ON tf.id = ts.idFaculty WHERE idFaculty = ?";
+        String sql = "select tcm.idCM, tcm.title, tcm.createdate, tcm.enddate, tcm._status, ta._name, tia.name \n"
+                + "from tblClaimManage tcm\n"
+                + "join tblADetail tad on tcm.idItemAssessment = tad.id\n"
+                + "join tblAssessment ta on ta.id = tad.idAssesment\n"
+                + "join tblFaculty tf on tf.id = ta.idFaculty\n"
+                + "join tblItemA tia on tad.idItem = tia.id  where ta.idFaculty = ?";
         List<Claim> list = new LinkedList<>();
 
         try {
@@ -351,8 +353,9 @@ public class ConnectDB {
                 claim.setTitle(rs.getString(2));
                 claim.setCreateDate(rs.getString(3));
                 claim.setEndDate(rs.getString(4));
-                claim.setidItemAssessment(rs.getInt(5));
-                claim.setStatus(rs.getInt(6));
+                claim.setStatus(rs.getInt(5));
+                claim.setAssessmentName(rs.getString(6));
+                claim.setItemAssessmentName(rs.getString(7));
                 list.add(claim);
 
             }
@@ -362,12 +365,12 @@ public class ConnectDB {
         }
         return list;
     }
-    
+
     public List<Claim> getAllClaimManage() {
-        String sql = "select tcm.idCM, tcm.title, tcm.createdate, tcm.enddate, tcm._status, tf.name, ta._name, tia.name from tblClaimManage tcm join tblADetail tad on tcm.idItemAssessment = tad.id \n" +
-"                            join tblAssessment ta on ta.id = tad.idAssesment\n" +
-"                            join tblFaculty tf on tf.id = ta.idFaculty\n" +
-"                            join tblItemA tia on tad.idItem = tia.id ";
+        String sql = "select tcm.idCM, tcm.title, tcm.createdate, tcm.enddate, tcm._status, tf.name, ta._name, tia.name from tblClaimManage tcm join tblADetail tad on tcm.idItemAssessment = tad.id \n"
+                + "                            join tblAssessment ta on ta.id = tad.idAssesment\n"
+                + "                            join tblFaculty tf on tf.id = ta.idFaculty\n"
+                + "                            join tblItemA tia on tad.idItem = tia.id ";
         List<Claim> list = new LinkedList<>();
 
         try {
@@ -393,20 +396,20 @@ public class ConnectDB {
         }
         return list;
     }
-    
-    public List<ItemSelected> getAllAssessmentDetail(){
+
+    public List<ItemSelected> getAllAssessmentDetail() {
         List<ItemSelected> list = new ArrayList<>();
-        String sql ="select tad.id, ta._name, tia.name, tf.name from tblADetail tad join tblAssessment ta on ta.id = tad.idAssesment\n" +
-"                            join tblFaculty tf on tf.id = ta.idFaculty\n" +
-"                            join tblItemA tia on tad.idItem = tia.id "    ;
+        String sql = "select tad.id, ta._name, tia.name, tf.name from tblADetail tad join tblAssessment ta on ta.id = tad.idAssesment\n"
+                + "                            join tblFaculty tf on tf.id = ta.idFaculty\n"
+                + "                            join tblItemA tia on tad.idItem = tia.id ";
         try {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 ItemSelected item = new ItemSelected();
-                item.setValue(rs.getInt(1)+"");
-                item.setData(rs.getString(3)+" -- "+rs.getString(2));
+                item.setValue(rs.getInt(1) + "");
+                item.setData(rs.getString(3) + " -- " + rs.getString(2));
                 list.add(item);
 
             }
@@ -416,8 +419,8 @@ public class ConnectDB {
         }
         return list;
     }
-    
-    public boolean insertClaimM(Claim c){
+
+    public boolean insertClaimM(Claim c) {
         try {
             connectdatabase();
             String sql = "INSERT INTO tblClaimManage ( title, createDate, endDate, idItemAssessment, _status) VALUES"
@@ -668,16 +671,16 @@ public class ConnectDB {
 
     public List<Statistic> getAllClaim(String year, int idFaculty) {
         List<Statistic> list = new ArrayList<>();
-        String sql = "select tm.id, tm.name, tc.sendDate, tc.idUser,tc.title, ta._name from tblClaim tc inner join tblUser tu on tc.idUser = tu.idUser \n" +
-"                inner join tblFaculty tm on tu.idFaculty = tm.id\n" +
-"                inner join tblClaimManage tcm on tc.idCM = tcm.idCM\n" +
-"                inner join tblADetail tad on tcm.idItemAssessment = tad.id \n" +
-"				join tblAssessment ta on ta.id = tad.idAssesment\n" +
-"				join tblFaculty tf on tf.id = ta.idFaculty\n" +
-"				join tblItemA tia on tad.idItem = tia.id\n" +
-"                where\n" +
-"                tc.sendDate between '"+year+"-01-01' and '"+year+"-12-31'\n" +
-"                and tf.id = " + idFaculty;
+        String sql = "select tm.id, tm.name, tc.sendDate, tc.idUser,tc.title, ta._name from tblClaim tc inner join tblUser tu on tc.idUser = tu.idUser \n"
+                + "                inner join tblFaculty tm on tu.idFaculty = tm.id\n"
+                + "                inner join tblClaimManage tcm on tc.idCM = tcm.idCM\n"
+                + "                inner join tblADetail tad on tcm.idItemAssessment = tad.id \n"
+                + "				join tblAssessment ta on ta.id = tad.idAssesment\n"
+                + "				join tblFaculty tf on tf.id = ta.idFaculty\n"
+                + "				join tblItemA tia on tad.idItem = tia.id\n"
+                + "                where\n"
+                + "                tc.sendDate between '" + year + "-01-01' and '" + year + "-12-31'\n"
+                + "                and tf.id = " + idFaculty;
         try {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
