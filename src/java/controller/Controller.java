@@ -60,7 +60,7 @@ public class Controller extends HttpServlet {
 
             List<Claim> lClaim = connectDB.getAllClaim();
             session.setAttribute("listClaim", lClaim);
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("process.jsp");
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("processECM.jsp");
             requestDispatcher.forward(request, response);
         }
         if (action.equals("viewDetail")) {
@@ -69,7 +69,7 @@ public class Controller extends HttpServlet {
             Decision d = connectDB.getDecissionById(Integer.parseInt(id));
             session.setAttribute("ClaimDetail", claim);
             session.setAttribute("DecisionDetail", d);
-            response.sendRedirect("../sample/detail-process.jsp");
+            response.sendRedirect("sample/detail-process.jsp");
         }
 
         if (action.equals("viewStatisticChart")) {
@@ -105,7 +105,7 @@ public class Controller extends HttpServlet {
         claim.setListClaimUnresolved(connectDB.getAllClaimUnresolvedAfterTwoWeek());
         claim.setListSelectedMajor(listMajor);
         session.setAttribute("beanClaim", claim);
-        response.sendRedirect("statistic.jsp");
+        response.sendRedirect("statisticECM.jsp");
     }
 
     private void viewStatisticWithFilter(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -136,7 +136,7 @@ public class Controller extends HttpServlet {
         claim.setListClaimUnresolved(connectDB.getAllClaimUnresolvedAfterTwoWeekInMajor(idM));
         claim.setListSelectedMajor(listMajor);
         session.setAttribute("beanClaim", claim);
-        response.sendRedirect("statistic.jsp");
+        response.sendRedirect("statisticECM.jsp");
     }
 
     

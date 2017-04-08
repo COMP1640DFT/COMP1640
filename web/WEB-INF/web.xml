@@ -22,15 +22,15 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>Controller</servlet-name>
-        <url-pattern>/ecmanager/Controller</url-pattern>
+        <url-pattern>/Controller</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>StudentsController</servlet-name>
-        <url-pattern>/student/StudentsController</url-pattern>
+        <url-pattern>/StudentsController</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CoordinatorController</servlet-name>
-        <url-pattern>/coordinator/CoordinatorController</url-pattern>
+        <url-pattern>/CoordinatorController</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
@@ -38,11 +38,14 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AdminController</servlet-name>
-        <url-pattern>/admin/AdminController</url-pattern>
+        <url-pattern>/AdminController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
+    <welcome-file-list>
+        <welcome-file>login.jsp</welcome-file>
+    </welcome-file-list>
 </web-app>

@@ -97,7 +97,7 @@ public class AdminController extends HttpServlet {
         Claim c = new Claim();
         c.setListClaim(list);
         session.setAttribute("beanAdminCM", c);
-        response.sendRedirect("../admin/index.jsp");
+        response.sendRedirect("indexA.jsp");
     }
 
     private void openShedule(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
@@ -105,7 +105,7 @@ public class AdminController extends HttpServlet {
         AsssessmentDetail at = new AsssessmentDetail();
         at.setList(list);
         session.setAttribute("beanASD", at);
-        response.sendRedirect("../admin/schedule.jsp");
+        response.sendRedirect("schedule.jsp");
     }
 
     private void addNewCM(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {

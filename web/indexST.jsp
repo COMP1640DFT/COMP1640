@@ -18,17 +18,17 @@
 
         <title>Home</title>
 
-        <link rel="stylesheet" href="../assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+        <link rel="stylesheet" href="assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
               id="style-resource-1">
-        <link rel="stylesheet" href="../assets/css/font-icons/font-awesome/css/font-awesome.min.css" id="style-resource-1">
-        <link rel="stylesheet" href="../assets/css/font-icons/entypo/css/entypo.css" id="style-resource-2">
-        <link rel="stylesheet" href="../assets/css/font-icons/entypo/css/animation.css" id="style-resource-3">
+        <link rel="stylesheet" href="assets/css/font-icons/font-awesome/css/font-awesome.min.css" id="style-resource-1">
+        <link rel="stylesheet" href="assets/css/font-icons/entypo/css/entypo.css" id="style-resource-2">
+        <link rel="stylesheet" href="assets/css/font-icons/entypo/css/animation.css" id="style-resource-3">
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
               id="style-resource-4">
-        <link rel="stylesheet" href="../assets/css/main.css" id="style-resource-5">
-        <link rel="stylesheet" href="../assets/css/custom.css" id="style-resource-6">
+        <link rel="stylesheet" href="assets/css/main.css" id="style-resource-5">
+        <link rel="stylesheet" href="assets/css/custom.css" id="style-resource-6">
 
-        <script src="../assets/js/jquery-1.10.2.min.js"></script>
+        <script src="assets/js/jquery-1.10.2.min.js"></script>
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -49,7 +49,7 @@
                         <!-- logo -->
                         <div class="logo text-center">
                             <a href="dashboard/main/index.html">
-                                <img src="../assets/images/logo.png" width="100" alt="" style="margin-right: auto"/>
+                                <img src="assets/images/logo.png" width="100" alt="" style="margin-right: auto"/>
 
                             </a>
                             <h3>Greenwich University</h3>
@@ -71,7 +71,7 @@
                         <li class="active">
                             <a href="StudentsController?action=viewAllCM"><i class="glyphicon glyphicon-home"></i> All Claims</a>
                         </li>
-                        <li><a href="#"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
+                        <li><a href="logout.jsp"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
 
 
                     </ul>
@@ -131,33 +131,38 @@
                             <select id="status" class="form-control" name="status">
                                 <option value="Open">Open</option>
                                 <option value="Closed">Closed</option>
-                                
+
                             </select>
 
                         </div>
                         <input type="submit" style="margin-top: 20px" href="" class="btn btn-default" value="Search"/>
                     </form>
 
-                    <table class="table  table-responsive">
+                    <table class="dataTable table table-bordered table table-responsive">
                         <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Title</th>
-                                <th>Create Date</th>
-                                <th>End Date</th>
-                                <th>Assessment Name</th>
-                                <th>Item of Assessment</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>End Date</th>
+                        <th>Assessment Name</th>
+                        <th>Item</th>
+                        <th>Status</th>
+                        <th>Action</th>
                         </thead>
+                        <tfoot>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>End Date</th>
+                        <th>Assessment Name</th>
+                        <th>Item </th>
+                        <th>Status</th>
+                        <th>Action</th>
+                        </tfoot>
 
                         <tbody>
                             <c:forEach var="c" items="${beanAllClaim.listClaim}">
                                 <tr>
-                                    <td>${c.idClaim}</td>
-                                    <td>${c.title}</td>
-                                    <td>${c.createDate}</td>
+                                    <td>${c.idCM}</td>
+                                    <td>${c.title}</td>\
                                     <td>${c.endDate}</td>
                                     <td>${c.assessmentName}</td>
                                     <td>${c.itemAssessmentName}</td>
@@ -169,28 +174,59 @@
                                     </c:if>
                                     <td>
 
-                                        <a href="StudentsController?idCM=${c.idClaim}&idUser=${idUser}&action=viewAllClaim">View</a>|<a href="StudentsController?action=AddClaimPage&idCM=${c.idCM}">Up Claim</a>
+                                        <a href="StudentsController?idCM=${c.idCM}&idUser=${idUser}&action=viewAllClaim">View</a>|<a href="StudentsController?action=AddClaimPage&idCM=${c.idCM}">Up Claim</a>
                                     </td>
                                 </tr>
-                            </c:forEach>
-                            <!--                                
-                                                    </tbody>
-                                                </table>
-                                            </div><!-- Footer -->
+                            </c:forEach>                          
+                        </tbody>
+                    </table>
+                </div><!-- Footer -->
 
-                            </div>
+            </div>
 
-                            </div>
+        </div>
 
 
-                        <script src="../assets/js/gsap/main-gsap.js" id="script-resource-1"></script>
-                        <script src="../assets/js/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js" id="script-resource-2"></script>
-                        <script src="../assets/js/bootstrap.min.js" id="script-resource-3"></script>
-                        <script src="../assets/js/joinable.js" id="script-resource-4"></script>
-                        <script src="../assets/js/resizeable.js" id="script-resource-5"></script>
-                        <script src="../assets/js/api.js" id="script-resource-6"></script>
-                        <script src="../assets/js/custom.js" id="script-resource-8"></script>
-                        <script src="../assets/js/demo.js" id="script-resource-9"></script>
+        <script src="assets/js/gsap/main-gsap.js" id="script-resource-1"></script>
+        <script src="assets/js/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js" id="script-resource-2"></script>
+        <script src="assets/js/bootstrap.min.js" id="script-resource-3"></script>
+        <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js" ></script>
+        <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js" ></script>
+        <script src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
+        <script src="https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap.min.js"></script>
+        <script src="assets/js/joinable.js" id="script-resource-4"></script>
+        <script src="assets/js/resizeable.js" id="script-resource-5"></script>
+        <script src="assets/js/select2/select2.min.js" id="script-resource-12"></script>
+        <script src="assets/js/Chart.min.js" id="script-resource-13"></script>
+        <script src="assets/js/api.js" id="script-resource-6"></script>
+        <script src="assets/js/custom.js" id="script-resource-8"></script>
+        <script src="assets/js/demo.js" id="script-resource-9"></script>
 
-                        </body>
-                        </html>
+        <script>
+
+
+            $(document).ready(function () {
+
+                $('.dataTable').DataTable({
+                    searching: false,
+                    bLengthChange: false,
+                    responsive: {
+                        details: {
+                            display: $.fn.dataTable.Responsive.display.modal({
+                                header: function (row) {
+                                    var data = row.data();
+                                    return 'Details for ' + data[0] + ' ' + data[1];
+                                }
+                            }),
+                            renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+                                tableClass: 'table'
+                            })
+                        }
+                    }
+                });
+
+
+            });
+        </script>
+    </body>
+</html>

@@ -1,10 +1,9 @@
 <%-- 
     Document   : detailclaim
-    Created on : Mar 27, 2017, 4:41:20 PM
+    Created on : Mar 13, 2017, 10:31:24 PM
     Author     : minamaurer
 --%>
 
-<%@page import="entity.Account"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
@@ -19,16 +18,16 @@
 
         <title>Home</title>
 
-        <link rel="stylesheet" href="../assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css">
-        <link rel="stylesheet" href="../assets/css/font-icons/font-awesome/css/font-awesome.min.css" id="style-resource-1">
-        <link rel="stylesheet" href="../assets/css/font-icons/entypo/css/entypo.css" id="style-resource-2">
-        <link rel="stylesheet" href="../assets/css/font-icons/entypo/css/animation.css" id="style-resource-3">
+        <link rel="stylesheet" href="assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css">
+        <link rel="stylesheet" href="assets/css/font-icons/font-awesome/css/font-awesome.min.css" id="style-resource-1">
+        <link rel="stylesheet" href="assets/css/font-icons/entypo/css/entypo.css" id="style-resource-2">
+        <link rel="stylesheet" href="assets/css/font-icons/entypo/css/animation.css" id="style-resource-3">
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
               id="style-resource-4">
-        <link rel="stylesheet" href="../assets/css/main.css" id="style-resource-5">
-        <link rel="stylesheet" href="../assets/css/custom.css" id="style-resource-6">
+        <link rel="stylesheet" href="assets/css/main.css" id="style-resource-5">
+        <link rel="stylesheet" href="assets/css/custom.css" id="style-resource-6">
 
-        <script src="../assets/js/jquery-1.10.2.min.js"></script>
+        <script src="assets/js/jquery-1.10.2.min.js"></script>
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -37,19 +36,10 @@
         <![endif]-->
 
         <!-- TS1387507309: Neon - Responsive Admin Template created by Laborator -->
-        <script>
-
-            var select = $('select')[0];
-            select.selectedIndex = 0;
-        </script>
     </head>
-    <% Account c = (Account) session.getAttribute("account");%>
-<% if(c.getLever()!=4){%>
-    <jsp:forward page="../logout.jsp"></jsp:forward>
-<%}%>
     <body class="page-body">
-        <jsp:useBean id="claimD" class="entity.Claim" scope="session"></jsp:useBean>
-        <jsp:useBean id="decision" class="entity.Decision" scope="session"></jsp:useBean>
+        <jsp:useBean id="beanDecision" class="entity.Decision" scope="session"></jsp:useBean>
+        <jsp:useBean id="beanClaim" class="entity.Claim" scope="session"></jsp:useBean>
             <div class="page-container">
 
                 <div class="sidebar-menu">
@@ -59,7 +49,7 @@
                         <!-- logo -->
                         <div class="logo text-center">
                             <a href="dashboard/main/index.html">
-                                <img src="../assets/images/logo.png" width="100" alt="" style="margin-right: auto"/>
+                                <img src="assets/images/logo.png" width="100" alt="" style="margin-right: auto"/>
 
                             </a>
                             <h3>Greenwich University</h3>
@@ -102,7 +92,7 @@
                                     <!-- add class "pull-right" if you want to place this from right -->
 
 
-                                    Welcome: <strong>${fullName}</strong>
+                                    Welcome: <strong>${idUser} (${fullName})</strong>
 
 
                             </li>
@@ -125,7 +115,7 @@
                                             <li class="active">
                                                 <a href="#">
                                                     <span class="image pull-right">
-                                                        <img src="../assets/images/thumb-1.png" alt="" class="img-circle"/>
+                                                        <img src="assets/images/thumb-1.png" alt="" class="img-circle"/>
                                                     </span>
 
                                                     <span class="line">
@@ -142,7 +132,7 @@
                                             <li class="active">
                                                 <a href="#">
                                                     <span class="image pull-right">
-                                                        <img src="../assets/images/thumb-2.png" alt="" class="img-circle"/>
+                                                        <img src="assets/images/thumb-2.png" alt="" class="img-circle"/>
                                                     </span>
 
                                                     <span class="line">
@@ -159,7 +149,7 @@
                                             <li>
                                                 <a href="#">
                                                     <span class="image pull-right">
-                                                        <img src="../assets/images/thumb-3.png" alt="" class="img-circle"/>
+                                                        <img src="assets/images/thumb-3.png" alt="" class="img-circle"/>
                                                     </span>
 
                                                     <span class="line">
@@ -176,7 +166,7 @@
                                             <li>
                                                 <a href="#">
                                                     <span class="image pull-right">
-                                                        <img src="../assets/images/thumb-4.png" alt="" class="img-circle"/>
+                                                        <img src="assets/images/thumb-4.png" alt="" class="img-circle"/>
                                                     </span>
 
                                                     <span class="line">
@@ -226,44 +216,49 @@
                             <div class="mail-header">
                                 <!-- title -->
                                 <div class="mail-title">
-                                    ${claimD.title}
-                                    <p>
+                                    ${beanClaim.title}
+<!--                                    <p>
                                         <span class="text-danger">Remaining time: 13 days 4 hours</span>
 
-                                    </p>
+                                    </p>-->
 
                                 </div>
 
                                 <!-- links -->
                                 <div class="mail-links">
 
-
                                     <span>Status: <span class="label label-success">Open</span></span>
 
                                 </div>
+                                <br/><br/>
+
+                                <p>${beanClaim.title}</p>
                             </div>
+
 
                             <div class="mail-info">
 
                                 <div class="mail-sender dropdown">
 
                                     <a href="#">
-                                        Student: <span> ${claimD.idUser}</span>
-                                        <span>( ${claimD.userFullName})</span>
+                                        EC Coordinator: <span>${beanDecision.fullNameEC}</span>
+                                        <span>(${beanDecision.idUserEC})</span>
                                     </a>
 
 
                                 </div>
 
                                 <div class="mail-date">
-                                    ${claimD.sendDate}
+                                    ${beanDecision.sendDate}
                                 </div>
 
                             </div>
 
                             <div class="mail-text">
 
-                                ${claimD.content}
+                                <p>${beanDecision.content}</p>
+
+
                             </div>
 
                             <div class="mail-attachments">
@@ -271,48 +266,68 @@
                                 <h4>
                                     <i class="entypo-attach"></i> Attachments <span></span>
                                 </h4>
-
-                                <c:if test="${claimD.filedata != ''}">
-                                    <ul>
-                                        <li>
-                                            <a href="../files/${claimD.filedata}" class="thumb">
-                                                <img src="http://placehold.it/350x150?text=File" class="img-rounded"/>
-                                            </a>
-                                        </li>
-                                    </ul>
+                                <c:if test="${beanClaim.filedata != ''}">
+                                <ul>
+                                    <a href="../files/${beanClaim.filedata}" class="thumb">
+                                            <img src="http://placehold.it/350x150?text=File" class="img-rounded"/>
+                                        </a>
+                                </ul>
                                 </c:if>
 
-                            </div>
-
-                            <div class="mail-reply">
-                                <c:choose>
-                                    <c:when test="${claimD.status==1}">
-                                        <div class="fake-form coordinator">
-                                            ${decision.content}
-                                            <p><strong>${decision.fullNameEC}</strong>   ${decision.sendDate}</p>
-                                        </div>
-                                    </c:when>
-                                </c:choose>
-
-                                <div class="fake-form">
-                                    <form action="CoordinatorController?action=AddMessage" method="post">
-                                        <div class="form-group">
-                                            <label for="message">Status:</label>
-                                            <select style="margin-top: 10px;"addMessage name="selectStatus" id="selectStatus"  >                          
-                                                <option  value="1"   >Accept</option>
-                                                <option  value="0" >Protest</option>
-                                            </select><br/>
-                                            <label for="message">Message:</label>
-                                            <textarea class="form-control" name="message" id="message"></textarea>
+                                <form action="StudentsController?action=updateFile" method="post" enctype="multipart/form-data" >
+                                    <div class="form-group">
+                                       
+                                            
+                                       
+                                        <input type="file" id="file" name="file" class="form-control file2 inline btn btn-default" multiple
+                                               data-label="<i class='glyphicon glyphicon-circle-arrow-up'></i> &nbsp;Select file"/>
+                                        
                                         </div>
                                         <div class="form-group">
-                                            <input type="submit" class="btn btn-success" value="${textbtn}">
-
+                                      
+                                            <button type="submit" class="form-control btn btn-default">Submit</button>
                                         </div>
-                                    </form>
-                                </div>
+                                        </div>
+                                </form>
+                                <div class="clearfix" style="margin-bottom: 20px"></div>
 
                             </div>
+
+                            <!--                    <div class="mail-reply">
+                            
+                                                    <div class="fake-form owner">
+                                                        New the her nor case that lady paid read. Invitation friendship travelling eat everything
+                                                        the
+                                                        out two. Shy you who scarcely expenses debating hastened resolved.
+                                                        <p><strong>Phan Huyen Trang</strong> - 2017/03/03 08:30pm</p>
+                                                    </div>
+                                                    <div class="fake-form owner">
+                                                        New the her nor case that lady paid read. Invitation friendship travelling eat everything
+                                                        the
+                                                        out two. Shy you who scarcely expenses debating hastened resolved.
+                                                        <p><strong>Phan Huyen Trang</strong> - 2017/03/03 08:50pm</p>
+                                                    </div>
+                                                    <div class="fake-form coordinator">
+                                                        New the her nor case that lady paid read. Invitation friendship travelling eat everything
+                                                        the
+                                                        out two. Shy you who scarcely expenses debating hastened resolved.
+                                                        <p><strong>Dao Minh Thien</strong> - 2017/03/03 08:55pm</p>
+                                                    </div>
+                                                    <div class="fake-form">
+                                                        <form action="#" method="post">
+                                                            <div class="form-group">
+                                                                <label for="message">Message:</label>
+                                                                <textarea class="form-control" name="message" id="message"></textarea>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <button type="submit" class="btn btn-success"><i
+                                                                        class="glyphicon glyphicon-send"></i> Send
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                            
+                                                </div>-->
 
                         </div>
                     </div>
@@ -323,15 +338,15 @@
         </div>
 
 
-        <script src="../assets/js/gsap/main-gsap.js" id="script-resource-1"></script>
-        <script src="../assets/js/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js" id="script-resource-2"></script>
-        <script src="../assets/js/bootstrap.min.js" id="script-resource-3"></script>
-        <script src="../assets/js/joinable.js" id="script-resource-4"></script>
-        <script src="../assets/js/resizeable.js" id="script-resource-5"></script>
-        <script src="../assets/js/mail.js" id="script-resource-7"></script>
-        <script src="../assets/js/api.js" id="script-resource-6"></script>
-        <script src="../assets/js/custom.js" id="script-resource-8"></script>
-        <script src="../assets/js/demo.js" id="script-resource-9"></script>
+        <script src="assets/js/gsap/main-gsap.js" id="script-resource-1"></script>
+        <script src="assets/js/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js" id="script-resource-2"></script>
+        <script src="assets/js/bootstrap.min.js" id="script-resource-3"></script>
+        <script src="assets/js/joinable.js" id="script-resource-4"></script>
+        <script src="assets/js/resizeable.js" id="script-resource-5"></script>
+        <script src="assets/js/mail.js" id="script-resource-7"></script>
+        <script src="assets/js/api.js" id="script-resource-6"></script>
+        <script src="assets/js/custom.js" id="script-resource-8"></script>
+        <script src="assets/js/demo.js" id="script-resource-9"></script>
 
     </body>
 </html>

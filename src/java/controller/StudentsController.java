@@ -66,7 +66,7 @@ public class StudentsController extends HttpServlet {
          //   session.setAttribute("beanSubject", subject);
             session.setAttribute("beanCM", cm);
           //  session.setAttribute("idMajor", idMajor);
-            response.sendRedirect("../student/createclaim.jsp");
+            response.sendRedirect("createclaimST.jsp");
 
         }
         if (action.equals("viewAllCM")){
@@ -108,9 +108,9 @@ public class StudentsController extends HttpServlet {
                             Logger.getLogger(StudentsController.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
-                    sendMessage(response, "Add claim complete successfull!", "../student/createclaim.jsp");
+                    sendMessage(response, "Add claim complete successfull!", "createclaimST.jsp");
                 } else {
-                    sendMessage(response, "Add claim is failed!", "../student/createclaim.jsp");
+                    sendMessage(response, "Add claim is failed!", "createclaimST.jsp");
                 }
             }
         }
@@ -132,12 +132,12 @@ public class StudentsController extends HttpServlet {
             });
             if (!file_name.equals("")) {
                 if (connectDB.updateFileofClaim(file_name, claim.getIdClaim())) {
-                    sendMessage(response, "Update file complete successfull!", "../student/detailclaim.jsp");
+                    sendMessage(response, "Update file complete successfull!", "detailclaimST.jsp");
                 } else {
-                    sendMessage(response, "Update file failed!", "../student/detailclaim.jsp");
+                    sendMessage(response, "Update file failed!", "detailclaimST.jsp");
                 }
             } else {
-                sendMessage(response, "If you want update file, you must select file want update!", "../student/detailclaim.jsp");
+                sendMessage(response, "If you want update file, you must select file want update!", "detailclaimST.jsp");
             }
 
         }
@@ -152,7 +152,7 @@ public class StudentsController extends HttpServlet {
         HttpSession session = request.getSession();
         session.setAttribute("beanDecision", d);
         session.setAttribute("beanClaim", c);
-        response.sendRedirect("../student/detailclaim.jsp");
+        response.sendRedirect("detailclaimST.jsp");
     }
 
     private void viewAllClaim(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -164,7 +164,7 @@ public class StudentsController extends HttpServlet {
         c.setListClaim(connectDB.getAllClaimOfStudent(idUser, idC));
         HttpSession session = request.getSession();
         session.setAttribute("beanAllStudentClaim", c);
-        response.sendRedirect("../student/allClaims.jsp");
+        response.sendRedirect("allClaimsST.jsp");
     }
 
     private void viewAllClaimManage(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
@@ -175,7 +175,7 @@ public class StudentsController extends HttpServlet {
         session.setAttribute("idMajor", acc.getIdFaculty());
         session.setAttribute("fullName", acc.getFullName());
         session.setAttribute("beanAllClaim", c);
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("indexST.jsp");
     }
     private void viewAllClaimManageFilterByStatus(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
         Account acc = (Account) session.getAttribute("account");
@@ -190,7 +190,7 @@ public class StudentsController extends HttpServlet {
         session.setAttribute("idMajor", acc.getIdFaculty());
         session.setAttribute("fullName", acc.getFullName());
         session.setAttribute("beanAllClaim", c);
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("indexST.jsp");
     }
 
     private void sendMessage(HttpServletResponse response, String sms, String path) throws ServletException, IOException {

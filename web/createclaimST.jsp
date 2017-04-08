@@ -1,11 +1,11 @@
 <%-- 
-    Document   : allclaim
-    Created on : Mar 27, 2017, 4:38:55 PM
+    Document   : createclaim
+    Created on : Mar 13, 2017, 10:26:56 PM
     Author     : minamaurer
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,19 +16,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 
-    <title>Home</title>
+    <title>Send a claim</title>
 
-    <link rel="stylesheet" href="../assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
-          >
-    <link rel="stylesheet" href="../assets/css/font-icons/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../assets/css/font-icons/entypo/css/entypo.css" id="style-resource-2">
-    <link rel="stylesheet" href="../assets/css/font-icons/entypo/css/animation.css" id="style-resource-3">
+    <link rel="stylesheet" href="assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+          id="style-resource-1">
+    <link rel="stylesheet" href="assets/css/font-icons/font-awesome/css/font-awesome.min.css" id="style-resource-1">
+    <link rel="stylesheet" href="assets/css/font-icons/entypo/css/entypo.css" id="style-resource-2">
+    <link rel="stylesheet" href="assets/css/font-icons/entypo/css/animation.css" id="style-resource-3">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
           id="style-resource-4">
-    <link rel="stylesheet" href="../assets/css/main.css" id="style-resource-5">
-    <link rel="stylesheet" href="../assets/css/custom.css" id="style-resource-6">
+    <link rel="stylesheet" href="assets/css/main.css" id="style-resource-5">
+    <link rel="stylesheet" href="assets/css/custom.css" id="style-resource-6">
 
-    <script src="../assets/js/jquery-1.10.2.min.js"></script>
+    <script src="assets/js/jquery-1.10.2.min.js"></script>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -37,10 +37,42 @@
     <![endif]-->
 
     <!-- TS1387507309: Neon - Responsive Admin Template created by Laborator -->
+    
+    
+    
+    <script type="text/javascript">
+        function validate() {
+
+            var flag = true;
+            var subject = document.getElementById('subject');
+            var description = document.getElementById('description');
+           
+            if (subject.value == "")
+            {
+                return flag = false;
+            }
+             if (description.value == "")
+            {
+               return flag = false;
+            }
+            return flag;
+        }
+        function move() {
+                var flag = validate();
+                if (flag) {
+                    addclaim.action = "StudentsController?action=createClaim&Uid=${idUser}";
+                    addclaim.submit();
+                } else {
+                    alert("Please, Enter full fields! ");
+                }
+            }
+       
+
+    </script>r
 </head>
+<jsp:useBean id="beanCM" class="entity.ClaimManage" scope="session"></jsp:useBean>
 <body class="page-body">
-<jsp:useBean id="beanClaimInFaculty" class="entity.Claim" scope="session"></jsp:useBean>
-<jsp:useBean id="majorName" class="entity.Faculty" scope="session"></jsp:useBean>
+
 <div class="page-container">
 
     <div class="sidebar-menu">
@@ -50,7 +82,7 @@
             <!-- logo -->
             <div class="logo text-center">
                 <a href="dashboard/main/index.html">
-                    <img src="../assets/images/logo.png" width="100" alt="" style="margin-right: auto"/>
+                    <img src="assets/images/logo.png" width="100" alt="" style="margin-right: auto"/>
 
                 </a>
                 <h3>Greenwich University</h3>
@@ -68,9 +100,8 @@
 
 
         <ul id="main-menu" class="">
-
-            <li class="active">
-                <a href="CoordinatorController?action=viewAllClaim"><i class="glyphicon glyphicon-home"></i> Home</a>
+            <li >
+                <a href=""><i class="glyphicon glyphicon-home"></i> Home</a>
             </li>
             <li><a href="#"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
 
@@ -90,11 +121,14 @@
 
                     <!-- Profile Info -->
                     <li class="profile-info dropdown">
-                        <table>
-                        <tr><td>Welcome : </td><td><strong>${fullName} (${idUser})</strong></td></tr>
-                        <tr><td> Faculty:</td><td>  <strong>${majorName.name}</strong></td></tr>
-                        </table>
+                        <!-- add class "pull-right" if you want to place this from right -->
+
+
+                        Welcome: <strong>${idUser} (${fullName})</strong>
+                    
+                    
                     </li>
+
                 </ul>
 
                 <ul class="user-info pull-left pull-right-xs pull-none-xsm">
@@ -201,62 +235,50 @@
         <hr/>
 
 
-        <h2 class="text-center">All claims</h2>
+        <h2 class="text-center">Create a claim</h2>
         <br/>
 
-        <div class="panel panel-primary">
-            <form class="form-inline" action="CoordinatorController?action=viewAllClaimFilterByStatus" method="post" style="padding: 10px">
-                <div class="form-group">
-                    <label for="status">Filter by status: </label>
-                    <select id="status" class="form-control" name="status">
-                        <option value="Waiting">Waiting</option>
-                        <option value="Done">Done</option>
-                        <option value="Expired">Expired</option>
-                    </select>
-                   
-                </div>
-                <input type="submit" style="margin-top: 20px" href="" class="btn btn-default" value="Search"/>
-            </form>
-            
-            <table class="table  table-responsive">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Title</th>
-                    <th>Student user</th>
-                    <th>Evidence</th>
-                    <th>Faculty</th>
-                    <th>Assessment</th>
-                    <th>Item</th>
-                    <th>Status</th>
-                </tr>
-                </thead>
+        <div class="panel panel-primary" style="padding: 10px">
+            <form  id="addclaim" name="addclaim"  method="POST" class="form-horizontal" enctype="multipart/form-data" onsubmit="move()"   >
+               <div class="form-group">
+                   <label for="subject" class="col-sm-3 control-label">Subject</label>
+                   <div class="col-sm-9">
+                       <input type="text" id="subject" name="subject" placeholder="Input your claim subject" class="form-control"/>
+                   </div>
+               </div>
+              
+                <input type="hidden" value="${beanCM.id}" name="idCM"/>
+                <input type="hidden" value="${idMajor}" name="idM"/>
+               <div class="form-group">
+                   <label for="description" class="col-sm-3 control-label">Description</label>
+                   <div class="col-sm-9">
+                   <textarea rows="8" placeholder="Input your claim description" class="form-control" name="description" id="description"></textarea>
+                   </div>
+               </div>
+               
+               <div class="form-group">
+                   <label class="col-sm-3 control-label">Attachments</label>
 
-                <tbody>
-                        <c:forEach var="c" items="${beanClaimInFaculty.listClaim}">
-                                <tr>
-                                    <td>${c.idClaim}</td>
-                                    <td><a href="CoordinatorController?action=viewClaimDetail&idclaim=${c.idClaim}&idUser=${idUser}">${c.title}</a></td>
-                                    <td>${c.idUser}</td>
-                                    <c:if test="${c.filedata == ''}">
-                                        <td><span class="text-danger"><c:out value="No"/></span></td>
-                                    </c:if>
-                                        <c:if test="${c.filedata != ''}">
-                                        <td><span class="text-danger"><c:out value="Yes"/></span></td>
-                                    </c:if>
-                                     <td>${c.facultyName}</td>
-                                     <td>${c.assessmentName}</td>
-                                     <td>${c.itemAssessmentName}</td>
-                                    <c:if test="${c.status == 0}">
-                                        <td><span class="text-danger"><c:out value="Waiting"/></span></td>
-                                    </c:if>
-                                    <c:if test="${c.status == 1}">
-                                        <td><c:out value="Done"/></td>
-                                    </c:if>
-                                </tr>
-                            </c:forEach>
-                        </tbody>
-            </table>
+                   <div class="col-sm-5">
+
+                       <input type="file" id="file" name="file" class="form-control file2 inline btn btn-default" multiple
+                              data-label="<i class='glyphicon glyphicon-circle-arrow-up'></i> &nbsp;Browse Files"/>
+
+                   </div>
+               </div>
+               <div class="form-group">
+                   <div class="col-sm-9 col-sm-offset-3">
+                       <input class="btn btn-success" type="submit" value="Send Claim"/>
+
+                       <button class="btn btn-default pull-right" type="reset">Reset</button>
+
+                   </div>
+
+               </div>
+
+           </form>
+
+
         </div><!-- Footer -->
 
     </div>
@@ -264,14 +286,16 @@
 </div>
 
 
-<script src="../assets/js/gsap/main-gsap.js" id="script-resource-1"></script>
-<script src="../assets/js/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js" id="script-resource-2"></script>
-<script src="../assets/js/bootstrap.min.js" id="script-resource-3"></script>
-<script src="../assets/js/joinable.js" id="script-resource-4"></script>
-<script src="../assets/js/resizeable.js" id="script-resource-5"></script>
-<script src="../assets/js/api.js" id="script-resource-6"></script>
-<script src="../assets/js/custom.js" id="script-resource-8"></script>
-<script src="../assets/js/demo.js" id="script-resource-9"></script>
+<script src="assets/js/gsap/main-gsap.js" id="script-resource-1"></script>
+<script src="assets/js/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js" id="script-resource-2"></script>
+<script src="assets/js/bootstrap.min.js" id="script-resource-3"></script>
+<script src="assets/js/joinable.js" id="script-resource-4"></script>
+<script src="assets/js/resizeable.js" id="script-resource-5"></script>
+<script src="assets/js/fileinput.js" id="script-resource-7"></script>
+
+<script src="assets/js/api.js" id="script-resource-6"></script>
+<script src="assets/js/custom.js" id="script-resource-8"></script>
+<script src="assets/js/demo.js" id="script-resource-9"></script>
 
 </body>
 </html>

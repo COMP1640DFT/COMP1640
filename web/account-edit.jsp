@@ -18,16 +18,16 @@
 
     <title>Neon | Blank Page</title>
 
-    <link rel="stylesheet" href="../assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+    <link rel="stylesheet" href="assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
           id="style-resource-1">
-    <link rel="stylesheet" href="../assets/css/font-icons/entypo/css/entypo.css" id="style-resource-2">
-    <link rel="stylesheet" href="../assets/css/font-icons/entypo/css/animation.css" id="style-resource-3">
+    <link rel="stylesheet" href="assets/css/font-icons/entypo/css/entypo.css" id="style-resource-2">
+    <link rel="stylesheet" href="assets/css/font-icons/entypo/css/animation.css" id="style-resource-3">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
           id="style-resource-4">
-    <link rel="stylesheet" href="../assets/css/main.css" id="style-resource-5">
-    <link rel="stylesheet" href="../assets/css/custom.css" id="style-resource-6">
+    <link rel="stylesheet" href="assets/css/main.css" id="style-resource-5">
+    <link rel="stylesheet" href="assets/css/custom.css" id="style-resource-6">
 
-    <script src="../assets/js/jquery-1.10.2.min.js"></script>
+    <script src="assets/js/jquery-1.10.2.min.js"></script>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -45,13 +45,24 @@
 
         <header class="logo-env">
 
-            <!-- logo -->
-            <div class="logo">
-                <img src="../assets/images/logo.png" alt=""/>
-                <h3>Greenwich University</h3>
-            </div>
+                        <!-- logo -->
+                        <div class="logo text-center">
+                            <a href="dashboard/main/index.html">
+                                <img src="assets/images/logo.png" width="100" alt="" style="margin-right: auto"/>
 
-        </header>
+                            </a>
+                            <h3>Greenwich University</h3>
+                        </div>
+
+
+                        <!-- open/close menu icon (do not remove if you want to enable menu on mobile devices) -->
+                        <div class="sidebar-mobile-menu visible-xs">
+                            <a href="#" class="with-animation"><!-- add class "with-animation" to support animation -->
+                                <i class="entypo-menu"></i>
+                            </a>
+                        </div>
+
+                    </header>
 
 
         <ul id="main-menu" class="">
@@ -180,14 +191,14 @@
 </div>
 
 
-<script src="../assets/js/gsap/main-gsap.js" id="script-resource-1"></script>
-<script src="../assets/js/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js" id="script-resource-2"></script>
-<script src="../assets/js/bootstrap.min.js" id="script-resource-3"></script>
-<script src="../assets/js/joinable.js" id="script-resource-4"></script>
-<script src="../assets/js/resizeable.js" id="script-resource-5"></script>
-<script src="../assets/js/api.js" id="script-resource-6"></script>
-<script src="../assets/js/custom.js" id="script-resource-7"></script>
-<script src="../assets/js/demo.js" id="script-resource-8"></script>
+<script src="assets/js/gsap/main-gsap.js" id="script-resource-1"></script>
+<script src="assets/js/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js" id="script-resource-2"></script>
+<script src="assets/js/bootstrap.min.js" id="script-resource-3"></script>
+<script src="assets/js/joinable.js" id="script-resource-4"></script>
+<script src="assets/js/resizeable.js" id="script-resource-5"></script>
+<script src="assets/js/api.js" id="script-resource-6"></script>
+<script src="assets/js/custom.js" id="script-resource-7"></script>
+<script src="assets/js/demo.js" id="script-resource-8"></script>
 
 
 </body>

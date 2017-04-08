@@ -1,5 +1,13 @@
+.logo{
+    text-align: center;
+}
 .logo h3{
     color: #fff;
+}
+.logo img{
+    width: 108px;
+    margin-left: auto;
+    margin-right: auto;
 }
 .profile-info{
     padding-top: 12px;

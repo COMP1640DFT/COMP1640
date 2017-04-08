@@ -116,7 +116,7 @@ public class ConnectDB {
     }
 
     public List<Claim> getAllClaim() {
-        String sql = "select c.idClaim,c.idUser,c.content,f.name ,asm._name,im.name,c.sendDate  from tblClaim c join tblClaimManage cm on c.idCM=cm.idCM \n"
+        String sql = "select c.idClaim,c.idUser,c.title,f.name ,asm._name,im.name,c.sendDate  from tblClaim c join tblClaimManage cm on c.idCM=cm.idCM \n"
                 + "join tblADetail ad on cm.idItemAssessment=ad.id \n"
                 + "join  tblItemA im on ad.idItem= im.id\n"
                 + "join  tblAssessment  asm on asm.id= ad.idAssesment\n"
@@ -132,7 +132,7 @@ public class ConnectDB {
                 claim = new Claim();
                 claim.setIdClaim(rs.getInt(1));
                 claim.setIdUser(rs.getString(2));
-                claim.setContent(rs.getString(3));
+                claim.setTitle(rs.getString(3));
                 claim.setFacultyName(rs.getString(4));
                 claim.setAssessmentName(rs.getString(5));
                 claim.setItemAssessmentName(rs.getString(6));
@@ -343,7 +343,7 @@ public class ConnectDB {
                 + "join tblADetail tad on tcm.idItemAssessment = tad.id\n"
                 + "join tblAssessment ta on ta.id = tad.idAssesment\n"
                 + "join tblFaculty tf on tf.id = ta.idFaculty\n"
-                + "join tblItemA tia on tad.idItem = tia.id  where ta.idFaculty = ?";
+                + "join tblItemA tia on tad.idItem = tia.id  where tf.id = ?";
         List<Claim> list = new LinkedList<>();
 
         try {
@@ -353,6 +353,7 @@ public class ConnectDB {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Claim claim = new Claim();
+                System.out.println("---"+rs.getInt(1));
                 claim.setIdCM(rs.getInt(1));
                 claim.setTitle(rs.getString(2));
                 claim.setCreateDate(rs.getString(3));

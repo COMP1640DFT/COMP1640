@@ -45,7 +45,7 @@ public class LoginController extends HttpServlet {
         }
         if(action.equals("logout")){
             session.removeAttribute("account");
-            response.sendRedirect("../login.jsp");
+            response.sendRedirect("login.jsp");
         }
     }
     
@@ -59,19 +59,19 @@ public class LoginController extends HttpServlet {
             switch (acc.getLever()) {
                 //student
                 case 1:
-                    response.sendRedirect("student/StudentsController?action=viewAllCM");
+                    response.sendRedirect("StudentsController?action=viewAllCM");
                     break;
                 //admin
                 case 2:
-                    response.sendRedirect("admin/AdminController?action=adminViewAll");
+                    response.sendRedirect("AdminController?action=adminViewAll");
                     break;
                 //manager
                 case 3:
-                    response.sendRedirect("ecmanager/Controller?action=viewC");
+                    response.sendRedirect("Controller?action=viewC");
                     break;
                 //condinator
                 case 4:
-                    response.sendRedirect("coordinator/CoordinatorController?action=viewAllClaim");
+                    response.sendRedirect("CoordinatorController?action=viewAllClaim");
                     break;
             }
         } else {

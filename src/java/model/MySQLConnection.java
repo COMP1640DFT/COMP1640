@@ -24,7 +24,7 @@ public class MySQLConnection {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection(
-                    "jdbc:mysql://sql12.freemysqlhosting.net/sql12167647", "sql12167647", "ltgSI9V7uI");
+                    "jdbc:mysql://sql12.freemysqlhosting.net/sql12167963", "sql12167963", "ynQdQtEYah");
 //here sonoo is database name, root is username and password  
             
         } catch (Exception e) {

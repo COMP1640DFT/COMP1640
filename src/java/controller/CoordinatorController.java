@@ -63,7 +63,7 @@ public class CoordinatorController extends HttpServlet {
             session.setAttribute("claimD", claim);
             session.setAttribute("acc", account);
 
-            response.sendRedirect("../coordinator/detailclaim.jsp");
+            response.sendRedirect("detailclaimC.jsp");
         }
         if (action.equals("viewAllClaim")){
             viewAllClaim(request, response, session);
@@ -92,13 +92,13 @@ public class CoordinatorController extends HttpServlet {
                                 + "\n The decision of your claim (" + claim.getTitle() + ") finished.";
                         Account stdAcc = connectDB.getAccoutnByid(claim.getIdUser());
                         mail(stdAcc.getEmail(), mailtext);
-                        sendMessage(response, "Add claim complete successfull!", "../student/createclaim.jsp");
-                        response.sendRedirect("../coordinator/detailclaim.jsp");
+//                        sendMessage(response, "Add claim complete successfull!", "../student/createclaim.jsp");
+                        response.sendRedirect("detailclaimC.jsp");
                     } else {
 
                     }
                 } else {
-                    sendMessage(response, "Please enter content before add comment!", "../coordinator/detailclaim.jsp");
+                    sendMessage(response, "Please enter content before add comment!", "detailclaimC.jsp");
                 }
             }
             if (btntext.equals("Update")) {
@@ -124,7 +124,7 @@ public class CoordinatorController extends HttpServlet {
 
                     }
                 } else {
-                    sendMessage(response, "Please enter content before update!", "../coordinator/detailclaim.jsp");
+                    sendMessage(response, "Please enter content before update!", "detailclaimC.jsp");
                 }
 
             }
@@ -141,7 +141,7 @@ public class CoordinatorController extends HttpServlet {
         session.setAttribute("fullName", acc.getFullName());
         session.setAttribute("beanClaimInFaculty", c);
         session.setAttribute("majorName", m);
-        response.sendRedirect("allclaim.jsp");
+        response.sendRedirect("allclaimC.jsp");
     }
     private void viewAllClaimFilterByStatus(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
         Claim c = new Claim();
@@ -160,7 +160,7 @@ public class CoordinatorController extends HttpServlet {
         session.setAttribute("fullName", acc.getFullName());
         session.setAttribute("beanClaimInFaculty", c);
         session.setAttribute("majorName", m);
-        response.sendRedirect("allclaim.jsp");
+        response.sendRedirect("allclaimC.jsp");
     }
 
     private void mail(String email, String mailtext) {
