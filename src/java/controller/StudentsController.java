@@ -55,16 +55,17 @@ public class StudentsController extends HttpServlet {
         String action = request.getParameter("action");
         HttpSession session = request.getSession();
         if (action.equals("AddClaimPage")) {
-            String idSubject = request.getParameter("idC");
-            String idClaimM = request.getParameter("idCM");
-            String idMajor = request.getParameter("idM");
+           // String idSubject = request.getParameter("idC");
+            String idCM = request.getParameter("idCM");
+         
+        //    String idMajor = request.getParameter("idM");
             Assessment subject = new Assessment();
             ClaimManage cm = new ClaimManage();
-            cm.setId(Integer.parseInt(idClaimM));
-            subject.setId(Integer.parseInt(idSubject));
-            session.setAttribute("beanSubject", subject);
+            cm.setId(Integer.parseInt(idCM));
+         //   subject.setId(Integer.parseInt(idSubject));
+         //   session.setAttribute("beanSubject", subject);
             session.setAttribute("beanCM", cm);
-            session.setAttribute("idMajor", idMajor);
+          //  session.setAttribute("idMajor", idMajor);
             response.sendRedirect("../student/createclaim.jsp");
 
         }
@@ -92,8 +93,9 @@ public class StudentsController extends HttpServlet {
                 String date_send = new SimpleDateFormat("yyyy/MM/dd").format(Calendar.getInstance().getTime());
                 int status = 0;
                 int idCM = Integer.parseInt(m.getParameter("idCM"));
-                int idSubject = Integer.parseInt(m.getParameter("idSubject"));
-                Claim claim = new Claim(title, description, date_send, file_name, idU, idCM, status, idSubject);
+               
+                Claim claim = new Claim(title, description, date_send, file_name, idU, idCM, status);
+             
                 if (connectDB.createClaim(claim)) {
                     List<Account> accountecco = connectDB.getListEccoor(idMajor);
                     Mail mail = new Mail();

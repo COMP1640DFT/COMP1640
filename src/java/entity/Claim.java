@@ -25,7 +25,6 @@ public class Claim {
     private int status;
     private Decision decision;
     private String className;
-    private String iUserECCoor;
     private List<Claim> listClaimWithoutEvidence;
     private List<Claim> listClaimUnresolved;
     private List<Claim> listClaim;
@@ -51,13 +50,6 @@ public class Claim {
      public Claim() {
     }
 
-    public String getiUserECCoor() {
-        return iUserECCoor;
-    }
-
-    public void setiUserECCoor(String iUserECCoor) {
-        this.iUserECCoor = iUserECCoor;
-    }
 
     public Claim(int idClaim, String title, String content, String date, String filedata, String idUser, int idCM) {
         this.idClaim = idClaim;

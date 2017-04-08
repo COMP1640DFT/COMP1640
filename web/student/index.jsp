@@ -169,7 +169,7 @@
                                     </c:if>
                                     <td>
 
-                                        <a href="StudentsController?idCM=${c.idClaim}&idUser=${idUser}&action=viewAllClaim">View</a>|<a href="#">Up Claim</a>
+                                        <a href="StudentsController?idCM=${c.idClaim}&idUser=${idUser}&action=viewAllClaim">View</a>|<a href="StudentsController?action=AddClaimPage&idCM=${c.idCM}">Up Claim</a>
                                     </td>
                                 </tr>
                             </c:forEach>

@@ -233,8 +233,8 @@
                     <div class="col-sm-12" style="margin-bottom: 50px">
                         <table class="dataTable table table-bordered table table-responsive responsive">
                             <thead>
-                            <th>Student ID</th>
-                            <th>EC Coordinator</th>
+                            <th>#</th>
+                            <th>Student</th>
                             <th>Contents</th>
                             <th>Faculty</th>
                             <th>Assessment</th>
@@ -246,7 +246,7 @@
                             <c:forEach items="${sessionScope['listClaim']}" var="cl">
                                         <tr>
                                             <td>${cl.idClaim}</td>
-                                            <td>${cl.iUserECCoor}</td>
+                                            <td>${cl.idUser}</td>
                                             <td><a href="Controller?action=viewDetail&id=${cl.idClaim}" class="btn-reader">${cl.content}</a></td>
                                             <td>${cl.facultyName}</td>
                                             <td>${cl.assessmentName}</td>

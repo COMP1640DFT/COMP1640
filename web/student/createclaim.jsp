@@ -70,7 +70,6 @@
 
     </script>r
 </head>
-<jsp:useBean id="beanSubject" class="entity.Subject" scope="session"></jsp:useBean>
 <jsp:useBean id="beanCM" class="entity.ClaimManage" scope="session"></jsp:useBean>
 <body class="page-body">
 
@@ -247,7 +246,7 @@
                        <input type="text" id="subject" name="subject" placeholder="Input your claim subject" class="form-control"/>
                    </div>
                </div>
-                <input type="hidden" value="${beanSubject.id}" name="idSubject"/>
+              
                 <input type="hidden" value="${beanCM.id}" name="idCM"/>
                 <input type="hidden" value="${idMajor}" name="idM"/>
                <div class="form-group">

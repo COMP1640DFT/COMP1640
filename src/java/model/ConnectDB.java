@@ -116,12 +116,11 @@ public class ConnectDB {
     }
 
     public List<Claim> getAllClaim() {
-        String sql = "select c.idClaim,u.idUser,c.content,f.name ,asm._name,im.name,c.sendDate from tblClaim c join tblClaimManage cm on c.idCM=cm.idCM \n"
+        String sql = "select c.idClaim,c.idUser,c.content,f.name ,asm._name,im.name,c.sendDate  from tblClaim c join tblClaimManage cm on c.idCM=cm.idCM \n"
                 + "join tblADetail ad on cm.idItemAssessment=ad.id \n"
                 + "join  tblItemA im on ad.idItem= im.id\n"
                 + "join  tblAssessment  asm on asm.id= ad.idAssesment\n"
-                + "join tblFaculty f on f.id=asm.idFaculty\n"
-                + "join tblUser u on u.idFaculty= f.id";
+                + "join tblFaculty f on f.id=asm.idFaculty";
         Claim claim = null;
         Decision s = null;
         List<Claim> lClaim = new ArrayList<>();
@@ -132,7 +131,7 @@ public class ConnectDB {
             while (rs.next()) {
                 claim = new Claim();
                 claim.setIdClaim(rs.getInt(1));
-                claim.setiUserECCoor(rs.getString(2));
+                claim.setIdUser(rs.getString(2));
                 claim.setContent(rs.getString(3));
                 claim.setFacultyName(rs.getString(4));
                 claim.setAssessmentName(rs.getString(5));
@@ -354,7 +353,7 @@ public class ConnectDB {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Claim claim = new Claim();
-                claim.setIdClaim(rs.getInt(1));
+                claim.setIdCM(rs.getInt(1));
                 claim.setTitle(rs.getString(2));
                 claim.setCreateDate(rs.getString(3));
                 claim.setEndDate(rs.getString(4));
@@ -370,7 +369,8 @@ public class ConnectDB {
         }
         return list;
     }
-  public List<Claim> getAllClaimManageFilterByStatus(int idFaculty, int stt) {
+
+    public List<Claim> getAllClaimManageFilterByStatus(int idFaculty, int stt) {
         String sql = "select tcm.idCM, tcm.title, tcm.createdate, tcm.enddate, tcm._status, ta._name, tia.name \n"
                 + "from tblClaimManage tcm\n"
                 + "join tblADetail tad on tcm.idItemAssessment = tad.id\n"
@@ -743,7 +743,7 @@ public class ConnectDB {
     public boolean createClaim(Claim claim) {
         try {
             connectdatabase();
-            String sql = "INSERT INTO tblClaim ( title, content,sendDate, envidence, _status, idUser, idCM) VALUES"
+            String sql = "INSERT INTO tblClaim ( title, content,sendDate, evidence, _status, idUser, idCM) VALUES"
                     + "(?,?,?,?,?,?,?)";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, claim.getTitle());
@@ -874,5 +874,6 @@ public class ConnectDB {
 
 //        System.out.println(getCountClaimByMajor("2017",1));
 //        getCountClaimByMonth("2017",1);
+        
     }
 }

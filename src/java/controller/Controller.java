@@ -69,7 +69,7 @@ public class Controller extends HttpServlet {
             Decision d = connectDB.getDecissionById(Integer.parseInt(id));
             session.setAttribute("ClaimDetail", claim);
             session.setAttribute("DecisionDetail", d);
-            response.sendRedirect("sample/detail-process.jsp");
+            response.sendRedirect("../sample/detail-process.jsp");
         }
 
         if (action.equals("viewStatisticChart")) {

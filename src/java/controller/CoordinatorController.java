@@ -118,7 +118,8 @@ public class CoordinatorController extends HttpServlet {
                         String mailtext = "Hello " + stdAcc.getFullName() + "(" + stdAcc.getIdUser() + ")"
                                 + "\n The decision of your claim  (" + claim.getTitle() + ") update finished.";
                         mail(stdAcc.getEmail(), mailtext);
-                        response.sendRedirect("../coordinator/detailclaim.jsp");
+//                        response.sendRedirect("../coordinator/detailclaim.jsp");
+                          response.sendRedirect("CoordinatorController?action=viewAllClaim");
                     } else {
 
                     }
