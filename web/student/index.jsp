@@ -125,63 +125,72 @@
                 <br/>
 
                 <div class="panel panel-primary">
-                    <form class="form-inline" style="padding: 10px">
+                    <form class="form-inline" action="StudentsController?action=viewAllClaimManageFilterByStatus" method="post" style="padding: 10px">
                         <div class="form-group">
                             <label for="status">Filter by status: </label>
                             <select id="status" class="form-control" name="status">
-                                <option value="open">Open</option>
-                                <option value="closed">Closed</option>
-                                <option value="expired">Expired</option>
+                                <option value="Open">Open</option>
+                                <option value="Closed">Closed</option>
+                                
                             </select>
+
                         </div>
+                        <input type="submit" style="margin-top: 20px" href="" class="btn btn-default" value="Search"/>
                     </form>
 
                     <table class="table  table-responsive">
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Subject</th>
-                                <th>Close Date</th>
+                                <th>Title</th>
+                                <th>Create Date</th>
+                                <th>End Date</th>
+                                <th>Assessment Name</th>
+                                <th>Item of Assessment</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                             <c:forEach var="c" items="${beanAllClaim.listClaimUnresolved}">
+                            <c:forEach var="c" items="${beanAllClaim.listClaim}">
                                 <tr>
                                     <td>${c.idClaim}</td>
                                     <td>${c.title}</td>
+                                    <td>${c.createDate}</td>
                                     <td>${c.endDate}</td>
+                                    <td>${c.assessmentName}</td>
+                                    <td>${c.itemAssessmentName}</td>
                                     <c:if test="${c.status == 0}">
                                         <td><span class="text-danger"><c:out value="Closed"/></span></td>
-                                    </c:if>
-                                    <c:if test="${c.status == 1}">
+                                        </c:if>
+                                        <c:if test="${c.status == 1}">
                                         <td><c:out value="Open"/></td>
                                     </c:if>
-                                        <td>
-                                        <a href="StudentsController?idCM=${c.idClaim}&idUser=${idUser}&action=viewAllClaim">View</a>|<a href="StudentsController?action=AddClaimPage&idC=${c.idSubject}&idCM=${c.idClaim}&idM=${idMajor}">Up Claim</a>
+                                    <td>
+
+                                        <a href="StudentsController?idCM=${c.idClaim}&idUser=${idUser}&action=viewAllClaim">View</a>|<a href="#">Up Claim</a>
                                     </td>
                                 </tr>
                             </c:forEach>
-<!--                                
-                        </tbody>
-                    </table>
-                </div><!-- Footer -->
+                            <!--                                
+                                                    </tbody>
+                                                </table>
+                                            </div><!-- Footer -->
 
-            </div>
+                            </div>
 
-        </div>
+                            </div>
 
 
-        <script src="../assets/js/gsap/main-gsap.js" id="script-resource-1"></script>
-        <script src="../assets/js/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js" id="script-resource-2"></script>
-        <script src="../assets/js/bootstrap.min.js" id="script-resource-3"></script>
-        <script src="../assets/js/joinable.js" id="script-resource-4"></script>
-        <script src="../assets/js/resizeable.js" id="script-resource-5"></script>
-        <script src="../assets/js/api.js" id="script-resource-6"></script>
-        <script src="../assets/js/custom.js" id="script-resource-8"></script>
-        <script src="../assets/js/demo.js" id="script-resource-9"></script>
+                        <script src="../assets/js/gsap/main-gsap.js" id="script-resource-1"></script>
+                        <script src="../assets/js/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js" id="script-resource-2"></script>
+                        <script src="../assets/js/bootstrap.min.js" id="script-resource-3"></script>
+                        <script src="../assets/js/joinable.js" id="script-resource-4"></script>
+                        <script src="../assets/js/resizeable.js" id="script-resource-5"></script>
+                        <script src="../assets/js/api.js" id="script-resource-6"></script>
+                        <script src="../assets/js/custom.js" id="script-resource-8"></script>
+                        <script src="../assets/js/demo.js" id="script-resource-9"></script>
 
-    </body>
-</html>
+                        </body>
+                        </html>

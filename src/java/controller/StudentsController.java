@@ -71,6 +71,9 @@ public class StudentsController extends HttpServlet {
         if (action.equals("viewAllCM")){
             viewAllClaimManage(request, response, session);
         }
+        if (action.equals("viewAllClaimManageFilterByStatus")) {
+            viewAllClaimManageFilterByStatus(request, response, session);
+        }
         if (action.equals("createClaim")) {
             final String idU = request.getParameter("Uid");
             MultipartRequest m = new MultipartRequest(request, getServletContext().getRealPath("/files"), 256000000, new FileRenamePolicy() {
@@ -165,7 +168,22 @@ public class StudentsController extends HttpServlet {
     private void viewAllClaimManage(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
         Account acc = (Account) session.getAttribute("account");
         Claim c = new Claim();
-        c.setListClaimUnresolved(connectDB.getAllClaimManage(acc.getIdFaculty()));
+        c.setListClaim(connectDB.getAllClaimManage(acc.getIdFaculty()));
+        session.setAttribute("idUser", acc.getIdUser());
+        session.setAttribute("idMajor", acc.getIdFaculty());
+        session.setAttribute("fullName", acc.getFullName());
+        session.setAttribute("beanAllClaim", c);
+        response.sendRedirect("index.jsp");
+    }
+    private void viewAllClaimManageFilterByStatus(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
+        Account acc = (Account) session.getAttribute("account");
+        Claim c = new Claim();
+        int idStt = 0;
+        String status = request.getParameter("status");
+        if(status.equals("Open")) {
+            idStt = 1;
+        }
+        c.setListClaim(connectDB.getAllClaimManageFilterByStatus(acc.getIdFaculty(),idStt));
         session.setAttribute("idUser", acc.getIdUser());
         session.setAttribute("idMajor", acc.getIdFaculty());
         session.setAttribute("fullName", acc.getFullName());
