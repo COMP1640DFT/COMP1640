@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,7 +39,7 @@
     <!-- TS1387507138: Neon - Responsive Admin Template created by Laborator -->
 </head>
 <body class="page-body">
-
+<jsp:useBean id="beanUserDetail" class="entity.Account" scope="session"></jsp:useBean>
 <div class="page-container">
 
     <div class="sidebar-menu">
@@ -89,88 +90,43 @@
 
     </div>
     <div class="main-content">
-        <h2>Welcome: </h2>
+        <h2>Welcome: ${account.fullName}</h2>
 
         <br/>
         <div class="col-sm-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h1 class="panel-title">Editing : <strong>minaphan</strong></h1>
+                    <h1 class="panel-title">Editing : <strong>${beanUserDetail.idUser}</strong></h1>
                 </div>
 
                 <div class="panel-body">
-                    <form action="#" method="post" class="form-horizontal form-groups-bordered">
+                    <form action="AdminController?action=updateUser" method="post" class="form-horizontal form-groups-bordered">
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Account ID</label>
-                            <div class="col-sm-4"><input disabled value="minaphan" type="text" class="form-control" name="id"/></div>
+                            <div class="col-sm-4"><input readonly="readonly" value="${beanUserDetail.idUser}" type="text" class="form-control" name="idUser"/></div>
 
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Password</label>
-                            <div class="col-sm-5"><input value="1234567890123456789" type="password" class="form-control" name="password"/></div>
+                            <div class="col-sm-5"><input value="${beanUserDetail.passWord}" type="password" class="form-control" name="password"/></div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Full name</label>
-                            <div class="col-sm-5"><input value="Phan Huyen Trang" type="text" class="form-control" name="name"/></div>
+                            <div class="col-sm-5"><input value="${beanUserDetail.fullName}" type="text" class="form-control" name="name"/></div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Email address</label>
-                            <div class="col-sm-5"><input type="email" value="minaphan@fpt.edu.vn" class="form-control" name="email"/></div>
+                            <div class="col-sm-5"><input type="email" value="${beanUserDetail.email}" class="form-control" name="email"/></div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Phone number</label>
-                            <div class="col-sm-5"><input type="tel" value="0999999999" class="form-control" name="phone"/></div>
+                            <div class="col-sm-5"><input type="text" value="${beanUserDetail.phoneNumber}" class="form-control" name="phone"/></div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Birth date</label>
-                            <div class="col-sm-3"><input type="date" value="1996-08-16" class="form-control" name="birthdate"/></div>
+                            <div class="col-sm-3"><input type="date" value="${beanUserDetail.dob}" class="form-control" name="birthdate"/></div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">Role</label>
-                            <div class="col-sm-3">
-                                <select class="form-control">
-                                    <option>---</option>
-                                    <option value="manager">Manager</option>
-                                    <option selected value="coordinator">Coordinator</option>
-                                    <option value="student">Student</option>
-                                    <option value="admin">Administrator</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">Faculty</label>
-                            <div class="col-sm-3">
-                                <select class="form-control">
-                                    <option>---</option>
-                                    <option selected value="1">Information Technology</option>
-                                    <option value="2">Business</option>
-                                    <option value="3">Commerce</option>
-                                </select>
-                            </div>
-
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">Course</label>
-                            <div class="col-sm-3">
-                                <select class="form-control">
-                                    <option>---</option>
-                                    <option value="1">I</option>
-                                    <option value="2">II</option>
-                                    <option value="3">III</option>
-                                    <option selected value="4">IV</option>
-                                    <option value="5">V</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">Status</label>
-                            <div class="col-sm-3">
-                                <select class="form-control" name="status">
-                                    <option value="active">Active</option>
-                                    <option value="deactive">Deactive</option>
-                                </select>
-                            </div>
-                        </div>
+                       
                         <div class="form-group">
                             <div class="col-sm-7 col-sm-offset-5">
                                 <button class="btn btn-success" type="submit"><i class="entypo entypo-floppy"></i> Save</button>

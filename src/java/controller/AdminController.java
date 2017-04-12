@@ -5,6 +5,7 @@
  */
 package controller;
 
+import entity.Account;
 import entity.Assessment;
 import entity.AsssessmentDetail;
 import entity.Claim;
@@ -50,6 +51,15 @@ public class AdminController extends HttpServlet {
         }
         if (action.equals("addnewCM")) {
             addNewCM(request, response, session);
+        }
+        if (action.equals("viewAllUser")) {
+            viewAllUser(request, response, session);
+        }
+        if (action.equals("viewUserDetail")) {
+            viewUserDetail(request, response, session);
+        }
+        if (action.equals("updateUser")) {
+            updateUser(request, response, session);
         }
     }
 
@@ -122,11 +132,49 @@ public class AdminController extends HttpServlet {
         c.setIdItemAssessment(id);
         c.setStatus(st);
 
-         if(connectDB.insertClaimM(c)){
+        if (connectDB.insertClaimM(c)) {
             response.sendRedirect("AdminController?action=adminViewAll");
-         }   else {
+        } else {
             String mes = "Create new failed!";
             sendMessage(response, mes, "AdminController?action=adminViewAll");
+        }
+    }
+
+    private void viewAllUser(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
+        Account acc = (Account) session.getAttribute("account");
+        Account aL = new Account();
+        aL.setListAccount(connectDB.getAllAccount(acc.getIdUser()));
+        session.setAttribute("idUser", acc.getIdUser());
+        session.setAttribute("fullName", acc.getFullName());
+        session.setAttribute("beanAllUser", aL);
+        response.sendRedirect("account-view-all.jsp");
+    }
+
+    private void viewUserDetail(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
+        response.setContentType("text/html;charset=UTF-8");
+        String id = request.getParameter("id");
+        Account accDetail = connectDB.getAccountInfor(id);
+        session.setAttribute("beanUserDetail", accDetail);
+        response.sendRedirect("account-edit.jsp");
+    }
+
+    private void updateUser(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
+        response.setContentType("text/html;charset=UTF-8");
+        String idUser = request.getParameter("idUser");
+        String password = request.getParameter("password");
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        String phone = request.getParameter("phone");
+        String dob = request.getParameter("birthdate");
+        Account acc = new Account();
+        acc.setIdUser(idUser);
+        acc.setPassWord(password);
+        acc.setFullName(name);
+        acc.setEmail(email);
+        acc.setPhoneNumber(phone);
+        acc.setDob(dob);
+        if (connectDB.updateAccount(acc)) {
+            response.sendRedirect("AdminController?action=viewAllUser");
         }
     }
 
@@ -138,5 +186,5 @@ public class AdminController extends HttpServlet {
         out.println("location='" + path + "';");
         out.println("</script>");
     }
-    
+
 }

@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -38,7 +39,7 @@
         <!-- TS1387507138: Neon - Responsive Admin Template created by Laborator -->
     </head>
     <body class="page-body">
-
+  <jsp:useBean id="beanAllUser" class="entity.Account" scope="session"></jsp:useBean>
         <div class="page-container">
 
             <div class="sidebar-menu">
@@ -89,7 +90,7 @@
 
             </div>
             <div class="main-content">
-                <h2>Welcome: </h2>
+                <h2>Welcome: ${account.fullName}</h2>
 
                 <br/>
                 <div class="col-sm-12">
@@ -105,85 +106,34 @@
                                 <th>Email</th>
                                 <th>Name</th>
                                 <th>Faculty</th>
-                                <th>Course</th>
                                 <th>Role</th>
                                 <th>Status</th>
                                 <th>---</th>
                                 </thead>
                                 <tbody>
                                
-                                <tr>
-                                    <td>minaphan</td>
-                                    <td>minaphan@gw.edu.uk</td>
-                                    <td>Phan Huyen Trang</td>
-                                    <td>Information Technology</td>
-                                    <td>---</td>
-                                    <td>Administrator</td>
-                                    <td><span class="label label-success">Active</span></td>
-                                    <td>
-                                        <a href="#" class="btn btn-default btn-icon"><i class="entypo entypo-pencil"></i> Edit</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>minaphan</td>
-                                    <td>minaphan@gw.edu.uk</td>
-                                    <td>Phan Huyen Trang</td>
-                                    <td>Information Technology</td>
-                                    <td>---</td>
-                                    <td>Administrator</td>
-                                    <td><span class="label label-success">Active</span></td>
-                                    <td>
-                                        <a href="#" class="btn btn-default btn-icon"><i class="entypo entypo-pencil"></i> Edit</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>minaphan</td>
-                                    <td>minaphan@gw.edu.uk</td>
-                                    <td>Phan Huyen Trang</td>
-                                    <td>Information Technology</td>
-                                    <td>---</td>
-                                    <td>Administrator</td>
-                                    <td><span class="label label-success">Active</span></td>
-                                    <td>
-                                        <a href="#" class="btn btn-default btn-icon"><i class="entypo entypo-pencil"></i> Edit</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>minaphan</td>
-                                    <td>minaphan@gw.edu.uk</td>
-                                    <td>Phan Huyen Trang</td>
-                                    <td>Information Technology</td>
-                                    <td>---</td>
-                                    <td>Administrator</td>
-                                    <td><span class="label label-success">Active</span></td>
-                                    <td>
-                                        <a href="#" class="btn btn-default btn-icon"><i class="entypo entypo-pencil"></i> Edit</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>minaphan</td>
-                                    <td>minaphan@gw.edu.uk</td>
-                                    <td>Phan Huyen Trang</td>
-                                    <td>Information Technology</td>
-                                    <td>---</td>
-                                    <td>Administrator</td>
-                                    <td><span class="label label-success">Active</span></td>
-                                    <td>
-                                        <a href="#" class="btn btn-default btn-icon"><i class="entypo entypo-pencil"></i> Edit</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>minaphan</td>
-                                    <td>minaphan@gw.edu.uk</td>
-                                    <td>Phan Huyen Trang</td>
-                                    <td>Information Technology</td>
-                                    <td>---</td>
-                                    <td>Administrator</td>
-                                    <td><span class="label label-success">Active</span></td>
-                                    <td>
-                                        <a href="#" class="btn btn-default btn-icon"><i class="entypo entypo-pencil"></i> Edit</a>
-                                    </td>
-                                </tr>
+                                <c:forEach var="a" items="${beanAllUser.listAccount}">
+                                        <tr>
+                                        <td>${a.idUser}</td>
+                                        <td>${a.email}</td>
+                                        <td>${a.fullName}</td>
+                                        <td>${a.facultyName}</td>
+                                        <c:if test="${c.status == 1}">
+                                        <td><c:out value="Student"/></td>
+                                        </c:if>
+                                        <c:if test="${c.status == 3}">
+                                        <td><c:out value="Manager"/></td>
+                                         </c:if>
+                                        <c:if test="${c.status == 4}">
+                                        <td><c:out value="EC Coordinator"/></td>
+                                         </c:if>
+                                        <td><span class="label label-success">Active</span></td>
+                                        <td>
+                                            <a href="AdminController?id=${a.idUser}&action=viewUserDetail" class="btn btn-default btn-icon"><i class="entypo entypo-pencil"></i> Edit</a>
+                                        </td>
+                                        </tr>
+                                    </c:forEach>
+                                
                                 </tbody>
                             </table>
                         </div>

@@ -352,7 +352,7 @@ public class ConnectDB {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Claim claim = new Claim();
-                System.out.println("---"+rs.getInt(1));
+                System.out.println("---" + rs.getInt(1));
                 claim.setIdCM(rs.getInt(1));
                 claim.setTitle(rs.getString(2));
                 claim.setCreateDate(rs.getString(3));
@@ -863,6 +863,81 @@ public class ConnectDB {
         return list;
     }
 
+    public List<Account> getAllAccount(String idAdminUser) {
+        List<Account> list = new ArrayList<>();
+        String sql = "select  distinct  u.idUser, u.fullName, u.email, f.name, u.lever\n"
+                + " from tblUser u \n"
+                + " left join tblFaculty f on u.idFaculty = f.id\n"
+                + "where u.idUser not like ?";
+        try {
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, idAdminUser);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Account acc = new Account();
+                acc.setIdUser(rs.getString(1));
+                acc.setFullName(rs.getString(2));
+                acc.setEmail(rs.getString(3));
+                acc.setFacultyName(rs.getString(4));
+                acc.setLever(rs.getInt(5));
+                list.add(acc);
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+
+    public Account getAccountInfor(String idUser) {
+        Account acc = null;
+        String sql = "select * from tblUser where idUser like ? ";
+        try {
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, idUser);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                acc = new Account();
+                acc.setIdUser(rs.getString(1));
+                acc.setPassWord(rs.getString(2));
+                acc.setFullName(rs.getString(3));
+                acc.setDob(rs.getString(4));
+                acc.setEmail(rs.getString(5));
+                acc.setPhoneNumber(rs.getString(6));
+                acc.setIdAcademy(rs.getInt(7));
+                acc.setIdFaculty(rs.getInt(8));
+                acc.setLever(rs.getInt(9));
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return acc;
+    }
+
+    public boolean updateAccount(Account acc) {
+        try {
+            connectdatabase();
+            String sql = "Update tblUser set  _passWord = ?, fullName = ?, dob = ?, email = ?, phoneNumber = ? where idUser = ?";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, acc.getPassWord());
+            st.setString(2, acc.getFullName());
+            st.setString(3, acc.getDob());
+            st.setString(4, acc.getEmail());
+            st.setString(5, acc.getPhoneNumber());
+            st.setString(6, acc.getIdUser());
+            if (st.executeUpdate() > 0) {
+                return true;
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
     public void main(String[] args) {
 //        con;
 //        Claim c = new Claim("1", "1", "2017-02-12", "1", "taincgc", 1, 0);
@@ -874,6 +949,5 @@ public class ConnectDB {
 
 //        System.out.println(getCountClaimByMajor("2017",1));
 //        getCountClaimByMonth("2017",1);
-        
     }
 }

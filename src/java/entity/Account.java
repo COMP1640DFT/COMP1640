@@ -5,6 +5,8 @@
  */
 package entity;
 
+import java.util.List;
+
 /**
  *
  * @author user
@@ -19,8 +21,17 @@ public class Account {
     private int idAcademy;
     private int idFaculty;
     private int lever;
-
+    private String facultyName;
+    private List<Account> listAccount;
     public Account() {
+    }
+
+    public List<Account> getListAccount() {
+        return listAccount;
+    }
+
+    public void setListAccount(List<Account> listAccount) {
+        this.listAccount = listAccount;
     }
 
     public Account(String idUser, String _passWord, String fullName, String dob, String email, String phoneNumber, int idAcademy, int idFaculty, int lever) {
@@ -105,6 +116,14 @@ public class Account {
 
     public void setLever(int lever) {
         this.lever = lever;
+    }
+
+    public String getFacultyName() {
+        return facultyName;
+    }
+
+    public void setFacultyName(String facultyName) {
+        this.facultyName = facultyName;
     }
     
     
