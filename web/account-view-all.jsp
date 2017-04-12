@@ -19,7 +19,7 @@
 
         <title>Neon | Blank Page</title>
 
-        
+
         <link rel="stylesheet" href="assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
               id="style-resource-1">
         <link rel="stylesheet" href="assets/css/font-icons/entypo/css/entypo.css" id="style-resource-2">
@@ -39,12 +39,12 @@
         <!-- TS1387507138: Neon - Responsive Admin Template created by Laborator -->
     </head>
     <body class="page-body">
-  <jsp:useBean id="beanAllUser" class="entity.Account" scope="session"></jsp:useBean>
-        <div class="page-container">
+        <jsp:useBean id="beanAllUser" class="entity.Account" scope="session"></jsp:useBean>
+            <div class="page-container">
 
-            <div class="sidebar-menu">
+                <div class="sidebar-menu">
 
-                <header class="logo-env">
+                    <header class="logo-env">
 
                         <!-- logo -->
                         <div class="logo text-center">
@@ -66,31 +66,30 @@
                     </header>
 
 
-                <ul id="main-menu" class="">
-                    <li>
-                        <a href="#"><i class="entypo-user"></i><span>Account</span></a>
-                        <ul>
+                    <ul id="main-menu" class="">
+                        <li>
+                            <a href="#"><i class="entypo-user"></i><span>Account</span></a>
+                            <ul>
 
 
-                            <li><a href="#"><i class="entypo entypo-user-add"></i> Create</a></li>
-                            <li><a href="#"><i class="entypo entypo-users"></i> View all</a></li>
+                                <li><a href="#"><i class="entypo entypo-user-add"></i> Create</a></li>
+                                <li><a href="AdminController?action=viewAllUser"><i class="entypo entypo-users"></i> View all</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#"><i class="entypo-suitcase"></i> Faculty</a>
+                            <ul>
+                                <li><a href="AdminController?action=openShedule">Create</a></li>
+                                <li><a href="AdminController?action=adminViewAll">View all</a></li>
+                            </ul>
 
-                        </ul>
-                    </li>
-                    <li><a href="#"><i class="entypo-suitcase"></i> Faculty</a>
-                        <ul>
-                            <li><a href="#">Create</a></li>
-                            <li><a href="#">View all</a></li>
-                        </ul>
-
-                    </li>
-                    <li><a href="#"><i class="entypo-logout"></i> Logout</a></li>
-                </ul>
+                        </li>
+                        <li><a href="#"><i class="entypo-logout"></i> Logout</a></li>
+                    </ul>
 
 
-            </div>
-            <div class="main-content">
-                <h2>Welcome: ${account.fullName}</h2>
+                </div>
+                <div class="main-content">
+                    <h2>Welcome: ${account.fullName}</h2>
 
                 <br/>
                 <div class="col-sm-12">
@@ -111,29 +110,29 @@
                                 <th>---</th>
                                 </thead>
                                 <tbody>
-                               
-                                <c:forEach var="a" items="${beanAllUser.listAccount}">
+
+                                    <c:forEach var="a" items="${beanAllUser.listAccount}">
                                         <tr>
-                                        <td>${a.idUser}</td>
-                                        <td>${a.email}</td>
-                                        <td>${a.fullName}</td>
-                                        <td>${a.facultyName}</td>
-                                        <c:if test="${c.status == 1}">
-                                        <td><c:out value="Student"/></td>
-                                        </c:if>
-                                        <c:if test="${c.status == 3}">
-                                        <td><c:out value="Manager"/></td>
-                                         </c:if>
-                                        <c:if test="${c.status == 4}">
-                                        <td><c:out value="EC Coordinator"/></td>
-                                         </c:if>
-                                        <td><span class="label label-success">Active</span></td>
-                                        <td>
-                                            <a href="AdminController?id=${a.idUser}&action=viewUserDetail" class="btn btn-default btn-icon"><i class="entypo entypo-pencil"></i> Edit</a>
-                                        </td>
+                                            <td>${a.idUser}</td>
+                                            <td>${a.email}</td>
+                                            <td>${a.fullName}</td>
+                                            <td>${a.facultyName}</td>
+                                            <c:if test="${c.status == 1}">
+                                                <td><c:out value="Student"/></td>
+                                            </c:if>
+                                            <c:if test="${c.status == 3}">
+                                                <td><c:out value="Manager"/></td>
+                                            </c:if>
+                                            <c:if test="${c.status == 4}">
+                                                <td><c:out value="EC Coordinator"/></td>
+                                            </c:if>
+                                            <td><span class="label label-success">Active</span></td>
+                                            <td>
+                                                <a href="AdminController?id=${a.idUser}&action=viewUserDetail" class="btn btn-default btn-icon"><i class="entypo entypo-pencil"></i> Edit</a>
+                                            </td>
                                         </tr>
                                     </c:forEach>
-                                
+
                                 </tbody>
                             </table>
                         </div>
