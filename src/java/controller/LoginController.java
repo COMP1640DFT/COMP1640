@@ -54,7 +54,7 @@ public class LoginController extends HttpServlet {
         String pass = request.getParameter("password");
         Account acc = connectDB.checkLogin(idUser, pass);
         Claim c = new Claim();
-        if (acc != null) {
+        if (acc.getIdUser().equals("")) {
             session.setAttribute("account", acc);
             switch (acc.getLever()) {
                 //student

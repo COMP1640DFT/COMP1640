@@ -61,6 +61,11 @@ public class TestLogin {
     
     @Test
     public void checkLoginWithEcCon(){
-        assertEquals("User condinator", 4, connectDB.checkLogin("ECCONIT001", "123123").getLever());
+        assertEquals("User condinator", 4, connectDB.checkLogin("eccoorit", "123123").getLever());
+    }
+    
+    @Test
+    public void checkLoginWithUserNotCreated(){
+        assertEquals("User was not created", null, connectDB.checkLogin("studentid", "123123").getIdUser());
     }
 }

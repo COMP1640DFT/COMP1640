@@ -60,7 +60,7 @@ public class ConnectDB {
     }
 
     public Account checkLogin(String idUser, String pass) {
-        Account acc = null;
+        Account acc = new Account();
         String sql = "select * from tblUser where idUser=? and _passWord=? ";
         try {
             connectdatabase();
@@ -69,7 +69,6 @@ public class ConnectDB {
             ps.setString(2, pass);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                acc = new Account();
                 acc.setIdUser(rs.getString(1));
                 acc.setFullName(rs.getString(3));
                 acc.setDob(rs.getString(4));
