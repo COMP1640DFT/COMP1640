@@ -5,8 +5,6 @@
  */
 package controller;
 
-import com.oreilly.servlet.MultipartRequest;
-import com.oreilly.servlet.multipart.FileRenamePolicy;
 import entity.Account;
 import entity.Claim;
 import entity.ClaimManage;
@@ -47,13 +45,22 @@ public class StudentsController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     ConnectDB connectDB = new ConnectDB();
-    public static String file_name = "";
+    public String file_name = "";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String action = request.getParameter("action");
         HttpSession session = request.getSession();
+        Account account = (Account) session.getAttribute("account");
+        if (account != null && account.getLever()==1) {
+            action(request, response, session);
+        }else{
+            response.sendRedirect("logout.jsp");
+        }
+    }
+    
+    private void action(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
+        String action = request.getParameter("action");
         if (action.equals("AddClaimPage")) {
            // String idSubject = request.getParameter("idC");
             String idCM = request.getParameter("idCM");
@@ -77,22 +84,15 @@ public class StudentsController extends HttpServlet {
         }
         if (action.equals("createClaim")) {
             final String idU = request.getParameter("Uid");
-            MultipartRequest m = new MultipartRequest(request, getServletContext().getRealPath("/files"), 256000000, new FileRenamePolicy() {
-                @Override
-                public File rename(File file) {
-                    file_name = rfile(file, idU).getName();
-                    System.out.println("-----------" + rfile(file, idU).getPath());
-                    return rfile(file, idU);
-                }
-            });
-            String title = m.getParameter("subject");
-            String description = m.getParameter("description");
-            int idMajor = Integer.parseInt(m.getParameter("idM"));
+            String title = request.getParameter("subject");
+            String description = request.getParameter("description");
+            int idMajor = Integer.parseInt(request.getParameter("idM"));
+            file_name = request.getParameter("linkfile");
 
             if (!title.equals("") && !description.equals("")) {
                 String date_send = new SimpleDateFormat("yyyy/MM/dd").format(Calendar.getInstance().getTime());
                 int status = 0;
-                int idCM = Integer.parseInt(m.getParameter("idCM"));
+                int idCM = Integer.parseInt(request.getParameter("idCM"));
                
                 Claim claim = new Claim(title, description, date_send, file_name, idU, idCM, status);
              
@@ -108,7 +108,7 @@ public class StudentsController extends HttpServlet {
                             Logger.getLogger(StudentsController.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
-                    sendMessage(response, "Add claim complete successfull!", "createclaimST.jsp");
+                    response.sendRedirect("StudentsController?idCM="+idCM+"&idUser="+idU+"&action=viewAllClaim");
                 } else {
                     sendMessage(response, "Add claim is failed!", "createclaimST.jsp");
                 }
@@ -123,15 +123,12 @@ public class StudentsController extends HttpServlet {
         if (action.equals("updateFile")) {
             final String idU = (String) session.getAttribute("idUser");
             Claim claim = (Claim) session.getAttribute("beanClaim");
-            MultipartRequest m = new MultipartRequest(request, getServletContext().getRealPath("/files"), 256000000, new FileRenamePolicy() {
-                @Override
-                public File rename(File file) {
-                    file_name = rfile(file, idU).getName();
-                    return rfile(file, idU);
-                }
-            });
+            String file_name = request.getParameter("linkfile");
+            System.out.println("file: "+ file_name);
             if (!file_name.equals("")) {
                 if (connectDB.updateFileofClaim(file_name, claim.getIdClaim())) {
+                    claim.setFiledata(file_name);
+                    session.setAttribute("beanClaim", claim);
                     sendMessage(response, "Update file complete successfull!", "detailclaimST.jsp");
                 } else {
                     sendMessage(response, "Update file failed!", "detailclaimST.jsp");
@@ -200,17 +197,6 @@ public class StudentsController extends HttpServlet {
         out.println("alert('" + sms + "');");
         out.println("location='" + path + "';");
         out.println("</script>");
-    }
-
-    public File rfile(File file, String uid) {
-        long reqID = (new Date()).getTime();
-        char uniq = 'A';
-        File f = new File(file.getParentFile(), uid + reqID + uniq + "_" + file.getName());
-        while (f.exists()) {
-            uniq++;
-            f = new File(file.getParentFile(), uid + reqID + "_" + file.getName());
-        }
-        return f;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

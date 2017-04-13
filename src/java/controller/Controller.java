@@ -46,9 +46,18 @@ public class Controller extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String action = request.getParameter("action");
+
         HttpSession session = request.getSession();
-        
+        Account account = (Account) session.getAttribute("account");
+        if (account != null && account.getLever()==3) {
+            action(request, response, session);
+        }else{
+            response.sendRedirect("logout.jsp");
+        }
+    }
+
+    private void action(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
+        String action = request.getParameter("action");
         if (action.equals("viewstatistic")) {
             viewStatistic(request, response);
             viewStaticsChart(request, response);
@@ -75,7 +84,6 @@ public class Controller extends HttpServlet {
         if (action.equals("viewStatisticChart")) {
             viewStaticsChart(request, response);
         }
-
     }
 
     private void viewStatistic(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -138,8 +146,6 @@ public class Controller extends HttpServlet {
         session.setAttribute("beanClaim", claim);
         response.sendRedirect("statisticECM.jsp");
     }
-
-    
 
     private void sendMessage(HttpServletResponse response, String sms, String path) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -257,7 +263,7 @@ public class Controller extends HttpServlet {
         s.setMajor(major);
         s.setYear(year);
         s.setListItemTableClaim(listTotal);
-        
+
         session.setAttribute("beanStatistic", s);
     }
 

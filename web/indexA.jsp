@@ -41,6 +41,9 @@
     <body class="page-body">
         <jsp:useBean id="account" class="entity.Account" scope="session"></jsp:useBean>
         <jsp:useBean id="beanAdminCM" class="entity.Claim" scope="session"></jsp:useBean>
+        <c:if test="${account.lever != 2}">
+            <jsp:forward page="logout.jsp"></jsp:forward>
+        </c:if>
             <div class="page-container">
 
                 <div class="sidebar-menu">
@@ -99,14 +102,15 @@
                             <h1 class="panel-title">All Claim</h1>
                         </div>
 
-                        <div class="panel-body">
+                        
+                    </div>
+                    <div class="panel-body">
                             <table class="dataTable table table-bordered table table-responsive">
                                 <thead>
                                 <th>#</th>
                                 <th>Title</th>
                                 <th>Create Date</th>
                                 <th>End Date</th>
-                                <th>Faculty</th>
                                 <th>Assessment</th>
                                 <th>Item</th>
                                 <th>Status</th>
@@ -119,25 +123,29 @@
                                             <td>${c.title}</td>
                                             <td>${c.createDate}</td>
                                             <td>${c.endDate}</td>
-                                            <td>${c.facultyName}</td>
                                             <td>${c.assessmentName}</td>
-                                            <td>${c.itemAssessmentName}</td>
+                                            <td>${c.itemAssessmentName} - ${c.facultyName}</td>
                                             <c:if test="${c.status == 0}">
                                                 <td><span><c:out value="Open"/></span></td>
                                             </c:if>
                                             <c:if test="${c.status == 1}">
-                                                <td><c:out value="Update evidence"/></td>
+                                                <td><c:out value="Updating"/></td>
                                             </c:if>
                                             <c:if test="${c.status == 2}">
                                                 <td><c:out value="Closed"/></td>
                                             </c:if>
-                                            <td>#</td>
+                                            <td><div class="dropdown">
+                                                    <button class="dropbtn">Update</button>
+                                                    <div class="dropdown-content">
+                                                        <a href="AdminController?action=updateSttCM&stt=1&idCM=${c.idClaim}">Close update claim</a>
+                                                        <a href="AdminController?action=updateSttCM&stt=2&idCM=${c.idClaim}">Close update evidence</a>
+                                                    </div>
+                                                </div></td>
                                         </tr>
                                     </c:forEach>
                                 </tbody>
                             </table>
                         </div>
-                    </div>
                 </div>
                 <!-- lets do some work here... --><!-- Footer -->
                 <footer class="main">

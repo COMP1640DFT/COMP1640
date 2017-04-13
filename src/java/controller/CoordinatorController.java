@@ -45,8 +45,18 @@ public class CoordinatorController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String action = request.getParameter("action");
         HttpSession session = request.getSession();
+        Account account = (Account) session.getAttribute("account");
+        if (account != null && account.getLever()==4) {
+            action(request, response, session);
+        }else{
+            response.sendRedirect("logout.jsp");
+        }
+
+    }
+
+    private void action(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
+        String action = request.getParameter("action");
         if (action.equals("viewClaimDetail")) {
             String idclaim = request.getParameter("idclaim");
             String idUser = request.getParameter("idUser");
@@ -65,10 +75,10 @@ public class CoordinatorController extends HttpServlet {
 
             response.sendRedirect("detailclaimC.jsp");
         }
-        if (action.equals("viewAllClaim")){
+        if (action.equals("viewAllClaim")) {
             viewAllClaim(request, response, session);
         }
-        if (action.equals("viewAllClaimFilterByStatus")){
+        if (action.equals("viewAllClaimFilterByStatus")) {
             viewAllClaimFilterByStatus(request, response, session);
         }
         if (action.equals("AddMessage")) {
@@ -119,7 +129,7 @@ public class CoordinatorController extends HttpServlet {
                                 + "\n The decision of your claim  (" + claim.getTitle() + ") update finished.";
                         mail(stdAcc.getEmail(), mailtext);
 //                        response.sendRedirect("../coordinator/detailclaim.jsp");
-                          response.sendRedirect("CoordinatorController?action=viewAllClaim");
+                        response.sendRedirect("CoordinatorController?action=viewAllClaim");
                     } else {
 
                     }
@@ -143,18 +153,19 @@ public class CoordinatorController extends HttpServlet {
         session.setAttribute("majorName", m);
         response.sendRedirect("allclaimC.jsp");
     }
+
     private void viewAllClaimFilterByStatus(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
         Claim c = new Claim();
         int idStt = 0;
         String status = request.getParameter("status");
-        if(status.equals("Done")) {
+        if (status.equals("Done")) {
             idStt = 1;
         }
-        if(status.equals("Expired")) {
+        if (status.equals("Expired")) {
             idStt = 2;
         }
         Account acc = (Account) session.getAttribute("account");
-        c.setListClaim(connectDB.getAllClaimOfStudentInAFacultyFilterByStatus(acc.getIdFaculty(),idStt));
+        c.setListClaim(connectDB.getAllClaimOfStudentInAFacultyFilterByStatus(acc.getIdFaculty(), idStt));
         Faculty m = connectDB.getMajor(acc.getIdFaculty());
         session.setAttribute("idUser", acc.getIdUser());
         session.setAttribute("fullName", acc.getFullName());

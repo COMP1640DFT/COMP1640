@@ -196,7 +196,7 @@ public class ConnectDB {
     }
 
     public Claim getClaimById(int id) {
-        String sql = "select idClaim,title,content,sendDate,envidence,idUser from tblClaim where idClaim = ?";
+        String sql = "select idClaim,title,content,sendDate,evidence,idUser from tblClaim where idClaim = ?";
         Claim claim = null;
 
         try {
@@ -822,10 +822,27 @@ public class ConnectDB {
     public boolean updateFileofClaim(String file, int idClaim) {
         try {
             connectdatabase();
-            String sql = "Update tblClaim set  envidence=? where idClaim=?";
+            String sql = "Update tblClaim set  evidence=? where idClaim=?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, file);
             st.setInt(2, idClaim);
+            if (st.executeUpdate() > 0) {
+                return true;
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    
+    public boolean updateSttCM(int id, int stt) {
+        try {
+            connectdatabase();
+            String sql = "Update tblClaimManage set _status=? where idCM=?";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setInt(1, stt);
+            st.setInt(2, id);
             if (st.executeUpdate() > 0) {
                 return true;
             }

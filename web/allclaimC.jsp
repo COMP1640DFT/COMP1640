@@ -40,6 +40,10 @@
     <body class="page-body">
         <jsp:useBean id="beanClaimInFaculty" class="entity.Claim" scope="session"></jsp:useBean>
         <jsp:useBean id="majorName" class="entity.Faculty" scope="session"></jsp:useBean>
+        <jsp:useBean id="account" class="entity.Account" scope="session"></jsp:useBean>
+        <c:if test="${account.lever != 4}">
+            <jsp:forward page="logout.jsp"></jsp:forward>
+        </c:if>
             <div class="page-container">
 
                 <div class="sidebar-menu">
@@ -71,7 +75,7 @@
                         <li class="active">
                             <a href="CoordinatorController?action=viewAllClaim"><i class="glyphicon glyphicon-home"></i> Home</a>
                         </li>
-                        <li><a href="#"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
+                        <li><a href="logout"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
 
 
                     </ul>

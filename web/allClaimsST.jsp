@@ -40,6 +40,10 @@
     </head>
     <body class="page-body">
         <jsp:useBean id="beanAllStudentClaim" class="entity.Claim" scope="session"></jsp:useBean>
+        <jsp:useBean id="account" class="entity.Account" scope="session"></jsp:useBean>
+        <c:if test="${account.lever != 1}">
+            <jsp:forward page="logout.jsp"></jsp:forward>
+        </c:if>
             <div class="page-container">
 
                 <div class="sidebar-menu">
@@ -88,9 +92,6 @@
                             <ul class="list-inline links-list pull-right">
 
                                 <li>
-                                    <a href="#">
-                                        Log Out <i class="entypo-logout right"></i>
-                                    </a>
                                 </li>
                             </ul>
 
@@ -111,7 +112,6 @@
                                 <select id="status" class="form-control" name="status">
                                     <option value="open">Open</option>
                                     <option value="closed">Closed</option>
-                                    <option value="expired">Expired</option>
                                 </select>
                             </div>
     <!--                        <a href="StudentsController?action=AddClaimPage&idC=${c.idCourse}&idCM=${c.idClaim}" class="btn btn-default" style="float: right;margin-top: 20px"><i

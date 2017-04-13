@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.ConnectDB;
+import model.Encode;
 import org.jboss.weld.context.http.Http;
 
 /**
@@ -42,6 +43,15 @@ public class AdminController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
+        Account account = (Account) session.getAttribute("account");
+        if (account != null && account.getLever()==2) {
+            action(request, response, session);
+        }else{
+            response.sendRedirect("logout.jsp");
+        }
+    }
+
+    private void action(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
         String action = request.getParameter("action");
         if (action.equals("adminViewAll")) {
             viewAllClaim(request, response, session);
@@ -60,6 +70,9 @@ public class AdminController extends HttpServlet {
         }
         if (action.equals("updateUser")) {
             updateUser(request, response, session);
+        }
+        if(action.equals("updateSttCM")){
+            updateSttClaim(request, response, session);
         }
     }
 
@@ -168,13 +181,22 @@ public class AdminController extends HttpServlet {
         String dob = request.getParameter("birthdate");
         Account acc = new Account();
         acc.setIdUser(idUser);
-        acc.setPassWord(password);
+        acc.setPassWord(Encode.encryptPass(password));
         acc.setFullName(name);
         acc.setEmail(email);
         acc.setPhoneNumber(phone);
         acc.setDob(dob);
         if (connectDB.updateAccount(acc)) {
             response.sendRedirect("AdminController?action=viewAllUser");
+        }
+    }
+    
+    private void updateSttClaim(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
+        response.setContentType("text/html;charset=UTF-8");
+        int stt = Integer.parseInt(request.getParameter("stt"));
+        int idCM = Integer.parseInt(request.getParameter("idCM"));
+        if (connectDB.updateSttCM(idCM,stt)) {
+            response.sendRedirect("AdminController?action=adminViewAll");
         }
     }
 

@@ -40,6 +40,10 @@
     </head>
     <body class="page-body">
         <jsp:useBean id="beanAllUser" class="entity.Account" scope="session"></jsp:useBean>
+        <jsp:useBean id="account" class="entity.Account" scope="session"></jsp:useBean>
+        <c:if test="${account.lever != 2}">
+            <jsp:forward page="logout.jsp"></jsp:forward>
+        </c:if>
             <div class="page-container">
 
                 <div class="sidebar-menu">
@@ -76,7 +80,7 @@
                                 <li><a href="AdminController?action=viewAllUser"><i class="entypo entypo-users"></i> View all</a></li>
                             </ul>
                         </li>
-                        <li><a href="#"><i class="entypo-suitcase"></i> Faculty</a>
+                        <li><a href="#"><i class="entypo-suitcase"></i> Claim</a>
                             <ul>
                                 <li><a href="AdminController?action=openShedule">Create</a></li>
                                 <li><a href="AdminController?action=adminViewAll">View all</a></li>
@@ -106,7 +110,6 @@
                                 <th>Name</th>
                                 <th>Faculty</th>
                                 <th>Role</th>
-                                <th>Status</th>
                                 <th>---</th>
                                 </thead>
                                 <tbody>
@@ -126,7 +129,6 @@
                                             <c:if test="${c.status == 4}">
                                                 <td><c:out value="EC Coordinator"/></td>
                                             </c:if>
-                                            <td><span class="label label-success">Active</span></td>
                                             <td>
                                                 <a href="AdminController?id=${a.idUser}&action=viewUserDetail" class="btn btn-default btn-icon"><i class="entypo entypo-pencil"></i> Edit</a>
                                             </td>

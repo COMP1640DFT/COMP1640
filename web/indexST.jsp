@@ -18,8 +18,8 @@
 
         <title>Home</title>
 
-        <link rel="stylesheet" href="assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
-              id="style-resource-1">
+        <link rel="stylesheet" href="assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css">
+
         <link rel="stylesheet" href="assets/css/font-icons/font-awesome/css/font-awesome.min.css" id="style-resource-1">
         <link rel="stylesheet" href="assets/css/font-icons/entypo/css/entypo.css" id="style-resource-2">
         <link rel="stylesheet" href="assets/css/font-icons/entypo/css/animation.css" id="style-resource-3">
@@ -30,6 +30,16 @@
 
         <script src="assets/js/jquery-1.10.2.min.js"></script>
 
+        <link rel="stylesheet" type="text/css" href="../css/responsive.jqueryui.min.css">
+        <link rel="stylesheet" type="text/css" href="../css/responsive.dataTables.min.css">
+        <link rel="stylesheet" href="assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+              id="style-resource-1">
+        <link rel="stylesheet" href="assets/css/font-icons/entypo/css/entypo.css" id="style-resource-2">
+        <link rel="stylesheet" href="assets/css/font-icons/entypo/css/animation.css" id="style-resource-3">
+        <link rel="stylesheet" href="assets/css/main.css" id="style-resource-5">
+        <link rel="stylesheet" href="assets/css/custom.css" id="style-resource-6">
+
+        <script src="assets/js/jquery-1.10.2.min.js"></script>
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -40,77 +50,61 @@
     </head>
     <body class="page-body">
         <jsp:useBean id="beanAllClaim" class="entity.Claim" scope="session"></jsp:useBean>
-            <div class="page-container">
+        <jsp:useBean id="account" class="entity.Account" scope="session"></jsp:useBean>
+        <c:if test="${account.lever != 1}">
+            <jsp:forward page="logout.jsp"></jsp:forward>
+        </c:if>
+        <div class="page-container">
 
-                <div class="sidebar-menu">
+            <div class="sidebar-menu">
 
-                    <header class="logo-env">
+                <header class="logo-env">
 
-                        <!-- logo -->
-                        <div class="logo text-center">
-                            <a href="dashboard/main/index.html">
-                                <img src="assets/images/logo.png" width="100" alt="" style="margin-right: auto"/>
+                    <!-- logo -->
+                    <div class="logo text-center">
+                        <a href="dashboard/main/index.html">
+                            <img src="assets/images/logo.png" width="100" alt="" style="margin-right: auto"/>
 
-                            </a>
-                            <h3>Greenwich University</h3>
-                        </div>
-
-
-                        <!-- open/close menu icon (do not remove if you want to enable menu on mobile devices) -->
-                        <div class="sidebar-mobile-menu visible-xs">
-                            <a href="#" class="with-animation"><!-- add class "with-animation" to support animation -->
-                                <i class="entypo-menu"></i>
-                            </a>
-                        </div>
-
-                    </header>
-
-
-                    <ul id="main-menu" class="">
-
-                        <li class="active">
-                            <a href="StudentsController?action=viewAllCM"><i class="glyphicon glyphicon-home"></i> All Claims</a>
-                        </li>
-                        <li><a href="logout.jsp"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
-
-
-                    </ul>
-
-
-                </div>
-                <div class="main-content">
-
-                    <div class="row">
-
-                        <!-- Profile Info and Notifications -->
-                        <div class="col-md-6 col-sm-8 clearfix">
-
-                            <ul class="user-info pull-left pull-none-xsm">
-
-                                <!-- Profile Info -->
-                                <li class="profile-info dropdown">
-                                    <!-- add class "pull-right" if you want to place this from right -->
-
-
-                                    Welcome: <strong>${idUser} (${fullName})</strong>
-
-
-                            </li>
-
-                        </ul>
-
+                        </a>
+                        <h3>Greenwich University</h3>
                     </div>
 
 
-                    <!-- Raw Links -->
-                    <div class="col-md-6 col-sm-4 clearfix hidden-xs">
+                    <!-- open/close menu icon (do not remove if you want to enable menu on mobile devices) -->
+                    <div class="sidebar-mobile-menu visible-xs">
+                        <a href="#" class="with-animation"><!-- add class "with-animation" to support animation -->
+                            <i class="entypo-menu"></i>
+                        </a>
+                    </div>
 
-                        <ul class="list-inline links-list pull-right">
+                </header>
 
-                            <li>
-                                <a href="#">
-                                    Log Out <i class="entypo-logout right"></i>
-                                </a>
+
+                <ul id="main-menu" class="">
+
+                    <li class="active">
+                        <a href="StudentsController?action=viewAllCM"><i class="glyphicon glyphicon-home"></i> All Claims</a>
+                    </li>
+                    <li><a href="logout.jsp"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
+
+
+                </ul>
+
+
+            </div>
+            <div class="main-content">
+
+                <div class="row">
+
+                    <!-- Profile Info and Notifications -->
+                    <div class="col-md-6 col-sm-8 clearfix">
+
+                        <ul class="user-info pull-left pull-none-xsm">
+
+                            <!-- Profile Info -->
+                            <li class="profile-info dropdown">
+                                <!-- add class "pull-right" if you want to place this from right -->
+                                Welcome: <strong> ${account.fullName} (${account.idUser})</strong>
                             </li>
                         </ul>
 
@@ -119,68 +113,79 @@
                 </div>
 
                 <hr/>
-
-
-                <h2 class="text-center">All claims</h2>
-                <br/>
-
-                <div class="panel panel-primary">
-                    <form class="form-inline" action="StudentsController?action=viewAllClaimManageFilterByStatus" method="post" style="padding: 10px">
-                        <div class="form-group">
-                            <label for="status">Filter by status: </label>
-                            <select id="status" class="form-control" name="status">
-                                <option value="Open">Open</option>
-                                <option value="Closed">Closed</option>
-
-                            </select>
-
+                <div class="row">
+                    <div class="col-sm-12 panel panel-dark">
+                        <div class="page-header">
+                            <h2 class="panel-heading text-center">All new claims</h2>
                         </div>
-                        <input type="submit" style="margin-top: 20px" href="" class="btn btn-default" value="Search"/>
-                    </form>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <form class="form-inline" action="StudentsController?action=viewAllClaimManageFilterByStatus" method="POST">
+                                        <div class="form-group">
+                                            <label><strong>Filter: &nbsp;&nbsp;&nbsp;&nbsp;</strong></label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="option1">Status</label>
+                                            <select id="option1" name="status">
+                                                <option value="Open">Open</option>
+                                                <option value="Closed">Closed</option>
 
-                    <table class="dataTable table table-bordered table table-responsive">
-                        <thead>
-                        <th>#</th>
-                        <th>Title</th>
-                        <th>End Date</th>
-                        <th>Assessment Name</th>
-                        <th>Item</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                        </thead>
-                        <tfoot>
-                        <th>#</th>
-                        <th>Title</th>
-                        <th>End Date</th>
-                        <th>Assessment Name</th>
-                        <th>Item </th>
-                        <th>Status</th>
-                        <th>Action</th>
-                        </tfoot>
+                                            </select>
+                                        </div>
+                                        <div class="form-group"><input type="submit" value="Search"/></div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="col-sm-12">
+                                <table class="dataTable table table-bordered table table-responsive">
+                                    <thead>
+                                    <th>#</th>
+                                    <th>Title</th>
+                                    <th>End Date</th>
+                                    <th>Assessment Name</th>
+                                    <th>Item</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                    </thead>
+                                    <tfoot>
+                                    <th>#</th>
+                                    <th>Title</th>
+                                    <th>End Date</th>
+                                    <th>Assessment Name</th>
+                                    <th>Item </th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                    </tfoot>
 
-                        <tbody>
-                            <c:forEach var="c" items="${beanAllClaim.listClaim}">
-                                <tr>
-                                    <td>${c.idCM}</td>
-                                    <td>${c.title}</td>\
-                                    <td>${c.endDate}</td>
-                                    <td>${c.assessmentName}</td>
-                                    <td>${c.itemAssessmentName}</td>
-                                    <c:if test="${c.status == 0}">
-                                        <td><span class="text-danger"><c:out value="Closed"/></span></td>
-                                        </c:if>
-                                        <c:if test="${c.status == 1}">
-                                        <td><c:out value="Open"/></td>
-                                    </c:if>
-                                    <td>
+                                    <tbody>
+                                        <c:forEach var="c" items="${beanAllClaim.listClaim}">
+                                            <tr>
+                                                <td>${c.idCM}</td>
+                                                <td>${c.title}</td>
+                                                <td>${c.endDate}</td>
+                                                <td>${c.assessmentName}</td>
+                                                <td>${c.itemAssessmentName}</td>
+                                                <c:if test="${c.status == 0}">
+                                                    <td><span class="text-danger"><c:out value="Closed"/></span></td>
+                                                    </c:if>
+                                                    <c:if test="${c.status == 1}">
+                                                    <td><c:out value="Open"/></td>
+                                                </c:if>
+                                                <td>
 
-                                        <a href="StudentsController?idCM=${c.idCM}&idUser=${idUser}&action=viewAllClaim">View</a>|<a href="StudentsController?action=AddClaimPage&idCM=${c.idCM}">Up Claim</a>
-                                    </td>
-                                </tr>
-                            </c:forEach>                          
-                        </tbody>
-                    </table>
-                </div><!-- Footer -->
+                                                    <a href="StudentsController?idCM=${c.idCM}&idUser=${idUser}&action=viewAllClaim">View</a>|<a href="StudentsController?action=AddClaimPage&idCM=${c.idCM}">Up Claim</a>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>                          
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
             </div>
 

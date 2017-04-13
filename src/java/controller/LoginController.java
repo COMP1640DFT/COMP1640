@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.ConnectDB;
+import model.Encode;
 
 /**
  *
@@ -52,7 +53,8 @@ public class LoginController extends HttpServlet {
     private Account checkLogin(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
         String idUser = request.getParameter("username");
         String pass = request.getParameter("password");
-        Account acc = connectDB.checkLogin(idUser, pass);
+        
+        Account acc = connectDB.checkLogin(idUser, Encode.encryptPass(pass));
         Claim c = new Claim();
         if (!acc.getIdUser().equals("")) {
             session.setAttribute("account", acc);

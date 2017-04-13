@@ -39,50 +39,53 @@
         <!-- TS1387507138: Neon - Responsive Admin Template created by Laborator -->
     </head>
     <jsp:useBean id="account" class="entity.Account" scope="session"></jsp:useBean>
-        <body class="page-body">
+    <c:if test="${account.lever != 3}">
+        <jsp:forward page="logout.jsp"></jsp:forward>
+    </c:if>
+    <body class="page-body">
 
-            <div class="page-container">
+        <div class="page-container">
 
-                <div class="sidebar-menu">
+            <div class="sidebar-menu">
 
-                    <header class="logo-env">
+                <header class="logo-env">
 
-                        <!-- logo -->
-                        <div class="logo text-center">
-                            <a href="dashboard/main/index.html">
-                                <img src="assets/images/logo.png" width="100" alt="" style="margin-right: auto"/>
+                    <!-- logo -->
+                    <div class="logo text-center">
+                        <a href="dashboard/main/index.html">
+                            <img src="assets/images/logo.png" width="100" alt="" style="margin-right: auto"/>
 
-                            </a>
-                            <h3>Greenwich University</h3>
-                        </div>
-
-
-                        <!-- open/close menu icon (do not remove if you want to enable menu on mobile devices) -->
-                        <div class="sidebar-mobile-menu visible-xs">
-                            <a href="#" class="with-animation"><!-- add class "with-animation" to support animation -->
-                                <i class="entypo-menu"></i>
-                            </a>
-                        </div>
-
-                    </header>
+                        </a>
+                        <h3>Greenwich University</h3>
+                    </div>
 
 
-                    <ul id="main-menu" class="">
-                        <li class="active">
-                            <a href=""><i class="glyphicon glyphicon-info-sign"></i>  View Process</a>
-                        </li>
-                        <li>
-                            <a href="Controller?action=viewstatistic"><i class="glyphicon glyphicon-dashboard"></i>  View Statistics</a>
-                        </li>
-                        <li><a href="logout.jsp"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
+                    <!-- open/close menu icon (do not remove if you want to enable menu on mobile devices) -->
+                    <div class="sidebar-mobile-menu visible-xs">
+                        <a href="#" class="with-animation"><!-- add class "with-animation" to support animation -->
+                            <i class="entypo-menu"></i>
+                        </a>
+                    </div>
+
+                </header>
 
 
-                    </ul>
+                <ul id="main-menu" class="">
+                    <li class="active">
+                        <a href="Controller?action=viewC"><i class="glyphicon glyphicon-info-sign"></i>  View Process</a>
+                    </li>
+                    <li>
+                        <a href="Controller?action=viewstatistic"><i class="glyphicon glyphicon-dashboard"></i>  View Statistics</a>
+                    </li>
+                    <li><a href="logout.jsp"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
 
 
-                </div>
-                <div class="main-content">
-                    <h2>Welcome: ${account.fullName} (${account.idUser})</h2>
+                </ul>
+
+
+            </div>
+            <div class="main-content">
+                <h2>Welcome: ${account.fullName} (${account.idUser})</h2>
 
                 <br/>
                 <div class="col-sm-12">

@@ -206,7 +206,7 @@
                         <ul class="list-inline links-list pull-right">
 
                             <li>
-                                <a href="#">
+                                <a href="logout.jsp">
                                     Log Out <i class="entypo-logout right"></i>
                                 </a>
                             </li>
@@ -360,7 +360,7 @@
                                                 </c:forEach>
                                             </select>
                                         </div>
-                                        <div class="form-group"><input type="submit" value="Search"/></div>
+                                        <div class="form-group"><input class="btn btn-success form-control" type="submit" value="Search"/></div>
                                     </form>
                                 </div>
                             </div>
