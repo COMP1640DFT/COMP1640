@@ -52,31 +52,31 @@ public class StudentsController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
         Account account = (Account) session.getAttribute("account");
-        if (account != null && account.getLever()==1) {
+        if (account != null && account.getLever() == 1) {
             action(request, response, session);
-        }else{
+        } else {
             response.sendRedirect("logout.jsp");
         }
     }
-    
+
     private void action(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
         String action = request.getParameter("action");
         if (action.equals("AddClaimPage")) {
-           // String idSubject = request.getParameter("idC");
+            // String idSubject = request.getParameter("idC");
             String idCM = request.getParameter("idCM");
-         
-        //    String idMajor = request.getParameter("idM");
+
+            //    String idMajor = request.getParameter("idM");
             Assessment subject = new Assessment();
             ClaimManage cm = new ClaimManage();
             cm.setId(Integer.parseInt(idCM));
-         //   subject.setId(Integer.parseInt(idSubject));
-         //   session.setAttribute("beanSubject", subject);
+            //   subject.setId(Integer.parseInt(idSubject));
+            //   session.setAttribute("beanSubject", subject);
             session.setAttribute("beanCM", cm);
-          //  session.setAttribute("idMajor", idMajor);
+            //  session.setAttribute("idMajor", idMajor);
             response.sendRedirect("createclaimST.jsp");
 
         }
-        if (action.equals("viewAllCM")){
+        if (action.equals("viewAllCM")) {
             viewAllClaimManage(request, response, session);
         }
         if (action.equals("viewAllClaimManageFilterByStatus")) {
@@ -93,25 +93,30 @@ public class StudentsController extends HttpServlet {
                 String date_send = new SimpleDateFormat("yyyy/MM/dd").format(Calendar.getInstance().getTime());
                 int status = 0;
                 int idCM = Integer.parseInt(request.getParameter("idCM"));
-               
+
                 Claim claim = new Claim(title, description, date_send, file_name, idU, idCM, status);
-             
-                if (connectDB.createClaim(claim)) {
-                    List<Account> accountecco = connectDB.getListEccoor(idMajor);
-                    Mail mail = new Mail();
-                    for (Account ec : accountecco) {
-                        String mailtext = "Hello " + ec.getFullName() + "(" + ec.getIdUser() + ")"
-                                + "\n You have new claim of the student.";
-                        try {
-                            mail.sendMail(ec.getEmail(), mailtext);
-                        } catch (MessagingException ex) {
-                            Logger.getLogger(StudentsController.class.getName()).log(Level.SEVERE, null, ex);
+                if (connectDB.checkSttClaimManage(idCM) == 0) {
+                    if (connectDB.createClaim(claim)) {
+
+                        List<Account> accountecco = connectDB.getListEccoor(idMajor);
+                        Mail mail = new Mail();
+                        for (Account ec : accountecco) {
+                            String mailtext = "Hello " + ec.getFullName() + "(" + ec.getIdUser() + ")"
+                                    + "\n You have new claim of the student.";
+                            try {
+                                mail.sendMail(ec.getEmail(), mailtext);
+                            } catch (MessagingException ex) {
+                                Logger.getLogger(StudentsController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
+                        response.sendRedirect("StudentsController?idCM=" + idCM + "&idUser=" + idU + "&action=viewAllClaim");
+                    } else {
+                        sendMessage(response, "Add claim failed!", "createclaimST.jsp");
                     }
-                    response.sendRedirect("StudentsController?idCM="+idCM+"&idUser="+idU+"&action=viewAllClaim");
                 } else {
-                    sendMessage(response, "Add claim is failed!", "createclaimST.jsp");
+                    sendMessage(response, "Too late for add claim!", "createclaimST.jsp");
                 }
+
             }
         }
         if (action.equals("viewDecision")) {
@@ -124,14 +129,19 @@ public class StudentsController extends HttpServlet {
             final String idU = (String) session.getAttribute("idUser");
             Claim claim = (Claim) session.getAttribute("beanClaim");
             String file_name = request.getParameter("linkfile");
-            System.out.println("file: "+ file_name);
+            System.out.println("file: " + file_name);
             if (!file_name.equals("")) {
-                if (connectDB.updateFileofClaim(file_name, claim.getIdClaim())) {
-                    claim.setFiledata(file_name);
-                    session.setAttribute("beanClaim", claim);
-                    sendMessage(response, "Update file complete successfull!", "detailclaimST.jsp");
-                } else {
-                    sendMessage(response, "Update file failed!", "detailclaimST.jsp");
+                int stt = connectDB.checkSttClaimManage(claim.getIdClaim());
+                if (stt == 0 || stt == 1) {
+                    if (connectDB.updateFileofClaim(file_name, claim.getIdClaim())) {
+                        claim.setFiledata(file_name);
+                        session.setAttribute("beanClaim", claim);
+                        sendMessage(response, "Update file complete successfull!", "detailclaimST.jsp");
+                    } else {
+                        sendMessage(response, "Update file failed!", "detailclaimST.jsp");
+                    }
+                }else{
+                    sendMessage(response, "Too late for upload evidence!", "detailclaimST.jsp");
                 }
             } else {
                 sendMessage(response, "If you want update file, you must select file want update!", "detailclaimST.jsp");
@@ -174,15 +184,12 @@ public class StudentsController extends HttpServlet {
         session.setAttribute("beanAllClaim", c);
         response.sendRedirect("indexST.jsp");
     }
+
     private void viewAllClaimManageFilterByStatus(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
         Account acc = (Account) session.getAttribute("account");
         Claim c = new Claim();
-        int idStt = 0;
-        String status = request.getParameter("status");
-        if(status.equals("Open")) {
-            idStt = 1;
-        }
-        c.setListClaim(connectDB.getAllClaimManageFilterByStatus(acc.getIdFaculty(),idStt));
+        int idStt = Integer.parseInt(request.getParameter("status"));
+        c.setListClaim(connectDB.getAllClaimManageFilterByStatus(acc.getIdFaculty(), idStt));
         session.setAttribute("idUser", acc.getIdUser());
         session.setAttribute("idMajor", acc.getIdFaculty());
         session.setAttribute("fullName", acc.getFullName());

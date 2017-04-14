@@ -25,7 +25,6 @@ public class Encode {
                 hashtext = "2" + hashtext;
             }
             p = hashtext;
-            System.out.println(hashtext);
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }

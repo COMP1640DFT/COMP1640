@@ -44,108 +44,129 @@
         <c:if test="${account.lever != 2}">
             <jsp:forward page="logout.jsp"></jsp:forward>
         </c:if>
-            <div class="page-container">
+        <div class="page-container">
 
-                <div class="sidebar-menu">
+            <div class="sidebar-menu">
 
-                    <header class="logo-env">
+                <header class="logo-env">
 
-                        <!-- logo -->
-                        <div class="logo text-center">
-                            <a href="dashboard/main/index.html">
-                                <img src="assets/images/logo.png" width="100" alt="" style="margin-right: auto"/>
+                    <!-- logo -->
+                    <div class="logo text-center">
+                        <a href="dashboard/main/index.html">
+                            <img src="assets/images/logo.png" width="100" alt="" style="margin-right: auto"/>
 
-                            </a>
-                            <h3>Greenwich University</h3>
-                        </div>
-
-
-                        <!-- open/close menu icon (do not remove if you want to enable menu on mobile devices) -->
-                        <div class="sidebar-mobile-menu visible-xs">
-                            <a href="#" class="with-animation"><!-- add class "with-animation" to support animation -->
-                                <i class="entypo-menu"></i>
-                            </a>
-                        </div>
-
-                    </header>
+                        </a>
+                        <h3>Greenwich University</h3>
+                    </div>
 
 
-                    <ul id="main-menu" class="">
-                        <li>
-                            <a href="#"><i class="entypo-user"></i><span>Account</span></a>
-                            <ul>
+                    <!-- open/close menu icon (do not remove if you want to enable menu on mobile devices) -->
+                    <div class="sidebar-mobile-menu visible-xs">
+                        <a href="#" class="with-animation"><!-- add class "with-animation" to support animation -->
+                            <i class="entypo-menu"></i>
+                        </a>
+                    </div>
+
+                </header>
 
 
-                                <li><a href="AdminController?action=openCreateUser"><i class="entypo entypo-user-add"></i> Create</a></li>
-                                <li><a href="AdminController?action=viewAllUser"><i class="entypo entypo-users"></i> View all</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#"><i class="entypo-suitcase"></i> Faculty</a>
-                            <ul>
-                                <li><a href="AdminController?action=openShedule">Create</a></li>
-                                <li><a href="AdminController?action=adminViewAll">View all</a></li>
-                            </ul>
-
-                        </li>
-                        <li><a href="#"><i class="entypo-logout"></i> Logout</a></li>
-                    </ul>
+                <ul id="main-menu" class="">
+                    <li>
+                        <a href="#"><i class="entypo-user"></i><span>Account</span></a>
+                        <ul>
 
 
-                </div>
-                <div class="main-content">
-                    <h2>Welcome: ${account.fullName}</h2>
+                            <li><a href="AdminController?action=openCreateUser"><i class="entypo entypo-user-add"></i> Create</a></li>
+                            <li><a href="AdminController?action=viewAllUser"><i class="entypo entypo-users"></i> View all</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#"><i class="entypo-suitcase"></i> Faculty</a>
+                        <ul>
+                            <li><a href="AdminController?action=openShedule">Create</a></li>
+                            <li><a href="AdminController?action=adminViewAll">View all</a></li>
+                        </ul>
+
+                    </li>
+                    <li><a href="#"><i class="entypo-logout"></i> Logout</a></li>
+                </ul>
+
+
+            </div>
+            <div class="main-content">
+                <h2>Welcome: ${account.fullName}</h2>
 
                 <br/>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <form class="form-inline" action="Controller?action=getStt" method="POST">
+                            <div class="form-group">
+                                <label><strong>Filter: &nbsp;&nbsp;&nbsp;&nbsp;</strong></label>
+                            </div>
+                            <div class="form-group">
+                                <label for="option1">Claims need</label>
+                                <div class="dropdown">
+                                    <button class="dropbtn">Search</button>
+                                    <div class="dropdown-content">
+                                        <a href="AdminController?action=getStt&stt=0">Claim need close upload</a>
+                                        <a href="AdminController?action=getStt&stt=1">Claim need close upload evidence</a>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </form>
+                    </div>
+                </div>
                 <div class="col-sm-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h1 class="panel-title">All Claim</h1>
                         </div>
 
-                        
+
                     </div>
                     <div class="panel-body">
-                            <table class="dataTable table table-bordered table table-responsive">
-                                <thead>
-                                <th>#</th>
-                                <th>Title</th>
-                                <th>Create Date</th>
-                                <th>End Date</th>
-                                <th>Assessment</th>
-                                <th>Item</th>
-                                <th>Status</th>
-                                <th>#</th>
-                                </thead>
-                                <tbody>
-                                    <c:forEach var="c" items="${beanAdminCM.listClaim}">
-                                        <tr>
-                                            <td>${c.idClaim}</td>
-                                            <td>${c.title}</td>
-                                            <td>${c.createDate}</td>
-                                            <td>${c.endDate}</td>
-                                            <td>${c.assessmentName}</td>
-                                            <td>${c.itemAssessmentName} - ${c.facultyName}</td>
-                                            <c:if test="${c.status == 0}">
-                                                <td><span><c:out value="Open"/></span></td>
-                                            </c:if>
-                                            <c:if test="${c.status == 1}">
-                                                <td><c:out value="Updating"/></td>
-                                            </c:if>
-                                            <c:if test="${c.status == 2}">
-                                                <td><c:out value="Closed"/></td>
-                                            </c:if>
-                                            <td><div class="dropdown">
-                                                    <button class="dropbtn">Update</button>
-                                                    <div class="dropdown-content">
-                                                        <a href="AdminController?action=updateSttCM&stt=1&idCM=${c.idClaim}">Close update claim</a>
-                                                        <a href="AdminController?action=updateSttCM&stt=2&idCM=${c.idClaim}">Close update evidence</a>
-                                                    </div>
-                                                </div></td>
-                                        </tr>
-                                    </c:forEach>
-                                </tbody>
-                            </table>
-                        </div>
+                        <table class="dataTable table table-bordered table table-responsive">
+                            <thead>
+                            <th>#</th>
+                            <th>Title</th>
+                            <th>Create Date</th>
+                            <th>End Date</th>
+                            <th>Assessment</th>
+                            <th>Item</th>
+                            <th>Status</th>
+                            <th>#</th>
+                            </thead>
+                            <tbody>
+                                <c:forEach var="c" items="${beanAdminCM.listClaim}">
+                                    <tr>
+                                        <td>${c.idClaim}</td>
+                                        <td>${c.title}</td>
+                                        <td>${c.createDate}</td>
+                                        <td>${c.endDate}</td>
+                                        <td>${c.assessmentName}</td>
+                                        <td>${c.itemAssessmentName} - ${c.facultyName}</td>
+                                        <c:if test="${c.status == 0}">
+                                            <td><span><c:out value="Open"/></span></td>
+                                        </c:if>
+                                        <c:if test="${c.status == 1}">
+                                            <td><c:out value="Updating"/></td>
+                                        </c:if>
+                                        <c:if test="${c.status == 2}">
+                                            <td><c:out value="Closed"/></td>
+                                        </c:if>
+                                        <td><div class="dropdown">
+                                                <button class="dropbtn">Update</button>
+                                                <div class="dropdown-content">
+                                                    <a href="AdminController?action=updateSttCM&stt=1&idCM=${c.idClaim}">Close upload claim</a>
+                                                    <a href="AdminController?action=updateSttCM&stt=2&idCM=${c.idClaim}">Close upload evidence</a>
+                                                </div>
+                                            </div></td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <!-- lets do some work here... --><!-- Footer -->
                 <footer class="main">

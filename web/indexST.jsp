@@ -128,9 +128,9 @@
                                         <div class="form-group">
                                             <label for="option1">Status</label>
                                             <select id="option1" name="status">
-                                                <option value="Open">Open</option>
-                                                <option value="Closed">Closed</option>
-
+                                                <option value="0">Upload Claim</option>
+                                                <option value="1">Upload Evidence</option>
+                                                <option value="2">Closed</option>
                                             </select>
                                         </div>
                                         <div class="form-group"><input type="submit" value="Search"/></div>
@@ -167,11 +167,14 @@
                                                 <td>${c.endDate}</td>
                                                 <td>${c.assessmentName}</td>
                                                 <td>${c.itemAssessmentName}</td>
-                                                <c:if test="${c.status == 0}">
+                                                <c:if test="${c.status == 2}">
                                                     <td><span class="text-danger"><c:out value="Closed"/></span></td>
                                                     </c:if>
                                                     <c:if test="${c.status == 1}">
-                                                    <td><c:out value="Open"/></td>
+                                                    <td><c:out value="Upload Evidence"/></td>
+                                                </c:if>
+                                                <c:if test="${c.status == 0}">
+                                                    <td><c:out value="Upload Claim"/></td>
                                                 </c:if>
                                                 <td>
 

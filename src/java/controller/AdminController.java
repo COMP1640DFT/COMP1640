@@ -14,10 +14,12 @@ import entity.Faculty;
 import entity.ItemSelected;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -87,6 +89,9 @@ public class AdminController extends HttpServlet {
         if (action.equals("createUser")) {
             createAccount(request, response, session);
         }
+        if(action.equals("getStt")){
+            getClaimsBystt(request, response, session);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -128,6 +133,27 @@ public class AdminController extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    private void getClaimsBystt(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+        int stt = Integer.parseInt(request.getParameter("stt"));
+        long DAY_IN_MS = 1000 * 60 * 60 * 24;
+        Date a;
+        if(stt == 0){
+            a = new Date(System.currentTimeMillis() - (1 * DAY_IN_MS)); 
+        }else{
+            a = new Date(System.currentTimeMillis()); 
+        }
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        df.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
+        
+        List<Claim> list = connectDB.getAllClaimManageByStt(stt, df.format(a));
+        System.out.println(""+list.size());
+        System.out.println(stt+"---"+df.format(a));
+        Claim c = new Claim();
+        c.setListClaim(list);
+        session.setAttribute("beanAdminCM", c);
+        response.sendRedirect("indexA.jsp");
+    }
+    
     private void viewAllClaim(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
         List<Claim> list = connectDB.getAllClaimManage();
         Claim c = new Claim();
@@ -237,7 +263,7 @@ public class AdminController extends HttpServlet {
             Account account = connectDB.getAccountInfor(userid);
             if (account == null) {
               
-                Account acc= new Account(userid, password, fullname, dob, email, phone, Integer.parseInt(academy), Integer.parseInt(faculty), Integer.parseInt(role));
+                Account acc= new Account(userid, Encode.encryptPass(password), fullname, dob, email, phone, Integer.parseInt(academy), Integer.parseInt(faculty), Integer.parseInt(role));
                 if(connectDB.addAccount(acc)){
                     response.sendRedirect("account-create.jsp");
                 }
