@@ -103,13 +103,11 @@
                         </div>
 
                         <div class="panel-body">
-                            <form action="#" method="post" class="form-horizontal form-groups-bordered">
+                            <form action="AdminController?action=createUser" method="post" class="form-horizontal form-groups-bordered">
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Account ID</label>
-                                    <div class="col-sm-4"><input type="text" class="form-control" name="id"/></div>
-                                    <div class="col-sm-3">
-                                        <button type="button" class="btn btn-default">Check exits</button>
-                                    </div>
+                                    <div class="col-sm-5"><input type="text" class="form-control" name="id"/></div>
+
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Password</label>
@@ -134,51 +132,40 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Role</label>
                                     <div class="col-sm-3">
-                                        <select class="form-control">
-                                            <option>---</option>
+                                        <select class="form-control" name="role">
+                                           
                                             <option value="3">Manager</option>
                                             <option value="4">Coordinator</option>
                                             <option value="1">Student</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" >
                                     <label class="col-sm-3 control-label">Faculty</label>
                                     <div class="col-sm-3">
-                                        <select class="form-control">
-                                            <option>---</option>
-                                            <option value="1">Information Technology</option>
-                                            <option value="2">Business</option>
-                                            <option value="3">Commerce</option>
+                                        <select class="form-control" name="faculty">
+                                           
+                                             <c:forEach items="${sessionScope['listFaculty']}" var="Faculty">
+                                                <option  value="${Faculty.id}">${Faculty.name}</option>
+                                            </c:forEach>
                                         </select>
                                     </div>
 
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">Course</label>
+                                    <label class="col-sm-3 control-label">Academy Year</label>
                                     <div class="col-sm-3">
-                                        <select class="form-control">
-                                            <option>---</option>
-                                            <option value="1">I</option>
-                                            <option value="2">II</option>
-                                            <option value="3">III</option>
-                                            <option value="4">IV</option>
-                                            <option value="5">V</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">Status</label>
-                                    <div class="col-sm-3">
-                                        <select class="form-control" name="status">
-                                            <option value="active">Active</option>
-                                            <option value="deactive">Deactive</option>
+                                        <select class="form-control" name="academy">
+                                           
+                                            <c:forEach items="${sessionScope['listAcademy']}" var="Academy">
+                                                <option  value="${Academy.id}">${Academy.name}</option>
+                                            </c:forEach>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-sm-7 col-sm-offset-5">
-                                        <button class="btn btn-success" type="submit"><i class="entypo entypo-user-add"></i> Create</button>
+                                       <button class="btn btn-success"  type="submit"><i class="entypo entypo-user-add"></i> Create</button>
                                         <button class="btn btn-default" type="reset"><i class="entypo entypo-cancel-circled"></i> Reset</button>
                                     </div>
                                 </div>

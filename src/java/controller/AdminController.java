@@ -5,14 +5,21 @@
  */
 package controller;
 
+import entity.Academy;
 import entity.Account;
 import entity.Assessment;
 import entity.AsssessmentDetail;
 import entity.Claim;
+import entity.Faculty;
 import entity.ItemSelected;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -44,9 +51,9 @@ public class AdminController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
         Account account = (Account) session.getAttribute("account");
-        if (account != null && account.getLever()==2) {
+        if (account != null && account.getLever() == 2) {
             action(request, response, session);
-        }else{
+        } else {
             response.sendRedirect("logout.jsp");
         }
     }
@@ -71,8 +78,14 @@ public class AdminController extends HttpServlet {
         if (action.equals("updateUser")) {
             updateUser(request, response, session);
         }
-        if(action.equals("updateSttCM")){
+        if (action.equals("updateSttCM")) {
             updateSttClaim(request, response, session);
+        }
+        if (action.equals("openCreateUser")) {
+            openCreateUser(request, response, session);
+        }
+        if (action.equals("createUser")) {
+            createAccount(request, response, session);
         }
     }
 
@@ -190,14 +203,57 @@ public class AdminController extends HttpServlet {
             response.sendRedirect("AdminController?action=viewAllUser");
         }
     }
-    
+
     private void updateSttClaim(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
         response.setContentType("text/html;charset=UTF-8");
         int stt = Integer.parseInt(request.getParameter("stt"));
         int idCM = Integer.parseInt(request.getParameter("idCM"));
-        if (connectDB.updateSttCM(idCM,stt)) {
+        if (connectDB.updateSttCM(idCM, stt)) {
             response.sendRedirect("AdminController?action=adminViewAll");
         }
+    }
+
+    private void openCreateUser(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
+//        Account account = new Account();
+//        session.setAttribute("account", account);
+        List<Academy> listAcademy = connectDB.getAllAcademy();
+        List<Faculty> listFaculty = connectDB.getListMajor();
+        session.setAttribute("listAcademy", listAcademy);
+        session.setAttribute("listFaculty", listFaculty);
+        response.sendRedirect("account-create.jsp");
+    }
+
+    public void createAccount(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
+        String userid = request.getParameter("id");
+        String password = request.getParameter("password");
+        String fullname = request.getParameter("name");
+        String email = request.getParameter("email");
+        String phone = request.getParameter("phone");
+        String dob =request.getParameter("birthdate");
+        String role = request.getParameter("role");
+        String faculty = request.getParameter("faculty");
+        String academy = request.getParameter("academy");
+        if (!userid.equals("") && !password.equals("") && !email.equals("")) {
+            Account account = connectDB.getAccountInfor(userid);
+            if (account == null) {
+              
+                Account acc= new Account(userid, password, fullname, dob, email, phone, Integer.parseInt(academy), Integer.parseInt(faculty), Integer.parseInt(role));
+                if(connectDB.addAccount(acc)){
+                    response.sendRedirect("account-create.jsp");
+                }
+                else{
+                     String mes="Add failed!";
+                        sendMessage(response,mes,"account-create.jsp");
+                }
+            } else {
+                String mes = "This Account is exist, Please try again!";
+                sendMessage(response, mes, "account-create.jsp");
+            }
+        } else {
+            String mes = "Please fill fields as Account ID, Password and Email";
+            sendMessage(response, mes, "account-create.jsp");
+        }
+
     }
 
     private void sendMessage(HttpServletResponse response, String sms, String path) throws ServletException, IOException {

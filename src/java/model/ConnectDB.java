@@ -5,6 +5,7 @@
  */
 package model;
 
+import entity.Academy;
 import entity.Account;
 import entity.Claim;
 import entity.Decision;
@@ -77,11 +78,14 @@ public class ConnectDB {
                 acc.setIdAcademy(rs.getInt(7));
                 acc.setIdFaculty(rs.getInt(8));
                 acc.setLever(rs.getInt(9));
+                con.close();
+                return acc;
             }
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
+        acc.setIdUser("");
         return acc;
 
     }
@@ -835,7 +839,7 @@ public class ConnectDB {
         }
         return false;
     }
-    
+
     public boolean updateSttCM(int id, int stt) {
         try {
             connectdatabase();
@@ -953,6 +957,53 @@ public class ConnectDB {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
+    }
+
+    public boolean addAccount(Account account) {
+
+        try {
+            connectdatabase();
+            String sql = "INSERT INTO tblUser ( idUser, _passWord,fullName, dob, email, phoneNumber, idAcademy,idFaculty,lever) VALUES"
+                    + "(?,?,?,?,?,?,?,?,?)";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, account.getIdUser());
+            st.setString(2, account.getPassWord());
+            st.setString(3, account.getFullName());
+            st.setString(4, account.getDob());
+            st.setString(5, account.getEmail());
+            st.setString(6, account.getPhoneNumber());
+            st.setInt(7, account.getIdAcademy());
+            st.setInt(8, account.getIdFaculty());
+            st.setInt(9, account.getLever());
+            
+            if (st.executeUpdate() > 0) {
+                return true;
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    
+    public List<Academy> getAllAcademy(){
+        List<Academy> list = new ArrayList<>();
+        String sql = "select * from tblAcademyYear";
+        try {
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+               Academy academy = new Academy();
+               academy.setId(rs.getInt(1));
+               academy.setName(rs.getString(2));
+               list.add(academy);           
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
     }
 
     public void main(String[] args) {
