@@ -76,7 +76,7 @@
                             <ul>
 
 
-                                <li><a href="#"><i class="entypo entypo-user-add"></i> Create</a></li>
+                                <li><a href="AdminController?action=openCreateUser"><i class="entypo entypo-user-add"></i> Create</a></li>
                                 <li><a href="AdminController?action=viewAllUser"><i class="entypo entypo-users"></i> View all</a></li>
                             </ul>
                         </li>
@@ -120,13 +120,14 @@
                                             <td>${a.email}</td>
                                             <td>${a.fullName}</td>
                                             <td>${a.facultyName}</td>
-                                            <c:if test="${c.status == 1}">
+                                            
+                                            <c:if test="${a.lever == 1}">
                                                 <td><c:out value="Student"/></td>
                                             </c:if>
-                                            <c:if test="${c.status == 3}">
+                                            <c:if test="${a.lever == 3}">
                                                 <td><c:out value="Manager"/></td>
                                             </c:if>
-                                            <c:if test="${c.status == 4}">
+                                            <c:if test="${a.lever == 4}">
                                                 <td><c:out value="EC Coordinator"/></td>
                                             </c:if>
                                             <td>
@@ -171,7 +172,7 @@
             $(document).ready(function () {
 
                 $('.dataTable').DataTable({
-                    searching: false,
+                    searching: true,
                     bLengthChange: false,
                     responsive: {
                         details: {

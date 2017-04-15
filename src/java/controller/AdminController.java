@@ -264,8 +264,7 @@ public class AdminController extends HttpServlet {
         String dob = request.getParameter("birthdate");
         String role = request.getParameter("role");
         String faculty = request.getParameter("faculty");
-        String academy = request.getParameter("academy");
-        if (!userid.equals("") && !password.equals("") && !email.equals("")) {
+        String academy = request.getParameter("academy"); 
             Account account = connectDB.getAccountInfor(userid);
             if (account == null) {
 
@@ -280,10 +279,7 @@ public class AdminController extends HttpServlet {
                 String mes = "This Account is exist, Please try again!";
                 sendMessage(response, mes, "account-create.jsp");
             }
-        } else {
-            String mes = "Please fill fields as Account ID, Password and Email";
-            sendMessage(response, mes, "account-create.jsp");
-        }
+       
 
     }
 

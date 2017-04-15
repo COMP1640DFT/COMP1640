@@ -103,31 +103,36 @@
                         </div>
 
                         <div class="panel-body">
-                            <form action="AdminController?action=createUser" method="post" class="form-horizontal form-groups-bordered">
+                            <form name="addAcc" action="AdminController?action=createUser" onsubmit="return validate()" method="post" class="form-horizontal form-groups-bordered">
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Account ID</label>
                                     <div class="col-sm-5"><input type="text" class="form-control" name="id"/></div>
-
+                                      <div class="classerror" id="erroraccount"></div>  
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Password</label>
                                     <div class="col-sm-5"><input type="password" class="form-control" name="password"/></div>
+                                     <div class="classerror" id="errorpass"></div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Full name</label>
                                     <div class="col-sm-5"><input type="text" class="form-control" name="name"/></div>
+                                     <div class="classerror" id="errorfullname"></div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Email address</label>
                                     <div class="col-sm-5"><input type="email" class="form-control" name="email"/></div>
+                                     <div class="classerror" id="erroremail"></div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Phone number</label>
                                     <div class="col-sm-5"><input type="tel" class="form-control" name="phone"/></div>
+                                    <div class="classerror" id="errorphone"></div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Birth date</label>
                                     <div class="col-sm-3"><input type="date" class="form-control" name="birthdate"/></div>
+                                      <div class="classerror" id="errordate"></div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Role</label>
@@ -194,4 +199,50 @@
 
 
     </body>
+     <script type="text/javascript">
+
+        function validate() {
+            var result=0;
+            if (document.addAcc.id.value == "") {
+                $('#erroraccount').text("Please input your Account Id!");
+                result=result+1;
+                
+            }
+            if (document.addAcc.password.value == "") {
+                $('#errorpass').text("Please input your password!");
+                result=result+1;
+                
+            }
+            if (document.addAcc.email.value == "") {
+                $('#erroremail').text("Please input your Email!");
+                result=result+1;
+                
+            }
+             if (document.addAcc.birthdate.value == "") {
+                $('#errordate').text("Please input your Birthday!");
+                result=result+1;
+                
+            }
+            if (document.addAcc.name.value == "") {
+                $('#errorfullname').text("Please input your Name!");
+                result=result+1;
+                
+            }
+            if (document.addAcc.phone.value == "") {
+                $('#errorphone').text("Please input your Phone!");
+                result=result+1;
+                
+            }
+            
+            if(result>0) {
+               return false;
+            }
+            else{
+                return  document.editForm.submit();
+            }
+        }
+
+
+
+    </script>
 </html>

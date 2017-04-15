@@ -76,7 +76,7 @@
                         <ul>
 
 
-                            <li><a href="#"><i class="entypo entypo-user-add"></i> Create</a></li>
+                            <li><a href="AdminController?action=openCreateUser"><i class="entypo entypo-user-add"></i> Create</a></li>
                             <li><a href="AdminController?action=viewAllUser"><i class="entypo entypo-users"></i> View all</a></li>
                         </ul>
                     </li>

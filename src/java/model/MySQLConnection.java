@@ -52,6 +52,6 @@ public class MySQLConnection {
 //        createDatabase("TOPUP");
 //        show();
         ConnectDB c = new ConnectDB();
-        System.out.println(c.getAllClaimManage(1).get(0).getEndDate());
+       
     }
 }
