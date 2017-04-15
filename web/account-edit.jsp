@@ -44,56 +44,56 @@
         <c:if test="${account.lever != 2}">
             <jsp:forward page="logout.jsp"></jsp:forward>
         </c:if>
-            <div class="page-container">
+        <div class="page-container">
 
-                <div class="sidebar-menu">
+            <div class="sidebar-menu">
 
-                    <header class="logo-env">
+                <header class="logo-env">
 
-                        <!-- logo -->
-                        <div class="logo text-center">
-                            <a href="dashboard/main/index.html">
-                                <img src="assets/images/logo.png" width="100" alt="" style="margin-right: auto"/>
+                    <!-- logo -->
+                    <div class="logo text-center">
+                        <a href="dashboard/main/index.html">
+                            <img src="assets/images/logo.png" width="100" alt="" style="margin-right: auto"/>
 
-                            </a>
-                            <h3>Greenwich University</h3>
-                        </div>
-
-
-                        <!-- open/close menu icon (do not remove if you want to enable menu on mobile devices) -->
-                        <div class="sidebar-mobile-menu visible-xs">
-                            <a href="#" class="with-animation"><!-- add class "with-animation" to support animation -->
-                                <i class="entypo-menu"></i>
-                            </a>
-                        </div>
-
-                    </header>
+                        </a>
+                        <h3>Greenwich University</h3>
+                    </div>
 
 
-                    <ul id="main-menu" class="">
-                        <li>
-                            <a href="#"><i class="entypo-user"></i><span>Account</span></a>
-                            <ul>
+                    <!-- open/close menu icon (do not remove if you want to enable menu on mobile devices) -->
+                    <div class="sidebar-mobile-menu visible-xs">
+                        <a href="#" class="with-animation"><!-- add class "with-animation" to support animation -->
+                            <i class="entypo-menu"></i>
+                        </a>
+                    </div>
+
+                </header>
 
 
-                                <li><a href="#"><i class="entypo entypo-user-add"></i> Create</a></li>
-                                <li><a href="AdminController?action=viewAllUser"><i class="entypo entypo-users"></i> View all</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#"><i class="entypo-suitcase"></i> Claim</a>
-                            <ul>
-                                <li><a href="AdminController?action=openShedule">Create</a></li>
-                                <li><a href="AdminController?action=adminViewAll">View all</a></li>
-                            </ul>
-
-                        </li>
-                        <li><a href="#"><i class="entypo-logout"></i> Logout</a></li>
-                    </ul>
+                <ul id="main-menu" class="">
+                    <li>
+                        <a href="#"><i class="entypo-user"></i><span>Account</span></a>
+                        <ul>
 
 
-                </div>
-                <div class="main-content">
-                    <h2>Welcome: ${account.fullName}</h2>
+                            <li><a href="#"><i class="entypo entypo-user-add"></i> Create</a></li>
+                            <li><a href="AdminController?action=viewAllUser"><i class="entypo entypo-users"></i> View all</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#"><i class="entypo-suitcase"></i> Claim</a>
+                        <ul>
+                            <li><a href="AdminController?action=openShedule">Create</a></li>
+                            <li><a href="AdminController?action=adminViewAll">View all</a></li>
+                        </ul>
+
+                    </li>
+                    <li><a href="logout.jsp"><i class="entypo-logout"></i> Logout</a></li>
+                </ul>
+
+
+            </div>
+            <div class="main-content">
+                <h2>Welcome: ${account.fullName}</h2>
 
                 <br/>
                 <div class="col-sm-12">
@@ -103,7 +103,7 @@
                         </div>
 
                         <div class="panel-body">
-                            <form action="AdminController?action=updateUser" method="post" class="form-horizontal form-groups-bordered">
+                            <form name="editForm" action="AdminController?action=updateUser" onsubmit="return validate()" method="post" class="form-horizontal form-groups-bordered">
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Account ID</label>
                                     <div class="col-sm-4"><input readonly="readonly" value="${beanUserDetail.idUser}" type="text" class="form-control" name="idUser"/></div>
@@ -111,7 +111,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Password</label>
-                                    <div class="col-sm-5"><input value="${beanUserDetail.passWord}" type="password" class="form-control" name="password"/></div>
+                                    <div class="col-sm-5"><input value="" type="password" class="form-control" name="password"/></div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Full name</label>
@@ -120,6 +120,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Email address</label>
                                     <div class="col-sm-5"><input type="email" value="${beanUserDetail.email}" class="form-control" name="email"/></div>
+                                    <div class="classerror" id="error"></div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Phone number</label>
@@ -132,7 +133,7 @@
 
                                 <div class="form-group">
                                     <div class="col-sm-7 col-sm-offset-5">
-                                        <button class="btn btn-success" type="submit"><i class="entypo entypo-floppy"></i> Save</button>
+                                        <button class="btn btn-success" type="submit" ><i class="entypo entypo-floppy"></i> Save</button>
                                         <button class="btn btn-default" type="reset"><i class="entypo entypo-cancel-circled"></i> Reset</button>
                                     </div>
                                 </div>
@@ -161,4 +162,18 @@
 
 
     </body>
+    <script type="text/javascript">
+
+        function validate() {
+            if (document.editForm.email.value == "") {
+                $('#error').text("Please input your email!");
+                return false;
+            } else {
+                document.editForm.submit();
+            }
+        }
+
+
+
+    </script>
 </html>

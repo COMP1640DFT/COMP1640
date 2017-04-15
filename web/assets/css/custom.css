@@ -98,3 +98,7 @@ a:hover{
 .dropdown:hover .dropbtn {
     background-color: #3e8e41;
 }
+
+.classerror{
+    color: red;
+}

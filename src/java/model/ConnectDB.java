@@ -438,13 +438,13 @@ public class ConnectDB {
         }
         return list;
     }
-    
+
     public List<Claim> getAllClaimManageByStt(int stt, String date) {
         String q[] = {"tcm.createdate", "tcm.enddate"};
         String sql = "select tcm.idCM, tcm.title, tcm.createdate, tcm.enddate, tcm._status, tf.name, ta._name, tia.name from tblClaimManage tcm join tblADetail tad on tcm.idItemAssessment = tad.id \n"
                 + "                            join tblAssessment ta on ta.id = tad.idAssesment\n"
                 + "                            join tblFaculty tf on tf.id = ta.idFaculty\n"
-                + "                            join tblItemA tia on tad.idItem = tia.id where " +q[stt]+"='"+date+"' and tcm._status = " + stt;
+                + "                            join tblItemA tia on tad.idItem = tia.id where " + q[stt] + "='" + date + "' and tcm._status = " + stt;
         List<Claim> list = new LinkedList<>();
 
         try {
@@ -469,11 +469,11 @@ public class ConnectDB {
         }
         return list;
     }
-    
-    public int checkSttClaimManage(int idCM){
+
+    public int checkSttClaimManage(int idCM) {
         String sql = "select _status from tblClaimManage where idCM = " + idCM;
         int stt = -1;
-        
+
         try {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
@@ -486,7 +486,7 @@ public class ConnectDB {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
         return stt;
-    } 
+    }
 
     public List<ItemSelected> getAllAssessmentDetail() {
         List<ItemSelected> list = new ArrayList<>();
@@ -987,7 +987,7 @@ public class ConnectDB {
         return acc;
     }
 
-    public boolean updateAccount(Account acc) {
+    public boolean updateAccountWithAllInfor(Account acc) {
         try {
             connectdatabase();
             String sql = "Update tblUser set  _passWord = ?, fullName = ?, dob = ?, email = ?, phoneNumber = ? where idUser = ?";
@@ -998,6 +998,26 @@ public class ConnectDB {
             st.setString(4, acc.getEmail());
             st.setString(5, acc.getPhoneNumber());
             st.setString(6, acc.getIdUser());
+            if (st.executeUpdate() > 0) {
+                return true;
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    public boolean updateAccountMissingPwd(Account acc) {
+        try {
+            connectdatabase();
+            String sql = "Update tblUser set fullName = ?, dob = ?, email = ?, phoneNumber = ? where idUser = ?";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, acc.getFullName());
+            st.setString(2, acc.getDob());
+            st.setString(3, acc.getEmail());
+            st.setString(4, acc.getPhoneNumber());
+            st.setString(5, acc.getIdUser());
             if (st.executeUpdate() > 0) {
                 return true;
             }
@@ -1024,7 +1044,7 @@ public class ConnectDB {
             st.setInt(7, account.getIdAcademy());
             st.setInt(8, account.getIdFaculty());
             st.setInt(9, account.getLever());
-            
+
             if (st.executeUpdate() > 0) {
                 return true;
             }
@@ -1034,8 +1054,8 @@ public class ConnectDB {
         }
         return false;
     }
-    
-    public List<Academy> getAllAcademy(){
+
+    public List<Academy> getAllAcademy() {
         List<Academy> list = new ArrayList<>();
         String sql = "select * from tblAcademyYear";
         try {
@@ -1043,10 +1063,10 @@ public class ConnectDB {
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-               Academy academy = new Academy();
-               academy.setId(rs.getInt(1));
-               academy.setName(rs.getString(2));
-               list.add(academy);           
+                Academy academy = new Academy();
+                academy.setId(rs.getInt(1));
+                academy.setName(rs.getString(2));
+                list.add(academy);
             }
             con.close();
         } catch (SQLException ex) {

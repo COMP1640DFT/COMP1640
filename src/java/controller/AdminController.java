@@ -89,7 +89,7 @@ public class AdminController extends HttpServlet {
         if (action.equals("createUser")) {
             createAccount(request, response, session);
         }
-        if(action.equals("getStt")){
+        if (action.equals("getStt")) {
             getClaimsBystt(request, response, session);
         }
     }
@@ -137,23 +137,23 @@ public class AdminController extends HttpServlet {
         int stt = Integer.parseInt(request.getParameter("stt"));
         long DAY_IN_MS = 1000 * 60 * 60 * 24;
         Date a;
-        if(stt == 0){
-            a = new Date(System.currentTimeMillis() - (1 * DAY_IN_MS)); 
-        }else{
-            a = new Date(System.currentTimeMillis()); 
+        if (stt == 0) {
+            a = new Date(System.currentTimeMillis() - (1 * DAY_IN_MS));
+        } else {
+            a = new Date(System.currentTimeMillis());
         }
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         df.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
-        
+
         List<Claim> list = connectDB.getAllClaimManageByStt(stt, df.format(a));
-        System.out.println(""+list.size());
-        System.out.println(stt+"---"+df.format(a));
+        System.out.println("" + list.size());
+        System.out.println(stt + "---" + df.format(a));
         Claim c = new Claim();
         c.setListClaim(list);
         session.setAttribute("beanAdminCM", c);
         response.sendRedirect("indexA.jsp");
     }
-    
+
     private void viewAllClaim(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
         List<Claim> list = connectDB.getAllClaimManage();
         Claim c = new Claim();
@@ -225,8 +225,14 @@ public class AdminController extends HttpServlet {
         acc.setEmail(email);
         acc.setPhoneNumber(phone);
         acc.setDob(dob);
-        if (connectDB.updateAccount(acc)) {
-            response.sendRedirect("AdminController?action=viewAllUser");
+        if (password.equals("")) {
+            if (connectDB.updateAccountMissingPwd(acc)) {
+                response.sendRedirect("AdminController?action=viewAllUser");
+            }
+        } else {
+            if (connectDB.updateAccountWithAllInfor(acc)) {
+                response.sendRedirect("AdminController?action=viewAllUser");
+            }
         }
     }
 
@@ -255,21 +261,20 @@ public class AdminController extends HttpServlet {
         String fullname = request.getParameter("name");
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
-        String dob =request.getParameter("birthdate");
+        String dob = request.getParameter("birthdate");
         String role = request.getParameter("role");
         String faculty = request.getParameter("faculty");
         String academy = request.getParameter("academy");
         if (!userid.equals("") && !password.equals("") && !email.equals("")) {
             Account account = connectDB.getAccountInfor(userid);
             if (account == null) {
-              
-                Account acc= new Account(userid, Encode.encryptPass(password), fullname, dob, email, phone, Integer.parseInt(academy), Integer.parseInt(faculty), Integer.parseInt(role));
-                if(connectDB.addAccount(acc)){
+
+                Account acc = new Account(userid, Encode.encryptPass(password), fullname, dob, email, phone, Integer.parseInt(academy), Integer.parseInt(faculty), Integer.parseInt(role));
+                if (connectDB.addAccount(acc)) {
                     response.sendRedirect("account-create.jsp");
-                }
-                else{
-                     String mes="Add failed!";
-                        sendMessage(response,mes,"account-create.jsp");
+                } else {
+                    String mes = "Add failed!";
+                    sendMessage(response, mes, "account-create.jsp");
                 }
             } else {
                 String mes = "This Account is exist, Please try again!";
