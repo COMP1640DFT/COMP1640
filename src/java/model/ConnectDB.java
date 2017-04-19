@@ -525,6 +525,7 @@ public class ConnectDB {
     }
 
     public boolean insertClaimM(Claim c) {
+        boolean rs = false;
         try {
             connectdatabase();
             String sql = "INSERT INTO tblClaimManage ( title, createDate, endDate, idItemAssessment, _status) VALUES"
@@ -535,14 +536,12 @@ public class ConnectDB {
             st.setString(3, c.getEndDate());
             st.setInt(4, c.getIdItemAssessment());
             st.setInt(5, c.getStatus());
-            if (st.executeUpdate() > 0) {
-                return true;
-            }
+            rs  = st.executeUpdate() > 0;
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+        return rs;
     }
 
     public List<Claim> getAllClaimOfStudent(String user, int idCM) {
@@ -807,6 +806,7 @@ public class ConnectDB {
     }
 
     public boolean createClaim(Claim claim) {
+        boolean rs = false;
         try {
             connectdatabase();
             String sql = "INSERT INTO tblClaim ( title, content,sendDate, evidence, _status, idUser, idCM) VALUES"
@@ -819,17 +819,16 @@ public class ConnectDB {
             st.setInt(5, claim.getStatus());
             st.setString(6, claim.getIdUser());
             st.setInt(7, claim.getIdCM());
-            if (st.executeUpdate() > 0) {
-                return true;
-            }
+            rs  = st.executeUpdate() > 0;
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+        return rs;
     }
 
     public boolean createDecision(Decision d) {
+        boolean rs = false;
         try {
             connectdatabase();
             String sql = "Insert into tblDecision (idClaim,content,sendDate, _status,idUser) values(?,?,?,?,?)";
@@ -840,17 +839,16 @@ public class ConnectDB {
             st.setInt(4, d.getStatus());
             st.setString(5, d.getIdUser());
 
-            if (st.executeUpdate() > 0) {
-                return true;
-            }
+            rs  = st.executeUpdate() > 0;
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+        return rs;
     }
 
     public boolean updateDecision(int status, String content, int idClaim) {
+        boolean rs = false;
         try {
             connectdatabase();
             String sql = "Update tblDecision set content=?, _status=? where idClaim=?";
@@ -858,9 +856,7 @@ public class ConnectDB {
             st.setString(1, content);
             st.setInt(2, status);
             st.setInt(3, idClaim);
-            if (st.executeUpdate() > 0) {
-                return true;
-            }
+            rs  = st.executeUpdate() > 0;
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -869,54 +865,51 @@ public class ConnectDB {
     }
 
     public boolean updateClaim(int status, int idClaim) {
+        boolean rs = false;
         try {
             connectdatabase();
             String sql = "Update tblClaim set  _status=? where idClaim=?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setInt(1, status);
             st.setInt(2, idClaim);
-            if (st.executeUpdate() > 0) {
-                return true;
-            }
+            rs  = st.executeUpdate() > 0;
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+        return rs;
     }
 
     public boolean updateFileofClaim(String file, int idClaim) {
+        boolean rs = false;
         try {
             connectdatabase();
             String sql = "Update tblClaim set  evidence=? where idClaim=?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, file);
             st.setInt(2, idClaim);
-            if (st.executeUpdate() > 0) {
-                return true;
-            }
+            rs  = st.executeUpdate() > 0;
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+        return rs;
     }
 
     public boolean updateSttCM(int id, int stt) {
+        boolean rs = false;
         try {
             connectdatabase();
             String sql = "Update tblClaimManage set _status=? where idCM=?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setInt(1, stt);
             st.setInt(2, id);
-            if (st.executeUpdate() > 0) {
-                return true;
-            }
+            rs  = st.executeUpdate() > 0;
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+        return rs;
     }
 
     public List<Account> getListEccoor(int idFaculty) {
@@ -1001,6 +994,7 @@ public class ConnectDB {
     }
 
     public boolean updateAccountWithAllInfor(Account acc) {
+        boolean rs = false;
         try {
             connectdatabase();
             String sql = "Update tblUser set  _passWord = ?, fullName = ?, dob = ?, email = ?, phoneNumber = ? where idUser = ?";
@@ -1011,17 +1005,16 @@ public class ConnectDB {
             st.setString(4, acc.getEmail());
             st.setString(5, acc.getPhoneNumber());
             st.setString(6, acc.getIdUser());
-            if (st.executeUpdate() > 0) {
-                return true;
-            }
+            rs  = st.executeUpdate() > 0;
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+        return rs;
     }
 
     public boolean updateAccountMissingPwd(Account acc) {
+        boolean rs = false;
         try {
             connectdatabase();
             String sql = "Update tblUser set fullName = ?, dob = ?, email = ?, phoneNumber = ? where idUser = ?";
@@ -1031,18 +1024,16 @@ public class ConnectDB {
             st.setString(3, acc.getEmail());
             st.setString(4, acc.getPhoneNumber());
             st.setString(5, acc.getIdUser());
-            if (st.executeUpdate() > 0) {
-                return true;
-            }
+            rs  = st.executeUpdate() > 0;
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+        return rs;
     }
 
     public boolean addAccount(Account account) {
-
+        boolean rs = false;
         try {
             connectdatabase();
             String sql = "INSERT INTO tblUser ( idUser, _passWord,fullName, dob, email, phoneNumber, idAcademy,idFaculty,lever) VALUES"
@@ -1058,14 +1049,30 @@ public class ConnectDB {
             st.setInt(8, account.getIdFaculty());
             st.setInt(9, account.getLever());
 
-            if (st.executeUpdate() > 0) {
-                return true;
-            }
+            rs  = st.executeUpdate() > 0;
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+        return rs;
+    }
+    
+    public boolean addItemAssessment(int idAssessment) {
+        boolean rs = false;
+        try {
+            connectdatabase();
+            String sql = "insert into tblADetail(idAssesment,idItem) value (?,'1'),(?,'2'),(?,'3')";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setInt(1, idAssessment);
+            st.setInt(2, idAssessment);
+            st.setInt(3, idAssessment);
+
+            rs  = st.executeUpdate() > 0;
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return rs;
     }
 
     public List<Academy> getAllAcademy() {

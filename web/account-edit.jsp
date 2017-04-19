@@ -87,6 +87,8 @@
                         </ul>
 
                     </li>
+                    <li><a href="#"><i class="entypo-user"></i><span>Faculty</span></a></li>
+                    <li><a href="#"><i class="entypo-user"></i><span>Assessment</span></a></li>
                     <li><a href="logout.jsp"><i class="entypo-logout"></i> Logout</a></li>
                 </ul>
 
@@ -177,7 +179,7 @@
                                 document.editForm.passwordcf.addEventListener('focus', function () {
                                     $('#errorpasscf').text("");
                                 });
-                                
+
                                 document.editForm.email.addEventListener('focus', function () {
                                     $('#error').text("");
                                 });

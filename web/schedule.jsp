@@ -87,6 +87,8 @@
                         </ul>
 
                     </li>
+                    <li><a href="#"><i class="entypo-user"></i><span>Faculty</span></a></li>
+                    <li><a href="#"><i class="entypo-user"></i><span>Assessment</span></a></li>
                     <li><a href="logout.jsp"><i class="entypo-logout"></i> Logout</a></li>
                 </ul>
 
@@ -117,14 +119,14 @@
                                                             </div>
                                 
                                                         </div>-->
-<!--                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">Title</label>
-                                    <div class="col-sm-3">
-                                        <input name="title" class="form-control" type="text"/>
-                                        <div class="txtError" id="titleer"></div>
-                                    </div>
-
-                                </div>-->
+                                <!--                                <div class="form-group">
+                                                                    <label class="col-sm-3 control-label">Title</label>
+                                                                    <div class="col-sm-3">
+                                                                        <input name="title" class="form-control" type="text"/>
+                                                                        <div class="txtError" id="titleer"></div>
+                                                                    </div>
+                                
+                                                                </div>-->
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Item Assessment</label>
                                     <div class="col-sm-3">

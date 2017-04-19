@@ -80,16 +80,17 @@
                             <li><a href="AdminController?action=viewAllUser"><i class="entypo entypo-users"></i> View all</a></li>
                         </ul>
                     </li>
-                    <li><a href="#"><i class="entypo-suitcase"></i> Faculty</a>
+                    <li><a href="#"><i class="entypo-suitcase"></i> Claim</a>
                         <ul>
                             <li><a href="AdminController?action=openShedule">Create</a></li>
                             <li><a href="AdminController?action=adminViewAll">View all</a></li>
                         </ul>
 
                     </li>
+                    <li><a href="#"><i class="entypo-user"></i><span>Faculty</span></a></li>
+                    <li><a href="#"><i class="entypo-user"></i><span>Assessment</span></a></li>
                     <li><a href="logout.jsp"><i class="entypo-logout"></i> Logout</a></li>
                 </ul>
-
 
             </div>
             <div class="main-content">

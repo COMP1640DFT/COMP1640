@@ -71,24 +71,26 @@
 
 
                 <ul id="main-menu" class="">
-                    <li>
-                        <a href="#"><i class="entypo-user"></i><span>Account</span></a>
-                        <ul>
+                        <li>
+                            <a href="#"><i class="entypo-user"></i><span>Account</span></a>
+                            <ul>
 
 
-                            <li><a href="#"><i class="entypo entypo-user-add"></i> Create</a></li>
-                            <li><a href="AdminController?action=viewAllUser"><i class="entypo entypo-users"></i> View all</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#"><i class="entypo-suitcase"></i> Claim</a>
-                        <ul>
-                            <li><a href="AdminController?action=openShedule">Create</a></li>
-                            <li><a href="AdminController?action=adminViewAll">View all</a></li>
-                        </ul>
+                                <li><a href="AdminController?action=openCreateUser"><i class="entypo entypo-user-add"></i> Create</a></li>
+                                <li><a href="AdminController?action=viewAllUser"><i class="entypo entypo-users"></i> View all</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#"><i class="entypo-suitcase"></i> Claim</a>
+                            <ul>
+                                <li><a href="AdminController?action=openShedule">Create</a></li>
+                                <li><a href="AdminController?action=adminViewAll">View all</a></li>
+                            </ul>
 
-                    </li>
-                    <li><a href="logout.jsp"><i class="entypo-logout"></i> Logout</a></li>
-                </ul>
+                        </li>
+                        <li><a href="#"><i class="entypo-user"></i><span>Faculty</span></a></li>
+                        <li><a href="#"><i class="entypo-user"></i><span>Assessment</span></a></li>
+                        <li><a href="logout.jsp"><i class="entypo-logout"></i> Logout</a></li>
+                    </ul>
 
 
             </div>
