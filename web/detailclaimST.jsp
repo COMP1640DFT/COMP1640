@@ -230,8 +230,16 @@
 
                                 <!-- links -->
                                 <div class="mail-links">
-
-                                    <span>Status: <span class="label label-success">Open</span></span>
+                                    <c:if test="${beanClaim.status == 0}">
+                                        <span>Status: <span class="label label-default">Waiting</span></span>
+                                    </c:if>
+                                    <c:if test="${beanClaim.status == 1}"> 
+                                        <span>Status: <span class="label label-success">Approve</span></span>
+                                    </c:if>
+                                    <c:if test="${beanClaim.status == 2}"> 
+                                        <span>Status: <span class="label label-danger">Reject</span></span>
+                                    </c:if>                                        
+                                    
 
                                 </div>
                                 <br/><br/>

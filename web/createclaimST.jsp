@@ -205,28 +205,31 @@
                 <br/>
 
                 <div class="panel panel-primary" style="padding: 10px">
-                    <form  id="addclaim" name="addclaim"  method="POST" class="form-horizontal" onsubmit="move()"   >
+                    <form  id="addclaim" name="addclaim" action="StudentsController?action=createClaim&Uid=${idUser}" onsubmit="return validate()"  method="POST" class="form-horizontal"   >
                         <div class="form-group">
-                            <label for="subject" class="col-sm-3 control-label">Subject</label>
+                            <label for="subject" class="col-sm-3 control-label">Title</label>
                             <div class="col-sm-9">
                                 <input type="text" id="subject" name="subject" placeholder="Input your claim subject" class="form-control"/>
+                                <div id="titleErr" class="txtError"></div>
                             </div>
                         </div>
 
                         <input type="hidden" value="${beanCM.id}" name="idCM"/>
                         <input type="hidden" value="${idMajor}" name="idM"/>
                         <div class="form-group">
-                            <label for="description" class="col-sm-3 control-label">Description</label>
+                            <label for="description" class="col-sm-3 control-label">Content</label>
                             <div class="col-sm-9">
                                 <textarea rows="8" placeholder="Input your claim description" class="form-control" name="description" id="description"></textarea>
+                                <div id="contentErr" class="txtError"></div>
                             </div>
+
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">Attachments</label>
+                            <label class="col-sm-3 control-label">Evidence</label>
 
                             <div class="col-sm-5">
-                                <progress value="0" max="100" id="uploader">0%</progress><span id="stt-file"></span>
+                                <progress value="0" max="100" id="uploader">0%</progress><span id="stt-file" style="margin-left: 30px">Max (20MB) - JPEG, PNG, PDF</span>
                                 <input type="file" id="fileButton" name="file" class="btn btn-default"
                                        />
 
@@ -279,77 +282,85 @@
                         var fileButton = document.getElementById('fileButton');
                         var sttfile = document.getElementById('stt-file');
                         //
+                        var file;
+                        
+                        var types = ["jpg", "jpeg", "png", "pdf"];
+                        
+                            
                         fileButton.addEventListener('change', function (e) {
                             // get file
                             var file = e.target.files[0];
                             var max_file_size = 20000000;
                             var d = new Date();
-
-                            if (file.size > max_file_size) {
-                                console.log(file.size);
+                            if (file == null) {
                             } else {
-                                $('#btnSend').prop("disabled", true);
-                                var storageRef = firebase.storage().ref('files/' + d.getTime() + "_${account.idUser}_" + file.name);
+                                if (file.size > max_file_size) {
+                                    sttfile.innerHTML = "File size max 20MB.";
+                                    return;
+                                } 
+                                var typef= file.name.split('.').pop();
+                                var checkf = 0;
+                                for(t in types){
+                                    if(types[t] == typef){
+                                        checkf++;
+                                    }
+                                }
+                                if(checkf == 0){
+                                    sttfile.innerHTML = "Please input file JPG-JPEG-PNG-PDF!";
+                                }else {
+                                    checkf = 0; 
+                                    $('#btnSend').prop("disabled", true);
+                                    var storageRef = firebase.storage().ref('files/' + d.getTime() + "_${account.idUser}_" + file.name);
 
-                                // upload file;
-                                var task = storageRef.put(file);
-                                sttfile.innerHTML = "Uploading..";
-                                task.on('state_changed',
-                                        function progress(snapshot) {
-                                            var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                                            uploader.value = percentage;
-                                        },
-                                        function error(err) {
+                                    // upload file;
+                                    var task = storageRef.put(file);
+                                    sttfile.innerHTML = "Uploading..";
+                                    task.on('state_changed',
+                                            function progress(snapshot) {
+                                                var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                                                uploader.value = percentage;
+                                            },
+                                            function error(err) {
 
-                                        },
-                                        function complete() {
+                                            },
+                                            function complete() {
 
-                                        }
-                                );
+                                            }
+                                    );
 
-                                task.then(function (snapshot) {
-                                    console.log('Uploaded', snapshot.totalBytes, 'bytes.');
-                                    console.log(snapshot.metadata);
-                                    var url = snapshot.downloadURL;
-                                    console.log('File available at', url);
-                                    // [START_EXCLUDE]
-                                    document.getElementById('linkfile').value = url;
-                                    sttfile.innerHTML = "Done!";
-                                    $('#btnSend').prop("disabled", false);
-                                    // [END_EXCLUDE]
-                                }).catch(function (error) {
-                                    // [START onfailure]
-                                    console.error('Upload failed:', error);
-                                    // [END onfailure]
-                                });
+                                    task.then(function (snapshot) {
+                                        console.log('Uploaded', snapshot.totalBytes, 'bytes.');
+                                        console.log(snapshot.metadata);
+                                        var url = snapshot.downloadURL;
+                                        console.log('File available at', url);
+                                        // [START_EXCLUDE]
+                                        document.getElementById('linkfile').value = url;
+                                        sttfile.innerHTML = "Done!";
+                                        $('#btnSend').prop("disabled", false);
+                                        // [END_EXCLUDE]
+                                    }).catch(function (error) {
+                                        // [START onfailure]
+                                        console.error('Upload failed:', error);
+                                        // [END onfailure]
+                                    });
+                                }
                             }
                         });
 
-
-
                         function validate() {
-
-                            var flag = true;
-                            var subject = document.getElementById('subject');
-                            var description = document.getElementById('description');
-
-                            if (subject.value == "")
-                            {
-                                return flag = false;
+                            var result = 0;
+                            if (document.addclaim.subject.value == "") {
+                                $('#titleErr').text("Please input title!");
+                                result = result + 1;
                             }
-                            if (description.value == "")
-                            {
-                                return flag = false;
+                            if (document.addclaim.description.value == "") {
+                                $('#contentErr').text("Please input content!");
+                                result = result + 1;
                             }
-                            return flag;
-                        }
-                        function move() {
-                            var flag = validate();
-                            if (flag) {
-                                addclaim.action = "StudentsController?action=createClaim&Uid=${idUser}";
-                                addclaim.submit();
+                            if (result > 0) {
+                                return false;
                             } else {
-                                alert("Please, Enter full fields! ");
+                                return document.addclaim.submit();
                             }
                         }
 

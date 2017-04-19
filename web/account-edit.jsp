@@ -112,6 +112,13 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Password</label>
                                     <div class="col-sm-5"><input value="" type="password" class="form-control" name="password"/></div>
+                                    <div class="classerror" id="errorpass"></div>
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Confirm Password</label>
+                                    <div class="col-sm-5"><input value="" type="password" class="form-control" name="passwordcf"/></div>
+                                    <div class="classerror" id="errorpasscf"></div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Full name</label>
@@ -163,15 +170,40 @@
 
     </body>
     <script type="text/javascript">
+                                document.editForm.password.addEventListener('focus', function () {
+                                    $('#errorpass').text("");
+                                });
 
-        function validate() {
-            if (document.editForm.email.value == "") {
-                $('#error').text("Please input your email!");
-                return false;
-            } else {
-                document.editForm.submit();
-            }
-        }
+                                document.editForm.passwordcf.addEventListener('focus', function () {
+                                    $('#errorpasscf').text("");
+                                });
+                                
+                                document.editForm.email.addEventListener('focus', function () {
+                                    $('#error').text("");
+                                });
+                                function validate() {
+                                    var result = 0;
+                                    if (document.editForm.password.value != "") {
+                                        if (document.editForm.password.value.length < 6) {
+                                            $('#errorpass').text("Please enter at least 6 characters!");
+                                            result = result + 1;
+                                        }
+                                    }
+                                    if (document.editForm.email.value == "") {
+                                        $('#error').text("Please input your email!");
+                                        result = result + 1;
+                                    }
+                                    if (document.editForm.password.value != document.editForm.passwordcf.value) {
+                                        $('#errorpasscf').text("Confirm password incorrect!");
+                                        result = result + 1;
+                                    }
+
+                                    if (result > 0) {
+                                        return false;
+                                    } else {
+                                        return document.editForm.submit();
+                                    }
+                                }
 
 
 

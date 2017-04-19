@@ -61,7 +61,7 @@ public class ConnectDB {
     }
 
     public Account checkLogin(String idUser, String pass) {
-        Account acc = new Account();
+        Account acc = null;
         String sql = "select * from tblUser where idUser=? and _passWord=? ";
         try {
             connectdatabase();
@@ -70,6 +70,7 @@ public class ConnectDB {
             ps.setString(2, pass);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
+                acc = new Account();
                 acc.setIdUser(rs.getString(1));
                 acc.setFullName(rs.getString(3));
                 acc.setDob(rs.getString(4));
@@ -78,18 +79,29 @@ public class ConnectDB {
                 acc.setIdAcademy(rs.getInt(7));
                 acc.setIdFaculty(rs.getInt(8));
                 acc.setLever(rs.getInt(9));
-                con.close();
-                return acc;
             }
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
-        acc.setIdUser("");
         return acc;
-
     }
 
+    public boolean deleteCM(int idCM) {
+        boolean rs = false;
+        String sql = "DELETE FROM tblClaimManage WHERE idCM = "+idCM;
+        try {
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
+            rs = ps.executeUpdate()>0;
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        return rs;
+    }    
+    
     public Account getAccoutnByid(String idUser) {
         Account acc = null;
         String sql = "select * from tblUser where idUser=? ";
@@ -200,7 +212,7 @@ public class ConnectDB {
     }
 
     public Claim getClaimById(int id) {
-        String sql = "select idClaim,title,content,sendDate,evidence,idUser from tblClaim where idClaim = ?";
+        String sql = "select idClaim,title,content,sendDate,evidence,idUser, _status from tblClaim where idClaim = ?";
         Claim claim = null;
 
         try {
@@ -216,6 +228,7 @@ public class ConnectDB {
                 claim.setSendDate(rs.getString(4));
                 claim.setFiledata(rs.getString(5));
                 claim.setIdUser(rs.getString(6));
+                claim.setStatus(rs.getInt(7));
             }
             con.close();
         } catch (SQLException ex) {
@@ -408,11 +421,11 @@ public class ConnectDB {
         return list;
     }
 
-    public List<Claim> getAllClaimManage() {
+    public List<Claim> getAllClaimManage(String y) {
         String sql = "select tcm.idCM, tcm.title, tcm.createdate, tcm.enddate, tcm._status, tf.name, ta._name, tia.name from tblClaimManage tcm join tblADetail tad on tcm.idItemAssessment = tad.id \n"
                 + "                            join tblAssessment ta on ta.id = tad.idAssesment\n"
                 + "                            join tblFaculty tf on tf.id = ta.idFaculty\n"
-                + "                            join tblItemA tia on tad.idItem = tia.id ";
+                + "                            join tblItemA tia on tad.idItem = tia.id WHERE createDate LIKE  '%"+y+"%' ORDER BY tcm.createDate DESC ";
         List<Claim> list = new LinkedList<>();
 
         try {

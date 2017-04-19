@@ -33,21 +33,6 @@ public class MySQLConnection {
         return con;
     }
     
-    public static void show (){
-        
-        try{
-            Statement stmt = getConnection().createStatement();
-            ResultSet rs = stmt.executeQuery("select * from tblSubject c inner join tblMajor m on c.idMajor = m.id ");
-            while (rs.next()) {
-                System.out.println(rs.getInt(1) + "  " + rs.getString(2) +"-" +rs.getString(5));
-            }
-            getConnection().close();
-        }catch(Exception ex){
-            
-        }
-        
-    }
-    
     public static void main(String[] args) {
 //        createDatabase("TOPUP");
 //        show();

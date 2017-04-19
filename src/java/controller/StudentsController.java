@@ -87,7 +87,8 @@ public class StudentsController extends HttpServlet {
             String title = request.getParameter("subject");
             String description = request.getParameter("description");
             int idMajor = Integer.parseInt(request.getParameter("idM"));
-            file_name = request.getParameter("linkfile");
+            String file_name = request.getParameter("linkfile");
+            System.out.println("URL--: "+ file_name);
 
             if (!title.equals("") && !description.equals("")) {
                 String date_send = new SimpleDateFormat("yyyy/MM/dd").format(Calendar.getInstance().getTime());

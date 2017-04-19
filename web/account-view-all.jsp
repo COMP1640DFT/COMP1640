@@ -131,7 +131,7 @@
                                                 <td><c:out value="EC Coordinator"/></td>
                                             </c:if>
                                             <td>
-                                                <a href="AdminController?id=${a.idUser}&action=viewUserDetail" class="btn btn-default btn-icon"><i class="entypo entypo-pencil"></i> Edit</a>
+                                                <a href="AdminController?id=${a.idUser}&action=viewUserDetail" class="btn btn-default btn-icon"><i class="entypo entypo-pencil"></i> Edit</a>|<a href="" class="btn btn-default btn-icon"><i class="entypo entypo-trash"></i> Delete</a>
                                             </td>
                                         </tr>
                                     </c:forEach>

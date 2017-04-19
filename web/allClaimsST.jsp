@@ -133,7 +133,7 @@
                                 <th>#</th>
                                 <th>Subject</th>
                                 <th>EC Coordinator</th>
-                                <th>File</th>
+                                <th>Evidence</th>
                                 <th>Status</th>
                             </tr>
                         </tfoot>

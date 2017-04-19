@@ -92,6 +92,9 @@ public class AdminController extends HttpServlet {
         if (action.equals("getStt")) {
             getClaimsBystt(request, response, session);
         }
+        if (action.equals("deleteCM")) {
+            deleteCM(request, response, session);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -133,6 +136,25 @@ public class AdminController extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    private void deleteCM(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+        int idCM = Integer.parseInt(request.getParameter("idCM"));
+        if (connectDB.deleteCM(idCM)) {
+            long DAY_IN_MS = 1000 * 60 * 60 * 24;
+            Date a = new Date(System.currentTimeMillis());
+            DateFormat df = new SimpleDateFormat("yyyy");
+            df.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
+
+            List<Claim> list = connectDB.getAllClaimManage(df.format(a));
+            Claim c = new Claim();
+            c.setListClaim(list);
+            session.setAttribute("beanAdminCM", c);
+            response.sendRedirect("indexA.jsp");
+        } else {
+            String mes = "Can not delete!";
+            sendMessage(response, mes, "indexA.jsp");
+        }
+    }
+
     private void getClaimsBystt(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
         int stt = Integer.parseInt(request.getParameter("stt"));
         long DAY_IN_MS = 1000 * 60 * 60 * 24;
@@ -152,10 +174,16 @@ public class AdminController extends HttpServlet {
         c.setListClaim(list);
         session.setAttribute("beanAdminCM", c);
         response.sendRedirect("indexA.jsp");
+
     }
 
     private void viewAllClaim(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
-        List<Claim> list = connectDB.getAllClaimManage();
+        long DAY_IN_MS = 1000 * 60 * 60 * 24;
+        Date a = new Date(System.currentTimeMillis());
+        DateFormat df = new SimpleDateFormat("yyyy");
+        df.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
+
+        List<Claim> list = connectDB.getAllClaimManage(df.format(a));
         Claim c = new Claim();
         c.setListClaim(list);
         session.setAttribute("beanAdminCM", c);
@@ -173,7 +201,7 @@ public class AdminController extends HttpServlet {
     private void addNewCM(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
 
         int id = Integer.parseInt(request.getParameter("iditem"));
-        String title = request.getParameter("title");
+        String title = "";//request.getParameter("title");
         String senddate = request.getParameter("from");
         String enddate = request.getParameter("to");
         int st = 0;
@@ -264,22 +292,21 @@ public class AdminController extends HttpServlet {
         String dob = request.getParameter("birthdate");
         String role = request.getParameter("role");
         String faculty = request.getParameter("faculty");
-        String academy = request.getParameter("academy"); 
-            Account account = connectDB.getAccountInfor(userid);
-            if (account == null) {
+        String academy = request.getParameter("academy");
+        Account account = connectDB.getAccountInfor(userid);
+        if (account == null) {
 
-                Account acc = new Account(userid, Encode.encryptPass(password), fullname, dob, email, phone, Integer.parseInt(academy), Integer.parseInt(faculty), Integer.parseInt(role));
-                if (connectDB.addAccount(acc)) {
-                    response.sendRedirect("account-create.jsp");
-                } else {
-                    String mes = "Add failed!";
-                    sendMessage(response, mes, "account-create.jsp");
-                }
+            Account acc = new Account(userid, Encode.encryptPass(password), fullname, dob, email, phone, Integer.parseInt(academy), Integer.parseInt(faculty), Integer.parseInt(role));
+            if (connectDB.addAccount(acc)) {
+                response.sendRedirect("account-create.jsp");
             } else {
-                String mes = "This Account is exist, Please try again!";
+                String mes = "Add failed!";
                 sendMessage(response, mes, "account-create.jsp");
             }
-       
+        } else {
+            String mes = "This Account is exist, Please try again!";
+            sendMessage(response, mes, "account-create.jsp");
+        }
 
     }
 

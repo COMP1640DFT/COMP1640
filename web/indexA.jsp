@@ -129,11 +129,11 @@
                         <table class="dataTable table table-bordered table table-responsive">
                             <thead>
                             <th>#</th>
-                            <th>Title</th>
-                            <th>Create Date</th>
-                            <th>End Date</th>
+                            <!--<th>Title</th>-->
                             <th>Assessment</th>
                             <th>Item</th>
+                            <th>Create Date</th>
+                            <th>End Date</th>
                             <th>Status</th>
                             <th>#</th>
                             </thead>
@@ -141,11 +141,11 @@
                                 <c:forEach var="c" items="${beanAdminCM.listClaim}">
                                     <tr>
                                         <td>${c.idClaim}</td>
-                                        <td>${c.title}</td>
-                                        <td>${c.createDate}</td>
-                                        <td>${c.endDate}</td>
+                                        <!--<td>${c.title}</td>-->
                                         <td>${c.assessmentName}</td>
                                         <td>${c.itemAssessmentName} - ${c.facultyName}</td>
+                                        <td>${c.createDate}</td>
+                                        <td>${c.endDate}</td>
                                         <c:if test="${c.status == 0}">
                                             <td><span><c:out value="Open"/></span></td>
                                         </c:if>
@@ -161,7 +161,7 @@
                                                     <a href="AdminController?action=updateSttCM&stt=1&idCM=${c.idClaim}">Close upload claim</a>
                                                     <a href="AdminController?action=updateSttCM&stt=2&idCM=${c.idClaim}">Close upload evidence</a>
                                                 </div>
-                                            </div></td>
+                                            </div>|<a href="AdminController?action=deleteCM&idCM=${c.idClaim}" class="btn btn-default btn-icon"><i class="entypo entypo-trash"></i> Delete</a></td>
                                     </tr>
                                 </c:forEach>
                             </tbody>
@@ -198,7 +198,7 @@
             $(document).ready(function () {
 
                 $('.dataTable').DataTable({
-                    searching: false,
+                    searching: true,
                     bLengthChange: false,
                     responsive: {
                         details: {

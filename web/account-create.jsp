@@ -106,27 +106,32 @@
                             <form name="addAcc" action="AdminController?action=createUser" onsubmit="return validate()" method="post" class="form-horizontal form-groups-bordered">
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Account ID</label>
-                                    <div class="col-sm-5"><input type="text" class="form-control" name="id"/></div>
+                                    <div class="col-sm-5"><input type="text" class="form-control" name="id" id="id"/></div>
                                       <div class="classerror" id="erroraccount"></div>  
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Password</label>
-                                    <div class="col-sm-5"><input type="password" class="form-control" name="password"/></div>
+                                    <div class="col-sm-5"><input type="password" class="form-control" name="password" id="password"/></div>
                                      <div class="classerror" id="errorpass"></div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="col-sm-3 control-label">Confirm Password</label>
+                                    <div class="col-sm-5"><input type="password" class="form-control" name="passwordcf" id="passwordcf"/></div>
+                                     <div class="classerror" id="errorpasscf"></div>
+                                </div>
+                                <div class="form-group">
                                     <label class="col-sm-3 control-label">Full name</label>
-                                    <div class="col-sm-5"><input type="text" class="form-control" name="name"/></div>
+                                    <div class="col-sm-5"><input type="text" class="form-control" name="name" id="name"/></div>
                                      <div class="classerror" id="errorfullname"></div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Email address</label>
-                                    <div class="col-sm-5"><input type="email" class="form-control" name="email"/></div>
+                                    <div class="col-sm-5"><input type="email" class="form-control" name="email" id="email"/></div>
                                      <div class="classerror" id="erroremail"></div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Phone number</label>
-                                    <div class="col-sm-5"><input type="tel" class="form-control" name="phone"/></div>
+                                    <div class="col-sm-5"><input type="tel" class="form-control" name="phone" id="phone"/></div>
                                     <div class="classerror" id="errorphone"></div>
                                 </div>
                                 <div class="form-group">
@@ -200,6 +205,33 @@
 
     </body>
      <script type="text/javascript">
+        document.addAcc.id.addEventListener('focus', function (){
+            $('#erroraccount').text("");
+        });
+        
+        document.addAcc.password.addEventListener('focus', function (){
+            $('#errorpass').text("");
+        });
+        
+        document.addAcc.passwordcf.addEventListener('focus', function (){
+            $('#errorpasscf').text("");
+        });
+        
+        document.addAcc.email.addEventListener('focus', function (){
+            $('#erroremail').text("");
+        });
+        
+        document.addAcc.birthdate.addEventListener('focus', function (){
+            $('#errordate').text("");
+        });
+        
+        document.addAcc.name.addEventListener('focus', function (){
+            $('#errorfullname').text("");
+        });
+        
+        document.addAcc.phone.addEventListener('focus', function (){
+            $('#errorphone').text("");
+        });
 
         function validate() {
             var result=0;
@@ -208,10 +240,19 @@
                 result=result+1;
                 
             }
+            if (document.addAcc.password.value != "") {
+                if (document.addAcc.password.value.length < 6) {
+                    $('#errorpass').text("Please enter at least 6 characters!");
+                    result=result+1;
+                }
+            }
             if (document.addAcc.password.value == "") {
-                $('#errorpass').text("Please input your password!");
+                $('#errorpass').text("Please enter password!");
                 result=result+1;
-                
+            }
+            if (document.addAcc.password.value != document.addAcc.passwordcf.value) {
+                $('#errorpasscf').text("Confirm password incorrect!");
+                result=result+1;
             }
             if (document.addAcc.email.value == "") {
                 $('#erroremail').text("Please input your Email!");

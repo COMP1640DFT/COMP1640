@@ -133,7 +133,7 @@
                                                 <option value="2">Closed</option>
                                             </select>
                                         </div>
-                                        <div class="form-group"><input type="submit" value="Search"/></div>
+                                        <div class="form-group"><input class="btn btn-success form-control" type="submit" value="Search"/></div>
                                     </form>
                                 </div>
                             </div>
@@ -142,19 +142,19 @@
                                 <table class="dataTable table table-bordered table table-responsive">
                                     <thead>
                                     <th>#</th>
-                                    <th>Title</th>
-                                    <th>End Date</th>
+                                    <!--<th>Title</th>-->
                                     <th>Assessment Name</th>
                                     <th>Item</th>
+                                    <th>End Date</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                     </thead>
                                     <tfoot>
                                     <th>#</th>
-                                    <th>Title</th>
-                                    <th>End Date</th>
+                                    <!--<th>Title</th>-->
                                     <th>Assessment Name</th>
                                     <th>Item </th>
+                                    <th>End Date</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                     </tfoot>
@@ -163,22 +163,21 @@
                                         <c:forEach var="c" items="${beanAllClaim.listClaim}">
                                             <tr>
                                                 <td>${c.idCM}</td>
-                                                <td>${c.title}</td>
-                                                <td>${c.endDate}</td>
+                                                <!--<td>${c.title}</td>-->
                                                 <td>${c.assessmentName}</td>
                                                 <td>${c.itemAssessmentName}</td>
+                                                <td>${c.endDate}</td>
                                                 <c:if test="${c.status == 2}">
                                                     <td><span class="text-danger"><c:out value="Closed"/></span></td>
-                                                    </c:if>
-                                                    <c:if test="${c.status == 1}">
+                                                </c:if>
+                                                <c:if test="${c.status == 1}">
                                                     <td><c:out value="Upload Evidence"/></td>
                                                 </c:if>
                                                 <c:if test="${c.status == 0}">
                                                     <td><c:out value="Upload Claim"/></td>
                                                 </c:if>
                                                 <td>
-
-                                                    <a href="StudentsController?idCM=${c.idCM}&idUser=${idUser}&action=viewAllClaim">View</a>|<a href="StudentsController?action=AddClaimPage&idCM=${c.idCM}">Up Claim</a>
+                                                    <a href="StudentsController?idCM=${c.idCM}&idUser=${idUser}&action=viewAllClaim">View</a><c:if test="${c.status == 0}">|<a href="StudentsController?action=AddClaimPage&idCM=${c.idCM}">Up Claim</a></c:if>
                                                 </td>
                                             </tr>
                                         </c:forEach>                          
