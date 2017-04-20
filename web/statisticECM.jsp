@@ -31,8 +31,8 @@
 
         <script src="assets/js/jquery-1.10.2.min.js"></script>
 
-        <link rel="stylesheet" type="text/css" href="../css/responsive.jqueryui.min.css">
-        <link rel="stylesheet" type="text/css" href="../css/responsive.dataTables.min.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/responsive.jqueryui.min.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/responsive.dataTables.min.css">
         <link rel="stylesheet" href="assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
               id="style-resource-1">
         <link rel="stylesheet" href="assets/css/font-icons/entypo/css/entypo.css" id="style-resource-2">
@@ -218,7 +218,7 @@
 
 
                 <div class="clearfix"></div>
-                <div class="row">
+                <div class="row" id="mydiv">
                     <div class="col-sm-12 panel panel-dark">
                         <div class="page-header">
                             <h2 class="panel-heading text-center">Statistics</h2>
@@ -436,9 +436,8 @@
                 </div>
 
             </div>
-
+            
         </div>
-
 
         <script src="assets/js/gsap/main-gsap.js" id="script-resource-1"></script>
         <script src="assets/js/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js" id="script-resource-2"></script>
@@ -456,112 +455,86 @@
         <script src="assets/js/demo.js" id="script-resource-9"></script>
 
         <script>
-                    $("#menu-toggle").click(function (e) {
-            e.preventDefault();
-                    $("#wrapper").toggleClass("toggled");
+            $("#menu-toggle").click(function (e) {
+                e.preventDefault();
+                $("#wrapper").toggleClass("toggled");
             });
-                    $(document).ready(function () {
-            var ctx = document.getElementById("myChart1");
-                    var data = [12, 19, 3, 5, 2, 3, 6, 7, 8];
-                    var myChart = new Chart(ctx, {
+            
+            $(document).ready(function () {
+                var ctx = document.getElementById("myChart1");
+                var data = [12, 19, 3, 5, 2, 3, 6, 7, 8];
+                var myChart = new Chart(ctx, 
+                {
                     type: 'bar',
-                            data: {
-                            labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
-                                    datasets: [{
-                                    label: '# of claims',
-                                            data: [<c:forEach var="m" items="${beanStatistic.listNumOfClaim}">
-                ${m.data},
-            </c:forEach>],
-                                            backgroundColor: "#758EA7",
-                                            borderWidth: 0
-                                    }]
-                            },
-                            options: {
-                            scales: {
-                            yAxes: [{
-                            ticks: {
-                            beginAtZero: true
-                            }
-                            }]
-                            }
-                            }
-                    });
-                    var ctx2 = document.getElementById("myChart2");
-                    var data2 = {
-                    labels: [
-            <c:forEach var="m" items="${beanStatistic.listStatisticAllMajor}">
-                    "${m.title}",
-            </c:forEach>
-                    ],
-                            datasets: [
-                            {
-                            data: [<c:forEach var="m" items="${beanStatistic.listStatisticAllMajor}">
-                ${m.data},
-            </c:forEach>],
-                                    backgroundColor: [
-                                            "#9c3a4e",
-                                            "#1a4466"
-                                    ],
-                                    hoverBackgroundColor: [
-                                            "#FF6384",
-                                            "#36A2EB"
-                                    ]
-                            }]
-                    };
-                    var myPieChart = new Chart(ctx2, {
+                    data: {
+                        labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+                        datasets: [{
+                            label: '# of claims',
+                            data: [<c:forEach var="m" items="${beanStatistic.listNumOfClaim}">${m.data},</c:forEach>],
+                            backgroundColor: "#758EA7",
+                            borderWidth: 0
+                        }]},
+                    options: {
+                        scales: {
+                            yAxes: [{ticks: {
+                                beginAtZero: true
+                            }}]
+                        }
+                    }
+                });
+                    
+                var ctx2 = document.getElementById("myChart2");
+                var data2 = {
+                    labels: [<c:forEach var="m" items="${beanStatistic.listStatisticAllMajor}">"${m.title}",</c:forEach>],
+                    datasets: [{
+                        data: [<c:forEach var="m" items="${beanStatistic.listStatisticAllMajor}">${m.data},</c:forEach>],
+                        backgroundColor: ["#9c3a4e","#1a4466"],
+                        hoverBackgroundColor: ["#FF6384","#36A2EB"]}]
+                };
+                    
+                var myPieChart = new Chart(ctx2, {
                     type: 'pie',
-                            data: data2,
-                            options: {}
-                    });
-                    var ctx3 = document.getElementById('myChart3');
-                    var myChart3 = new Chart(ctx3, {
+                    data: data2,
+                    options: {}
+                });
+                
+                var ctx3 = document.getElementById('myChart3');
+                var myChart3 = new Chart(ctx3, {
                     type: 'bar',
-                            data: {
+                        data: {
                             labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
-                                    datasets: [{
-                                    label: '# of student up claims',
-                                            data: [<c:forEach var="s" items="${beanStatistic.listNumOfStudent}">
-                ${s.data},
-            </c:forEach>],
-                                            backgroundColor: "#7A8E59",
-                                            borderColor: "#44572f",
-                                            borderWidth: 3
-                                    }]
-                            },
-                            options: {
+                            datasets: [{
+                                label: '# of student up claims',
+                                data: [<c:forEach var="s" items="${beanStatistic.listNumOfStudent}">${s.data},</c:forEach>],
+                                backgroundColor: "#7A8E59",
+                                borderColor: "#44572f",
+                                borderWidth: 3
+                            }]},
+                        options: {
                             scales: {
-                            yAxes: [{
-                            ticks: {
-                            beginAtZero: true
+                                yAxes: [{ticks: {beginAtZero: true}}]
                             }
-                            }]
-                            }
-                            }
-                    });
-                    $('.dataTable').DataTable({
-                        dom: 'Bfrtip',
-                        buttons: [
-                            'copy', 'csv', 'excel', 'pdf', 'print'
-                        ],
-                        searching:false,
-                        bLengthChange:false,
-                        responsive: {
+                        }
+                });
+                    
+                $('.dataTable').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+                    searching:false,
+                    bLengthChange:false,
+                    responsive: {
                         details: {
-                        display: $.fn.dataTable.Responsive.display.modal({
-                        header: function (row) {
-                        var data = row.data();
-                            return 'Details for ' + data[0] + ' ' + data[1];
-                    }   
-                    }),
-                            renderer: $.fn.dataTable.Responsive.renderer.tableAll({
-                            tableClass: 'table'
-                            })
+                            display: $.fn.dataTable.Responsive.display.modal({
+                                header: function (row) {
+                                    var data = row.data();
+                                        return 'Details for ' + data[0] + ' ' + data[1];
+                                    }
+                                }),
+                                renderer: $.fn.dataTable.Responsive.renderer.tableAll({tableClass: 'table'})
+                        }
                     }
-                    }
+                });
             });
-            });
-            
-            
         </script>
     </body>
 </html>

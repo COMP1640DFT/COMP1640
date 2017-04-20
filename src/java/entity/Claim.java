@@ -23,6 +23,7 @@ public class Claim {
     private int idCM;
     private int idItemAssessment;
     private int status;
+    private int statusCM;
     private Decision decision;
     private String className;
     private List<Claim> listClaimWithoutEvidence;
@@ -243,6 +244,14 @@ public class Claim {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public int getStatusCM() {
+        return statusCM;
+    }
+
+    public void setStatusCM(int statusCM) {
+        this.statusCM = statusCM;
     }
     
     

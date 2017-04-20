@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.ConnectDB;
+import model.Encode;
 import model.Mail;
 
 /**
@@ -148,6 +149,30 @@ public class StudentsController extends HttpServlet {
                 sendMessage(response, "If you want update file, you must select file want update!", "detailclaimST.jsp");
             }
 
+        }
+        
+        if(action.equals("changePass")){
+            changePass(request, response, session);
+        }
+      
+    }
+    
+    private void changePass(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
+        String oldPass = request.getParameter("oldpass");
+        String idUser = request.getParameter("idUser");
+        String newpass = request.getParameter("password");
+        Account acc = connectDB.checkLogin(idUser, Encode.encryptPass(oldPass));
+        if(acc!=null){
+            if(connectDB.changePassword(idUser, Encode.encryptPass(newpass))){
+                String message = "Chang password successful! Please login again with new password!";
+                sendMessage(response, message, "logout.jsp");
+            }else{
+                String message = "Chang password failed! Please try again!";
+                sendMessage(response, message, "accountST.jsp");
+            }
+        }else{
+            String message = "Old password is incorrect!";
+            sendMessage(response, message, "accountST.jsp");
         }
     }
 

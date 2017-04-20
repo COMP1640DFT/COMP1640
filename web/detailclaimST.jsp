@@ -239,7 +239,7 @@
                                     <c:if test="${beanClaim.status == 2}"> 
                                         <span>Status: <span class="label label-danger">Reject</span></span>
                                     </c:if>                                        
-                                    
+
 
                                 </div>
                                 <br/><br/>
@@ -285,23 +285,25 @@
                                         </a>
                                     </ul>
                                 </c:if>
+                                <c:if test="${beanClaim.statusCM!=2}">
+                                    <form action="StudentsController?action=updateFile" method="post">
+                                        <div class="form-group">
 
-                                <form action="StudentsController?action=updateFile" method="post">
-                                    <div class="form-group">
+                                            <progress value="0" max="100" id="uploader">0%</progress><span id="stt-file"></span>
+                                            <input type="file" id="fileButton" name="file" class="btn btn-default"
+                                                   />
 
-                                        <progress value="0" max="100" id="uploader">0%</progress><span id="stt-file"></span>
-                                        <input type="file" id="fileButton" name="file" class="btn btn-default"
-                                               />
+                                            <input type="hidden" value="" name="linkfile" id="linkfile"/>
 
-                                        <input type="hidden" value="" name="linkfile" id="linkfile"/>
+                                        </div>
+                                        <div class="form-group">
 
-                                    </div>
-                                    <div class="form-group">
+                                            <input class="btn btn-success" disabled="true" type="submit" id="btnSend" value="Update"/>
+                                        </div>
 
-                                        <input class="btn btn-success" disabled="true" type="submit" id="btnSend" value="Update"/>
-                                    </div>
+                                    </form>
+                                </c:if>
 
-                                </form>
                             </div>
                             <div class="clearfix" style="margin-bottom: 20px"></div>
 
@@ -378,49 +380,68 @@
         var fileButton = document.getElementById('fileButton');
         var sttfile = document.getElementById('stt-file');
         //
+        var file;
+
+        var types = ["jpg", "jpeg", "png", "pdf"];
+
+
         fileButton.addEventListener('change', function (e) {
             // get file
             var file = e.target.files[0];
             var max_file_size = 20000000;
             var d = new Date();
-
-            if (file.size > max_file_size) {
-                console.log(file.size);
+            if (file == null) {
             } else {
-                $('#btnSend').prop("disabled", true);
-                var storageRef = firebase.storage().ref('files/' + d.getTime() + "_${account.idUser}_" + file.name);
+                if (file.size > max_file_size) {
+                    sttfile.innerHTML = "File size max 20MB.";
+                    return;
+                }
+                var typef = file.name.split('.').pop().toLowerCase();
+                var checkf = 0;
+                for (t in types) {
+                    if (types[t] == typef) {
+                        checkf++;
+                    }
+                }
+                if (checkf == 0) {
+                    sttfile.innerHTML = "Please input file JPG-JPEG-PNG-PDF!";
+                } else {
+                    checkf = 0;
+                    $('#btnSend').prop("disabled", true);
+                    var storageRef = firebase.storage().ref('files/' + d.getTime() + "_${account.idUser}_" + file.name);
 
-                // upload file;
-                var task = storageRef.put(file);
-                sttfile.innerHTML = "Uploading..";
-                task.on('state_changed',
-                        function progress(snapshot) {
-                            var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                            uploader.value = percentage;
-                        },
-                        function error(err) {
+                    // upload file;
+                    var task = storageRef.put(file);
+                    sttfile.innerHTML = "Uploading..";
+                    task.on('state_changed',
+                            function progress(snapshot) {
+                                var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                                uploader.value = percentage;
+                            },
+                            function error(err) {
 
-                        },
-                        function complete() {
+                            },
+                            function complete() {
 
-                        }
-                );
+                            }
+                    );
 
-                task.then(function (snapshot) {
-                    console.log('Uploaded', snapshot.totalBytes, 'bytes.');
-                    console.log(snapshot.metadata);
-                    var url = snapshot.downloadURL;
-                    console.log('File available at', url);
-                    // [START_EXCLUDE]
-                    document.getElementById('linkfile').value = url;
-                    sttfile.innerHTML = "Done!";
-                    $('#btnSend').prop("disabled", false);
-                    // [END_EXCLUDE]
-                }).catch(function (error) {
-                    // [START onfailure]
-                    console.error('Upload failed:', error);
-                    // [END onfailure]
-                });
+                    task.then(function (snapshot) {
+                        console.log('Uploaded', snapshot.totalBytes, 'bytes.');
+                        console.log(snapshot.metadata);
+                        var url = snapshot.downloadURL;
+                        console.log('File available at', url);
+                        // [START_EXCLUDE]
+                        document.getElementById('linkfile').value = url;
+                        sttfile.innerHTML = "Done!";
+                        $('#btnSend').prop("disabled", false);
+                        // [END_EXCLUDE]
+                    }).catch(function (error) {
+                        // [START onfailure]
+                        console.error('Upload failed:', error);
+                        // [END onfailure]
+                    });
+                }
             }
         });
     </script>

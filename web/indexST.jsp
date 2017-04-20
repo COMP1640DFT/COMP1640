@@ -85,6 +85,9 @@
                     <li class="active">
                         <a href="StudentsController?action=viewAllCM"><i class="glyphicon glyphicon-home"></i> All Claims</a>
                     </li>
+                    <li>
+                        <a href="accountST.jsp"><i class="glyphicon glyphicon-user"></i>Password</a>
+                    </li>
                     <li><a href="logout.jsp"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
 
 

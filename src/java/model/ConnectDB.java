@@ -213,7 +213,7 @@ public class ConnectDB {
     }
 
     public Claim getClaimById(int id) {
-        String sql = "select idClaim,title,content,sendDate,evidence,idUser, _status from tblClaim where idClaim = ?";
+        String sql = "select tc.idClaim,tc.title,tc.content,tc.sendDate,tc.evidence,tc.idUser, tc._status, tcm._status from tblClaim tc inner join tblClaimManage tcm on tc.idCM = tcm.idCM where tc.idClaim = ?";
         Claim claim = null;
 
         try {
@@ -230,6 +230,7 @@ public class ConnectDB {
                 claim.setFiledata(rs.getString(5));
                 claim.setIdUser(rs.getString(6));
                 claim.setStatus(rs.getInt(7));
+                claim.setStatusCM(rs.getInt(8));
             }
             con.close();
         } catch (SQLException ex) {
@@ -1206,7 +1207,24 @@ public boolean addAssessment(Assessment ass){
             return false;
         }
         return rs;
-    }    
+    } 
+    
+    public boolean changePassword(String idUser, String pass) {
+        boolean rs = false;
+        try {
+            connectdatabase();
+            String sql = "Update tblUser set _passWord=? where idUser=?";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, pass);
+            st.setString(2, idUser);
+            rs  = st.executeUpdate() > 0;
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return rs;
+    }
+    
     public void main(String[] args) {
 //        con;
 //        Claim c = new Claim("1", "1", "2017-02-12", "1", "taincgc", 1, 0);
