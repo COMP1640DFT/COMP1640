@@ -17,7 +17,7 @@
         <meta name="description" content="Neon Admin Panel"/>
         <meta name="author" content="Laborator.co"/>
 
-        <title>Neon | Blank Page</title>
+        <title>Faculty</title>
 
         <link rel="stylesheet" href="assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
               id="style-resource-1">
@@ -87,8 +87,7 @@
                             </ul>
 
                         </li>
-                        <li><a href="#"><i class="entypo-user"></i><span>Faculty</span></a></li>
-                        <li><a href="#"><i class="entypo-user"></i><span>Assessment</span></a></li>
+                        <li><a href="AdminController?action=viewAllFaculty"><i class="entypo-suitcase"></i><span>Faculty</span></a></li>
                         <li><a href="logout.jsp"><i class="entypo-logout"></i> Logout</a></li>
                     </ul>
 

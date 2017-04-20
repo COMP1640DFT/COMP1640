@@ -1094,6 +1094,36 @@ public class ConnectDB {
         }
         return list;
     }
+    
+    public boolean createFaculty(String name){
+        boolean rs = false;
+        try {
+            connectdatabase();
+            String sql = "insert into tblFaculty(name) value (?)";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, name);
+            rs  = st.executeUpdate() > 0;
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return rs;
+    }
+    
+    public boolean removeFaculty(int id) {
+        boolean rs = false;
+        String sql = "DELETE FROM tblFaculty WHERE id = "+id;
+        try {
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
+            rs = ps.executeUpdate()>0;
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        return rs;
+    }    
 
     public void main(String[] args) {
 //        con;

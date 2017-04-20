@@ -298,7 +298,7 @@
                                     sttfile.innerHTML = "File size max 20MB.";
                                     return;
                                 } 
-                                var typef= file.name.split('.').pop();
+                                var typef= file.name.split('.').pop().toLowerCase();
                                 var checkf = 0;
                                 for(t in types){
                                     if(types[t] == typef){

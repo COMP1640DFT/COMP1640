@@ -4,6 +4,7 @@
     Author     : DaoMinhThien
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +17,7 @@
         <meta name="description" content="Neon Admin Panel"/>
         <meta name="author" content="Laborator.co"/>
 
-        <title>Neon | Blank Page</title>
+        <title>Faculty</title>
 
         <link rel="stylesheet" href="assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
               id="style-resource-1">
@@ -75,8 +76,7 @@
                         </ul>
 
                     </li>
-                    <li><a href="#"><i class="entypo-user"></i><span>Faculty</span></a></li>
-                    <li><a href="#"><i class="entypo-user"></i><span>Assessment</span></a></li>
+                    <li><a href="AdminController?action=viewAllFaculty"><i class="entypo-suitcase"></i><span>Faculty</span></a></li>
                     <li><a href="logout.jsp"><i class="entypo-logout"></i> Logout</a></li>
                 </ul>
 
@@ -102,12 +102,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                <c:forEach var="f" items="${sessionScope['listFaculty']}">
                                     <tr>
-                                        <td>1</td>
-                                        <td>II</td>
+                                        <td>${f.id}</td>
+                                        <td>${f.name}</td>
                                         <td><a href="#" class="btn btn-default btn-icon"><i class="entypo entypo-pencil"></i> Add</a></td>
-                                        <td><a href="#" class="btn btn-default btn-icon"><i class="entypo entypo-trash"></i> Delete</a></td>
+                                        <td><a href="AdminController?action=deleteFaculty&id=${f.id}" class="btn btn-default btn-icon"><i class="entypo entypo-trash"></i> Delete</a></td>
                                     </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                         </div>
@@ -120,11 +122,12 @@
                         </div>
 
                         <div class="panel-body">
-                            <form action="#" method="post" class="form-horizontal form-groups-bordered">
+                            <form action="AdminController?action=createFaculty" name="addFaculty" onsubmit="return validate()" method="post" class="form-horizontal form-groups-bordered">
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Name</label>
                                     <div class="col-sm-3">
                                         <input name="name" class="form-control" type="text"/>
+                                        <div id="errorFaculty" class="txtError"></div>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -161,7 +164,34 @@
         <script src="assets/js/custom.js" id="script-resource-8"></script>
         <script src="assets/js/demo.js" id="script-resource-9"></script>
         <script>
-
+            document.addFaculty.name.addEventListener('focus', function () {
+                                    $('#errorFaculty').text("");
+                                });
+            function validate() {
+                var result=0;
+                
+                var names = [<c:forEach var="f" items="${sessionScope['listFaculty']}">'${f.name}',</c:forEach>]
+                
+                if (document.addFaculty.name.value == "") {
+                    $('#errorFaculty').text("Please input name!");
+                    result=result+1;
+                }
+                
+                for(n in names){
+                    if(document.addFaculty.name.value.toLowerCase() == names[n].toLowerCase()){
+                        $('#errorFaculty').text("Name exists!");
+                        result=result+1;
+                        break;
+                    }
+                }
+                
+                
+                if(result>0){
+                    return false;
+                }else{
+                    return document.addFaculty.submit();
+                }
+            }
 
             $(document).ready(function () {
 

@@ -95,6 +95,15 @@ public class AdminController extends HttpServlet {
         if (action.equals("deleteCM")) {
             deleteCM(request, response, session);
         }
+        if (action.equals("viewAllFaculty")) {
+            viewAllFaculty(request, response, session);
+        }
+        if(action.equals("createFaculty")){
+            createFaculty(request, response, session);
+        }
+        if(action.equals("deleteFaculty")){
+            deleteFaculty(request, response, session);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -135,6 +144,38 @@ public class AdminController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private void viewAllFaculty(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+        List<Faculty> listFaculty = connectDB.getListMajor();
+        session.setAttribute("listFaculty", listFaculty);
+        response.sendRedirect("createFaculty.jsp");
+    }
+
+    private void createFaculty(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+        String name = request.getParameter("name");
+        if (connectDB.createFaculty(name)) {
+            List<Faculty> listFaculty = connectDB.getListMajor();
+            session.setAttribute("listFaculty", listFaculty);
+            String mes = "Add new faculty successful!";
+            sendMessage(response, mes, "createFaculty.jsp");
+        } else {
+            String mes = "Add failed!";
+            sendMessage(response, mes, "createFaculty.jsp");
+        }
+    }
+
+    private void deleteFaculty(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        if (connectDB.removeFaculty(id)) {
+            List<Faculty> listFaculty = connectDB.getListMajor();
+            session.setAttribute("listFaculty", listFaculty);
+            String mes = "Delete faculty successful!";
+            sendMessage(response, mes, "createFaculty.jsp");
+        } else {
+            String mes = "Can not delete!";
+            sendMessage(response, mes, "createFaculty.jsp");
+        }
+    }
 
     private void deleteCM(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
         int idCM = Integer.parseInt(request.getParameter("idCM"));
