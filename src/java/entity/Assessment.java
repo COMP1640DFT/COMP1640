@@ -14,6 +14,16 @@ public class Assessment {
     private String name;
     private int idFaculty;
 
+    public Assessment(int id, String name, int idFaculty) {
+        this.id = id;
+        this.name = name;
+        this.idFaculty = idFaculty;
+    }
+
+    public Assessment() {
+    }
+
+    
     public int getId() {
         return id;
     }

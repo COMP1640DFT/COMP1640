@@ -3,7 +3,7 @@
     Created on : Apr 19, 2017, 9:05:04 PM
     Author     : DaoMinhThien
 --%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -99,11 +99,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Mobile</td>
-                                        <td><a href="#" class="btn btn-default btn-icon"><i class="entypo entypo-trash"></i> Delete</a></td>
+                                     <c:forEach items="${sessionScope['lAssbyIdF']}" var="Assessment">
+                                         <tr>
+                                        <td>${Assessment.id}</td>
+                                        <td>${Assessment.name}</td>
+                                        <td><a href="AdminController?action=deleteAss&idAss=${Assessment.id}" class="btn btn-default btn-icon"><i class="entypo entypo-trash"></i> Delete</a></td>
                                     </tr>
+                                 
+                                    </c:forEach>
+                                   
                                 </tbody>
                             </table>
                         </div>
@@ -116,11 +120,19 @@
                         </div>
 
                         <div class="panel-body">
-                            <form action="#" method="post" class="form-horizontal form-groups-bordered">
+                            <form name="createAss" action="AdminController?action=addAssessment" method="post" class="form-horizontal form-groups-bordered" onsubmit="return validate()">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">ID</label>
+                                    <div class="col-sm-3">
+                                        <input name="id" class="form-control" type="number" min="1" max="9999"/>
+                                        <div id="errorIdAss" class="txtError"></div>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Name</label>
                                     <div class="col-sm-3">
                                         <input name="name" class="form-control" type="text"/>
+                                         <div id="errorNameAss" class="txtError"></div>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -181,6 +193,52 @@
 
 
             });
+            
+            
+            document.createAss.name.addEventListener('focus', function () {
+                                    $('#errorNameAss').text("");
+                                });
+                                document.createAss.id.addEventListener('focus', function () {
+                                    $('#errorIdAss').text("");
+                                });
+            function validate() {
+                var result=0;
+                
+              
+                var ids = [<c:forEach var="f" items="${sessionScope['listAss']}">'${f.id}',</c:forEach>]
+                var names = [<c:forEach var="fs" items="${sessionScope['lAssbyIdF']}">'${fs.name}',</c:forEach>]
+                if (document.createAss.id.value == "") {
+                    $('#errorIdAss').text("Please input id!");
+                  
+                    result=result+1;
+                }
+                if (document.createAss.name.value == "") {
+                    $('#errorNameAss').text("Please input name!");
+                  
+                    result=result+1;
+                }
+                for(i in ids){
+                    if(document.createAss.id.value == ids[i]){
+                       $('#errorIdAss').text("Id exists!");
+                        result=result+1;
+                        break;
+                    }
+                }
+                for(a in names){
+                    if(document.createAss.name.value.toLowerCase() == names[a].toLowerCase()){
+                        $('#errorNameAss').text("Name exists!");
+                        result=result+1;
+                        break;
+                    }
+                }
+                 
+                if(result>0){
+                    return false;
+                }else{
+                    return document.addFaculty.submit();
+                }
+            }                
+                              
         </script>
 
     </body>

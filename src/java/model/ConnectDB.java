@@ -7,6 +7,7 @@ package model;
 
 import entity.Academy;
 import entity.Account;
+import entity.Assessment;
 import entity.Claim;
 import entity.Decision;
 import entity.Faculty;
@@ -1126,7 +1127,86 @@ public class ConnectDB {
         }
         return rs;
     }    
-
+    
+public List<Assessment> getListAssessmentByIdFac(int idFa) {
+        List<Assessment> listAss= new ArrayList<Assessment>();
+        Assessment ass = null;
+        
+        String sql = "select * from tblAssessment where idFaculty=?";
+        try {
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, idFa);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ass = new Assessment();
+                ass.setId(rs.getInt(1));
+                ass.setName(rs.getString(2));
+                ass.setIdFaculty(rs.getInt(3));
+                listAss.add(ass);
+              
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listAss;
+    }
+public List<Assessment> getAllAssessment() {
+        List<Assessment> listAss= new ArrayList<Assessment>();
+        Assessment ass = null;
+        
+        String sql = "select * from tblAssessment";
+        try {
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
+          
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ass = new Assessment();
+                ass.setId(rs.getInt(1));
+                ass.setName(rs.getString(2));
+                ass.setIdFaculty(rs.getInt(3));
+                listAss.add(ass);
+              
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listAss;
+    }
+public boolean addAssessment(Assessment ass){
+    boolean rs = false;
+        try {
+            connectdatabase();
+            String sql = "insert into tblAssessment(id,_name,idFaculty) values (?,?,?)";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setInt(1, ass.getId());
+            st.setString(2, ass.getName());
+            st.setInt(3, ass.getIdFaculty());
+            rs  = st.executeUpdate() > 0;
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return rs;
+}
+  
+    public boolean removeAssessment(int idAss) {
+        boolean rs = false;
+        String sql = "DELETE FROM tblAssessment WHERE id = "+idAss;
+        try {
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
+            rs = ps.executeUpdate()>0;
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        return rs;
+    }    
     public void main(String[] args) {
 //        con;
 //        Claim c = new Claim("1", "1", "2017-02-12", "1", "taincgc", 1, 0);

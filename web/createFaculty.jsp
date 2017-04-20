@@ -106,7 +106,7 @@
                                     <tr>
                                         <td>${f.id}</td>
                                         <td>${f.name}</td>
-                                        <td><a href="#" class="btn btn-default btn-icon"><i class="entypo entypo-pencil"></i> Add</a></td>
+                                        <td><a href="AdminController?action=openCreateAsses&id=${f.id}" class="btn btn-default btn-icon"><i class="entypo entypo-pencil"></i> Add</a></td>
                                         <td><a href="AdminController?action=deleteFaculty&id=${f.id}" class="btn btn-default btn-icon"><i class="entypo entypo-trash"></i> Delete</a></td>
                                     </tr>
                                 </c:forEach>

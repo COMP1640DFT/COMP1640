@@ -17,6 +17,7 @@ import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -98,11 +99,20 @@ public class AdminController extends HttpServlet {
         if (action.equals("viewAllFaculty")) {
             viewAllFaculty(request, response, session);
         }
-        if(action.equals("createFaculty")){
+        if (action.equals("createFaculty")) {
             createFaculty(request, response, session);
         }
-        if(action.equals("deleteFaculty")){
+        if (action.equals("deleteFaculty")) {
             deleteFaculty(request, response, session);
+        }
+        if (action.equals("openCreateAsses")) {
+            openCreateAssignment(request, response, session);
+        }
+        if (action.equals("addAssessment")) {
+            createNewAssessment(request, response, session);
+        }
+        if (action.equals("deleteAss")) {
+            deleteAssessment(request, response, session);
         }
     }
 
@@ -324,6 +334,22 @@ public class AdminController extends HttpServlet {
         response.sendRedirect("account-create.jsp");
     }
 
+    private void openCreateAssignment(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
+        String idFacu = request.getParameter("id");
+        List<Assessment> listAssByIdFaculty = new ArrayList<>();
+        session.setAttribute("idF", idFacu);
+        List<Assessment> lAss = connectDB.getAllAssessment();
+        session.setAttribute("listAss", lAss);
+        for (Assessment asse : lAss) {
+            if (asse.getIdFaculty() == Integer.parseInt(idFacu)) {
+                listAssByIdFaculty.add(asse);
+            }
+        }
+        session.setAttribute("lAssbyIdF", listAssByIdFaculty);
+        response.sendRedirect("createAssessment.jsp");
+
+    }
+
     public void createAccount(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
         String userid = request.getParameter("id");
         String password = request.getParameter("password");
@@ -349,6 +375,38 @@ public class AdminController extends HttpServlet {
             sendMessage(response, mes, "account-create.jsp");
         }
 
+    }
+
+    public void createNewAssessment(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
+        String idass = request.getParameter("id");
+        String nameass = request.getParameter("name");
+        String idFa = (String) session.getAttribute("idF");
+        Assessment ass = new Assessment(Integer.parseInt(idass), nameass, Integer.parseInt(idFa));
+        if (connectDB.addAssessment(ass)) {
+            int idF = Integer.parseInt((String) session.getAttribute("idF"));
+            List<Assessment> listAssByIdFaculty = connectDB.getListAssessmentByIdFac(idF);
+            session.setAttribute("lAssbyIdF", listAssByIdFaculty);
+            response.sendRedirect("createAssessment.jsp");
+        } else {
+            String mes = "Add Assessment Failed!";
+            sendMessage(response, mes, "createAssessment.jsp");
+        }
+
+    }
+
+    private void deleteAssessment(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("idAss"));
+        if (connectDB.removeAssessment(id)) {
+            int idF = Integer.parseInt((String) session.getAttribute("idF"));
+            List<Assessment> listAssByIdFaculty = connectDB.getListAssessmentByIdFac(idF);
+            session.setAttribute("lAssbyIdF", listAssByIdFaculty);
+             List<Assessment> lAss = connectDB.getAllAssessment();
+            session.setAttribute("listAss", lAss);
+            response.sendRedirect("createAssessment.jsp");
+        } else {
+            String mes = "Can not delete!";
+            sendMessage(response, mes, "createAssessment.jsp");
+        }
     }
 
     private void sendMessage(HttpServletResponse response, String sms, String path) throws ServletException, IOException {
