@@ -575,7 +575,8 @@ public class ConnectDB {
         return list;
     }
 
-    public List<Claim> getAllClaimOfStudentInAFaculty(int majorID) {
+    public List<Claim> getAllClaimOfStudentInAFaculty(int majorID, int year) {
+        String y = Integer.toString(year);
         String sql = " select  c.idClaim, c.title,c.content, c.sendDate,c.evidence,c._status ,u.idUser, f.name, a._name,ia.name \n"
                 + "from tblClaim c \n"
                 + "join tblUser u on c.idUser = u.idUser \n"
@@ -583,12 +584,13 @@ public class ConnectDB {
                 + "join tblAssessment a on f.id = a.id\n"
                 + "join tblADetail ad on a.id = ad.id\n"
                 + "join tblItemA ia on ad.idItem = ia.id\n"
-                + "where u.idFaculty = ?";
+                + "where u.idFaculty = ? and c.sendDate LIKE ?";
         List<Claim> list = new LinkedList<>();
         try {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, majorID);
+            ps.setString(2, "%"+y+"%");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Claim claim = new Claim();

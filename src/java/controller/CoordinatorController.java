@@ -145,7 +145,9 @@ public class CoordinatorController extends HttpServlet {
     private void viewAllClaim(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
         Claim c = new Claim();
         Account acc = (Account) session.getAttribute("account");
-        c.setListClaim(connectDB.getAllClaimOfStudentInAFaculty(acc.getIdFaculty()));
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        System.out.println(year);
+        c.setListClaim(connectDB.getAllClaimOfStudentInAFaculty(acc.getIdFaculty(),year));
         Faculty m = connectDB.getMajor(acc.getIdFaculty());
         session.setAttribute("idUser", acc.getIdUser());
         session.setAttribute("fullName", acc.getFullName());
