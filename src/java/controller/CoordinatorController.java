@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.ConnectDB;
+import model.Encode;
 import model.Mail;
 
 /**
@@ -47,9 +48,9 @@ public class CoordinatorController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
         Account account = (Account) session.getAttribute("account");
-        if (account != null && account.getLever()==4) {
+        if (account != null && account.getLever() == 4) {
             action(request, response, session);
-        }else{
+        } else {
             response.sendRedirect("logout.jsp");
         }
 
@@ -77,6 +78,9 @@ public class CoordinatorController extends HttpServlet {
         }
         if (action.equals("viewAllClaim")) {
             viewAllClaim(request, response, session);
+        }
+        if (action.equals("changePass")) {
+            changePass(request, response, session);
         }
         if (action.equals("viewAllClaimFilterByStatus")) {
             viewAllClaimFilterByStatus(request, response, session);
@@ -147,13 +151,32 @@ public class CoordinatorController extends HttpServlet {
         Account acc = (Account) session.getAttribute("account");
         int year = Calendar.getInstance().get(Calendar.YEAR);
         System.out.println(year);
-        c.setListClaim(connectDB.getAllClaimOfStudentInAFaculty(acc.getIdFaculty(),year));
+        c.setListClaim(connectDB.getAllClaimOfStudentInAFaculty(acc.getIdFaculty(), year));
         Faculty m = connectDB.getMajor(acc.getIdFaculty());
         session.setAttribute("idUser", acc.getIdUser());
         session.setAttribute("fullName", acc.getFullName());
         session.setAttribute("beanClaimInFaculty", c);
         session.setAttribute("majorName", m);
         response.sendRedirect("allclaimC.jsp");
+    }
+
+    private void changePass(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
+        String oldPass = request.getParameter("oldpass");
+        String idUser = request.getParameter("idUser");
+        String newpass = request.getParameter("password");
+        Account acc = connectDB.checkLogin(idUser, Encode.encryptPass(oldPass));
+        if (acc != null) {
+            if (connectDB.changePassword(idUser, Encode.encryptPass(newpass))) {
+                String message = "Chang password successful! Please login again with new password!";
+                sendMessage(response, message, "logout.jsp");
+            } else {
+                String message = "Chang password failed! Please try again!";
+                sendMessage(response, message, "eccoorChangePwd.jsp");
+            }
+        } else {
+            String message = "Old password is incorrect!";
+            sendMessage(response, message, "eccoorChangePwd.jsp");
+        }
     }
 
     private void viewAllClaimFilterByStatus(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {

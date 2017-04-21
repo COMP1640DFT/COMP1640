@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.ConnectDB;
+import model.Encode;
 
 /**
  *
@@ -49,9 +50,9 @@ public class Controller extends HttpServlet {
 
         HttpSession session = request.getSession();
         Account account = (Account) session.getAttribute("account");
-        if (account != null && account.getLever()==3) {
+        if (account != null && account.getLever() == 3) {
             action(request, response, session);
-        }else{
+        } else {
             response.sendRedirect("logout.jsp");
         }
     }
@@ -65,9 +66,12 @@ public class Controller extends HttpServlet {
         if (action.equals("viewstatisticwithfilter")) {
             viewStatisticWithFilter(request, response);
         }
+        if (action.equals("changePass")) {
+            changePass(request, response, session);
+        }
         if (action.equals("viewC")) {
-
-            List<Claim> lClaim = connectDB.getAllClaim();
+            int year = Calendar.getInstance().get(Calendar.YEAR);
+            List<Claim> lClaim = connectDB.getAllClaim(year);
             session.setAttribute("listClaim", lClaim);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("processECM.jsp");
             requestDispatcher.forward(request, response);
@@ -86,8 +90,28 @@ public class Controller extends HttpServlet {
         }
     }
 
+    private void changePass(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
+        String oldPass = request.getParameter("oldpass");
+        String idUser = request.getParameter("idUser");
+        String newpass = request.getParameter("password");
+        Account acc = connectDB.checkLogin(idUser, Encode.encryptPass(oldPass));
+        if (acc != null) {
+            if (connectDB.changePassword(idUser, Encode.encryptPass(newpass))) {
+                String message = "Chang password successful! Please login again with new password!";
+                sendMessage(response, message, "logout.jsp");
+            } else {
+                String message = "Chang password failed! Please try again!";
+                sendMessage(response, message, "managerChangePwd.jsp");
+            }
+        } else {
+            String message = "Old password is incorrect!";
+            sendMessage(response, message, "managerChangePwd.jsp");
+        }
+    }
+
     private void viewStatistic(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html;charset=UTF-8");
+        int year = Calendar.getInstance().get(Calendar.YEAR);
         String idmajor = request.getParameter("idmajor");
         String major = "";
         HttpSession session = request.getSession();
@@ -109,7 +133,7 @@ public class Controller extends HttpServlet {
             listMajor.add(item);
         }
         Claim claim = new Claim();
-        claim.setListClaimWithoutEvidence(connectDB.getStudentUpClaimWithOutEvidence());
+        claim.setListClaimWithoutEvidence(connectDB.getStudentUpClaimWithOutEvidence(year));
         claim.setListClaimUnresolved(connectDB.getAllClaimUnresolvedAfterTwoWeek());
         claim.setListSelectedMajor(listMajor);
         session.setAttribute("beanClaim", claim);
@@ -118,6 +142,7 @@ public class Controller extends HttpServlet {
 
     private void viewStatisticWithFilter(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html;charset=UTF-8");
+        int year = Calendar.getInstance().get(Calendar.YEAR);
         String idmajor = request.getParameter("idmajor");
         String major = "";
         int idM = Integer.parseInt(idmajor);

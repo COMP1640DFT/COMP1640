@@ -82,8 +82,8 @@
                         <li class="active">
                             <a href="CoordinatorController?action=viewAllClaim"><i class="glyphicon glyphicon-home"></i> Home</a>
                         </li>
+                        <li><a href="eccoorChangePwd.jsp"><i class="glyphicon glyphicon-lock"></i>Change password</a></li>
                         <li><a href="logout"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
-
 
                     </ul>
 

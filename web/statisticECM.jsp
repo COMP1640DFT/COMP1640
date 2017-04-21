@@ -93,6 +93,9 @@
                     <li class="active">
                         <a href="Controller?action=viewstatistic"><i class="glyphicon glyphicon-dashboard"></i>  View Statistics</a>
                     </li>
+                     <li>
+                        <a href="managerChangePwd.jsp"><i class="glyphicon glyphicon-lock"></i>  Change password</a>
+                    </li>
                     <li><a href="logout.jsp"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
 
 

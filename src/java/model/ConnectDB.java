@@ -90,19 +90,19 @@ public class ConnectDB {
 
     public boolean deleteCM(int idCM) {
         boolean rs = false;
-        String sql = "DELETE FROM tblClaimManage WHERE idCM = "+idCM;
+        String sql = "DELETE FROM tblClaimManage WHERE idCM = " + idCM;
         try {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
-            rs = ps.executeUpdate()>0;
+            rs = ps.executeUpdate() > 0;
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
         return rs;
-    }    
-    
+    }
+
     public Account getAccoutnByid(String idUser) {
         Account acc = null;
         String sql = "select * from tblUser where idUser=? ";
@@ -131,18 +131,22 @@ public class ConnectDB {
 
     }
 
-    public List<Claim> getAllClaim() {
+    public List<Claim> getAllClaim(int year) {
+
         String sql = "select c.idClaim,c.idUser,c.title,f.name ,asm._name,im.name,c.sendDate  from tblClaim c join tblClaimManage cm on c.idCM=cm.idCM \n"
                 + "join tblADetail ad on cm.idItemAssessment=ad.id \n"
                 + "join  tblItemA im on ad.idItem= im.id\n"
                 + "join  tblAssessment  asm on asm.id= ad.idAssesment\n"
-                + "join tblFaculty f on f.id=asm.idFaculty";
+                + "join tblFaculty f on f.id=asm.idFaculty and c.sendDate LIKE ?";
+
         Claim claim = null;
         Decision s = null;
+        String y = Integer.toString(year);
         List<Claim> lClaim = new ArrayList<>();
         try {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, "%"+y+"%");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 claim = new Claim();
@@ -240,14 +244,16 @@ public class ConnectDB {
     }
 
     //Get all student send claim without evidence
-    public List<Claim> getStudentUpClaimWithOutEvidence() {
+    public List<Claim> getStudentUpClaimWithOutEvidence(int year) {
+        String y = Integer.toString(year);
         List<Claim> list = new LinkedList<>();
         String sql = "select c.idClaim, c.title, c.sendDate, u.fullName from tblClaim c \n"
                 + "inner join tblUser u on c.idUser = u.idUser \n"
-                + "where c.evidence = ''";
+                + "where c.evidence = '' and c.sendDate like ?";
         try {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, "%"+y+"%");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Claim c = new Claim();
@@ -427,7 +433,7 @@ public class ConnectDB {
         String sql = "select tcm.idCM, tcm.title, tcm.createdate, tcm.enddate, tcm._status, tf.name, ta._name, tia.name from tblClaimManage tcm join tblADetail tad on tcm.idItemAssessment = tad.id \n"
                 + "                            join tblAssessment ta on ta.id = tad.idAssesment\n"
                 + "                            join tblFaculty tf on tf.id = ta.idFaculty\n"
-                + "                            join tblItemA tia on tad.idItem = tia.id WHERE createDate LIKE  '%"+y+"%' ORDER BY tcm.createDate DESC ";
+                + "                            join tblItemA tia on tad.idItem = tia.id WHERE createDate LIKE  '%" + y + "%' ORDER BY tcm.createDate DESC ";
         List<Claim> list = new LinkedList<>();
 
         try {
@@ -538,7 +544,7 @@ public class ConnectDB {
             st.setString(3, c.getEndDate());
             st.setInt(4, c.getIdItemAssessment());
             st.setInt(5, c.getStatus());
-            rs  = st.executeUpdate() > 0;
+            rs = st.executeUpdate() > 0;
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -592,7 +598,7 @@ public class ConnectDB {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, majorID);
-            ps.setString(2, "%"+y+"%");
+            ps.setString(2, "%" + y + "%");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Claim claim = new Claim();
@@ -823,7 +829,7 @@ public class ConnectDB {
             st.setInt(5, claim.getStatus());
             st.setString(6, claim.getIdUser());
             st.setInt(7, claim.getIdCM());
-            rs  = st.executeUpdate() > 0;
+            rs = st.executeUpdate() > 0;
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -843,7 +849,7 @@ public class ConnectDB {
             st.setInt(4, d.getStatus());
             st.setString(5, d.getIdUser());
 
-            rs  = st.executeUpdate() > 0;
+            rs = st.executeUpdate() > 0;
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -860,7 +866,7 @@ public class ConnectDB {
             st.setString(1, content);
             st.setInt(2, status);
             st.setInt(3, idClaim);
-            rs  = st.executeUpdate() > 0;
+            rs = st.executeUpdate() > 0;
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -876,7 +882,7 @@ public class ConnectDB {
             PreparedStatement st = con.prepareStatement(sql);
             st.setInt(1, status);
             st.setInt(2, idClaim);
-            rs  = st.executeUpdate() > 0;
+            rs = st.executeUpdate() > 0;
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -892,7 +898,7 @@ public class ConnectDB {
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, file);
             st.setInt(2, idClaim);
-            rs  = st.executeUpdate() > 0;
+            rs = st.executeUpdate() > 0;
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -908,7 +914,7 @@ public class ConnectDB {
             PreparedStatement st = con.prepareStatement(sql);
             st.setInt(1, stt);
             st.setInt(2, id);
-            rs  = st.executeUpdate() > 0;
+            rs = st.executeUpdate() > 0;
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -1009,7 +1015,7 @@ public class ConnectDB {
             st.setString(4, acc.getEmail());
             st.setString(5, acc.getPhoneNumber());
             st.setString(6, acc.getIdUser());
-            rs  = st.executeUpdate() > 0;
+            rs = st.executeUpdate() > 0;
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -1028,7 +1034,7 @@ public class ConnectDB {
             st.setString(3, acc.getEmail());
             st.setString(4, acc.getPhoneNumber());
             st.setString(5, acc.getIdUser());
-            rs  = st.executeUpdate() > 0;
+            rs = st.executeUpdate() > 0;
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -1053,14 +1059,14 @@ public class ConnectDB {
             st.setInt(8, account.getIdFaculty());
             st.setInt(9, account.getLever());
 
-            rs  = st.executeUpdate() > 0;
+            rs = st.executeUpdate() > 0;
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
         return rs;
     }
-    
+
     public boolean addItemAssessment(int idAssessment) {
         boolean rs = false;
         try {
@@ -1071,7 +1077,7 @@ public class ConnectDB {
             st.setInt(2, idAssessment);
             st.setInt(3, idAssessment);
 
-            rs  = st.executeUpdate() > 0;
+            rs = st.executeUpdate() > 0;
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -1098,41 +1104,41 @@ public class ConnectDB {
         }
         return list;
     }
-    
-    public boolean createFaculty(String name){
+
+    public boolean createFaculty(String name) {
         boolean rs = false;
         try {
             connectdatabase();
             String sql = "insert into tblFaculty(name) value (?)";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, name);
-            rs  = st.executeUpdate() > 0;
+            rs = st.executeUpdate() > 0;
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
         return rs;
     }
-    
+
     public boolean removeFaculty(int id) {
         boolean rs = false;
-        String sql = "DELETE FROM tblFaculty WHERE id = "+id;
+        String sql = "DELETE FROM tblFaculty WHERE id = " + id;
         try {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
-            rs = ps.executeUpdate()>0;
+            rs = ps.executeUpdate() > 0;
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
         return rs;
-    }    
-    
-public List<Assessment> getListAssessmentByIdFac(int idFa) {
-        List<Assessment> listAss= new ArrayList<Assessment>();
+    }
+
+    public List<Assessment> getListAssessmentByIdFac(int idFa) {
+        List<Assessment> listAss = new ArrayList<Assessment>();
         Assessment ass = null;
-        
+
         String sql = "select * from tblAssessment where idFaculty=?";
         try {
             connectdatabase();
@@ -1145,7 +1151,7 @@ public List<Assessment> getListAssessmentByIdFac(int idFa) {
                 ass.setName(rs.getString(2));
                 ass.setIdFaculty(rs.getInt(3));
                 listAss.add(ass);
-              
+
             }
             con.close();
         } catch (SQLException ex) {
@@ -1153,15 +1159,16 @@ public List<Assessment> getListAssessmentByIdFac(int idFa) {
         }
         return listAss;
     }
-public List<Assessment> getAllAssessment() {
-        List<Assessment> listAss= new ArrayList<Assessment>();
+
+    public List<Assessment> getAllAssessment() {
+        List<Assessment> listAss = new ArrayList<Assessment>();
         Assessment ass = null;
-        
+
         String sql = "select * from tblAssessment";
         try {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
-          
+
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 ass = new Assessment();
@@ -1169,7 +1176,7 @@ public List<Assessment> getAllAssessment() {
                 ass.setName(rs.getString(2));
                 ass.setIdFaculty(rs.getInt(3));
                 listAss.add(ass);
-              
+
             }
             con.close();
         } catch (SQLException ex) {
@@ -1177,8 +1184,9 @@ public List<Assessment> getAllAssessment() {
         }
         return listAss;
     }
-public boolean addAssessment(Assessment ass){
-    boolean rs = false;
+
+    public boolean addAssessment(Assessment ass) {
+        boolean rs = false;
         try {
             connectdatabase();
             String sql = "insert into tblAssessment(id,_name,idFaculty) values (?,?,?)";
@@ -1186,29 +1194,29 @@ public boolean addAssessment(Assessment ass){
             st.setInt(1, ass.getId());
             st.setString(2, ass.getName());
             st.setInt(3, ass.getIdFaculty());
-            rs  = st.executeUpdate() > 0;
+            rs = st.executeUpdate() > 0;
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
         return rs;
-}
-  
+    }
+
     public boolean removeAssessment(int idAss) {
         boolean rs = false;
-        String sql = "DELETE FROM tblAssessment WHERE id = "+idAss;
+        String sql = "DELETE FROM tblAssessment WHERE id = " + idAss;
         try {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
-            rs = ps.executeUpdate()>0;
+            rs = ps.executeUpdate() > 0;
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
         return rs;
-    } 
-    
+    }
+
     public boolean changePassword(String idUser, String pass) {
         boolean rs = false;
         try {
@@ -1217,14 +1225,14 @@ public boolean addAssessment(Assessment ass){
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, pass);
             st.setString(2, idUser);
-            rs  = st.executeUpdate() > 0;
+            rs = st.executeUpdate() > 0;
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
         return rs;
     }
-    
+
     public void main(String[] args) {
 //        con;
 //        Claim c = new Claim("1", "1", "2017-02-12", "1", "taincgc", 1, 0);
