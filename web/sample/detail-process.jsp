@@ -19,7 +19,7 @@
         <p>
             ${ClaimDetail.content}
         </p>
-        <a href="../files/${ClaimDetail.filedata}" target="_blank"><img src="http://placehold.it/350x150?text=Mina Phan" class="img-thumbnail"></a>
+        <a href="${ClaimDetail.filedata}" target="_blank"><img src="http://placehold.it/350x150?text=File" class="img-thumbnail"></a>
         <hr/>
         <h3>Reply from: <strong>${DecisionDetail.idUser}</strong></h3>
         <p>${DecisionDetail.content}</p>

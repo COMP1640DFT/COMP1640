@@ -111,11 +111,30 @@ public class Controller extends HttpServlet {
 
     private void viewStatistic(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html;charset=UTF-8");
-        int year = Calendar.getInstance().get(Calendar.YEAR);
+        String y = request.getParameter("year");
+        int year = 0;
         String idmajor = request.getParameter("idmajor");
         String major = "";
         HttpSession session = request.getSession();
         session.setAttribute("beanStatistic", null);
+        
+        if(y == null){
+            year = Calendar.getInstance().get(Calendar.YEAR);
+        }else{
+            year = Integer.parseInt(y);
+        }
+        List<ItemSelected> listYear = new ArrayList<>();
+        for (int i = 2010; i < 2030; i++) {
+            ItemSelected item = new ItemSelected();
+            item.setData(i + "");
+            item.setValue(i + "");
+            item.setSelected(false);
+            if (year == i) {
+                item.setSelected(true);
+            }
+            listYear.add(item);
+        }
+        
         if (idmajor == null) {
             idmajor = "1";
         }
@@ -134,22 +153,39 @@ public class Controller extends HttpServlet {
         }
         Claim claim = new Claim();
         claim.setListClaimWithoutEvidence(connectDB.getStudentUpClaimWithOutEvidence(year));
-        claim.setListClaimUnresolved(connectDB.getAllClaimUnresolvedAfterTwoWeek());
+        claim.setListClaimUnresolved(connectDB.getAllClaimUnresolvedAfterTwoWeek(year));
         claim.setListSelectedMajor(listMajor);
+        claim.setListSelectedYear(listYear);
         session.setAttribute("beanClaim", claim);
         response.sendRedirect("statisticECM.jsp");
     }
 
     private void viewStatisticWithFilter(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html;charset=UTF-8");
-        int year = Calendar.getInstance().get(Calendar.YEAR);
+        String y = request.getParameter("year");
         String idmajor = request.getParameter("idmajor");
-        String major = "";
         int idM = Integer.parseInt(idmajor);
+        int year = 0;
         HttpSession session = request.getSession();
         session.setAttribute("beanClaim", null);
         if (idmajor == null) {
             idmajor = "1";
+        }
+        if(y == null){
+            year = Calendar.getInstance().get(Calendar.YEAR);
+        }else{
+            year = Integer.parseInt(y);
+        }
+        List<ItemSelected> listYear = new ArrayList<>();
+        for (int i = 2010; i < 2030; i++) {
+            ItemSelected item = new ItemSelected();
+            item.setData(i + "");
+            item.setValue(i + "");
+            item.setSelected(false);
+            if (year == i) {
+                item.setSelected(true);
+            }
+            listYear.add(item);
         }
         List<Faculty> listM = connectDB.getListMajor();
         List<ItemSelected> listMajor = new ArrayList<>();
@@ -160,14 +196,14 @@ public class Controller extends HttpServlet {
             item.setSelected(false);
             if (idmajor.equals(listM1.getId() + "")) {
                 item.setSelected(true);
-                major = listM1.getName();
             }
             listMajor.add(item);
         }
         Claim claim = new Claim();
-        claim.setListClaimWithoutEvidence(connectDB.getStudentUpClaimWithOutEvidenceInMajor(idM));
-        claim.setListClaimUnresolved(connectDB.getAllClaimUnresolvedAfterTwoWeekInMajor(idM));
+        claim.setListClaimWithoutEvidence(connectDB.getStudentUpClaimWithOutEvidenceInMajor(idM,year));
+        claim.setListClaimUnresolved(connectDB.getAllClaimUnresolvedAfterTwoWeekInMajor(idM,year));
         claim.setListSelectedMajor(listMajor);
+        claim.setListSelectedYear(listYear);
         session.setAttribute("beanClaim", claim);
         response.sendRedirect("statisticECM.jsp");
     }

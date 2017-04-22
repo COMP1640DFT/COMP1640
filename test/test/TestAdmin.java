@@ -6,6 +6,7 @@ package test;
  * and open the template in the editor.
  */
 
+import model.ConnectDB;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -18,6 +19,8 @@ import static org.junit.Assert.*;
  * @author DaoMinhThien
  */
 public class TestAdmin {
+    
+    ConnectDB connectDB = new ConnectDB();
     
     public TestAdmin() {
     }
@@ -38,6 +41,12 @@ public class TestAdmin {
     public void tearDown() {
     }
 
+    
+    @Test
+    public void getAllClaimManage(){
+        int total = 6;
+        assertEquals("All claims", total, connectDB.getAllClaimManage("2017").size());
+    }
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:
     //

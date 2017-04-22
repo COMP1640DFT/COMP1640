@@ -16,7 +16,7 @@
         <meta name="description" content="Neon Admin Panel"/>
         <meta name="author" content="Laborator.co"/>
 
-        <title>Neon | Blank Page</title>
+        <title>Assessment</title>
 
         <link rel="stylesheet" href="assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
               id="style-resource-1">

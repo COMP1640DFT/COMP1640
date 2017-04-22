@@ -16,7 +16,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 
-        <title>Home</title>
+        <title>Account</title>
 
         <link rel="stylesheet" href="assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css">
 
@@ -81,13 +81,13 @@
 
                 <ul id="main-menu" class="">
 
-                    <li class="active">
-                        <a href="StudentsController?action=viewAllCM"><i class="glyphicon glyphicon-home"></i> All Claims</a>
-                    </li>
                     <li>
-                        <a href="StudentsController?action=changePass"><i class="glyphicon glyphicon-user"></i>Password</a>
+                        <a href="StudentsController?action=viewAllCM"><i class="glyphicon glyphicon-home"></i>Claims</a>
                     </li>
-                    <li><a href="logout.jsp"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
+                    <li class="active">
+                        <a href="StudentsController?action=changePass"><i class="glyphicon glyphicon-lock"></i>Password</a>
+                    </li>
+                    <li><a href="logout.jsp"><i class="glyphicon glyphicon-log-out"></i>Logout</a></li>
 
 
                 </ul>

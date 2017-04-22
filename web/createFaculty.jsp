@@ -76,7 +76,7 @@
                         </ul>
 
                     </li>
-                    <li><a href="AdminController?action=viewAllFaculty"><i class="entypo-suitcase"></i><span>Faculty</span></a></li>
+                    <li class="active"><a href="AdminController?action=viewAllFaculty"><i class="entypo-suitcase"></i><span>Faculty</span></a></li>
                     <li><a href="logout.jsp"><i class="entypo-logout"></i> Logout</a></li>
                 </ul>
 

@@ -17,7 +17,7 @@
         <meta name="description" content="Neon Admin Panel"/>
         <meta name="author" content="Laborator.co"/>
 
-        <title>Neon | Blank Page</title>
+        <title>Schedule</title>
 
         <link rel="stylesheet" href="assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
               id="style-resource-1">
@@ -72,23 +72,23 @@
 
                 <ul id="main-menu" class="">
                     <li>
-                        <a href="#"><i class="entypo-user"></i><span>Account</span></a>
+                        <a href="#"><i class="entypo-user"></i><span>Accounts</span></a>
                         <ul>
 
 
-                            <li><a href="AdminController?action=openCreateUser"><i class="entypo entypo-user-add"></i> Create</a></li>
-                            <li><a href="AdminController?action=viewAllUser"><i class="entypo entypo-users"></i> View all</a></li>
+                            <li><a href="AdminController?action=openCreateUser"><i class="entypo entypo-user-add"></i>Create</a></li>
+                            <li><a href="AdminController?action=viewAllUser"><i class="entypo entypo-users"></i>View</a></li>
                         </ul>
                     </li>
-                    <li><a href="#"><i class="entypo-suitcase"></i> Claim</a>
+                    <li><a href="#"><i class="entypo-suitcase"></i>Claims</a>
                         <ul>
                             <li><a href="AdminController?action=openShedule">Create</a></li>
-                            <li><a href="AdminController?action=adminViewAll">View all</a></li>
+                            <li><a href="AdminController?action=adminViewAll">View</a></li>
                         </ul>
 
                     </li>
-                    <li><a href="AdminController?action=viewAllFaculty"><i class="entypo-user"></i><span>Faculty</span></a></li>
-                    <li><a href="logout.jsp"><i class="entypo-logout"></i> Logout</a></li>
+                    <li><a href="AdminController?action=viewAllFaculty"><i class="entypo-suitcase"></i><span>Faculty</span></a></li>
+                    <li><a href="logout.jsp"><i class="entypo-logout"></i>Logout</a></li>
                 </ul>
 
 

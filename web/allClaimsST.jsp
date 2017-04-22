@@ -16,7 +16,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 
-        <title>Home</title>
+        <title>Claims</title>
 
         <link rel="stylesheet" href="assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
               id="style-resource-1">
@@ -44,78 +44,98 @@
         <c:if test="${account.lever != 1}">
             <jsp:forward page="logout.jsp"></jsp:forward>
         </c:if>
-            <div class="page-container">
+        <div class="page-container">
 
-                <div class="sidebar-menu">
+            <div class="sidebar-menu">
 
-                    <header class="logo-env">
+                <header class="logo-env">
 
-                        <!-- logo -->
-                        <div class="logo text-center">
-                            <a href="dashboard/main/index.html">
-                                <img src="assets/images/logo.png" width="100" alt="" style="margin-right: auto"/>
+                    <!-- logo -->
+                    <div class="logo text-center">
+                        <a href="dashboard/main/index.html">
+                            <img src="assets/images/logo.png" width="100" alt="" style="margin-right: auto"/>
 
-                            </a>
-                            <h3>Greenwich University</h3>
-                        </div>
-
-
-                        <!-- open/close menu icon (do not remove if you want to enable menu on mobile devices) -->
-                        <div class="sidebar-mobile-menu visible-xs">
-                            <a href="#" class="with-animation"><!-- add class "with-animation" to support animation -->
-                                <i class="entypo-menu"></i>
-                            </a>
-                        </div>
-
-                    </header>
+                        </a>
+                        <h3>Greenwich University</h3>
+                    </div>
 
 
-                    <ul id="main-menu" class="">
+                    <!-- open/close menu icon (do not remove if you want to enable menu on mobile devices) -->
+                    <div class="sidebar-mobile-menu visible-xs">
+                        <a href="#" class="with-animation"><!-- add class "with-animation" to support animation -->
+                            <i class="entypo-menu"></i>
+                        </a>
+                    </div>
 
-                        <li class="active">
-                            <a href=""><i class="glyphicon glyphicon-home"></i> Home</a>
-                        </li>
-                        <li><a href="#"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
+                </header>
 
 
-                    </ul>
+                <ul id="main-menu" class="">
+
+                    <li class="active">
+                        <a href="StudentsController?action=viewAllCM"><i class="glyphicon glyphicon-home"></i>Claims</a>
+                    </li>
+                    <li >
+                        <a href="StudentsController?action=changePass"><i class="glyphicon glyphicon-lock"></i>Password</a>
+                    </li>
+                    <li><a href="logout.jsp"><i class="glyphicon glyphicon-log-out"></i>Logout</a></li>
 
 
-                </div>
-                <div class="main-content">
+                </ul>
 
-                    <div class="row">
 
-                        <!-- Raw Links -->
-                        <div class="col-md-6 col-sm-4 clearfix hidden-xs">
+            </div>
+            <div class="main-content">
 
-                            <ul class="list-inline links-list pull-right">
+                <div class="row">
 
-                                <li>
-                                </li>
-                            </ul>
+                    <!-- Raw Links -->
+                    <div class="col-md-6 col-sm-4 clearfix hidden-xs">
 
-                        </div>
+                        <ul class="list-inline links-list pull-right">
+
+                            <li>
+                            </li>
+                        </ul>
 
                     </div>
 
-                    <hr/>
+                </div>
+                <div class="row">
+
+                    <!-- Profile Info and Notifications -->
+                    <div class="col-md-6 col-sm-8 clearfix">
+
+                        <ul class="user-info pull-left pull-none-xsm">
+
+                            <!-- Profile Info -->
+                            <li class="profile-info dropdown">
+                                <!-- add class "pull-right" if you want to place this from right -->
+                                Welcome: <strong> ${account.fullName} (${account.idUser})</strong>
+                            </li>
+                        </ul>
+
+                    </div>
+
+                </div>
+
+                <hr/>
 
 
-                    <h2 class="text-center">All claims</h2>
-                    <br/>
+                <h2 class="text-center">All claims</h2>
+                <br/>
 
-                    <div class="panel panel-primary">
-                        <form class="form-inline" style="padding: 10px">
-                            <div class="form-group">
-                                <label for="status">Filter by status: </label>
-                                <select id="status" class="form-control" name="status">
-                                    <option value="open">Open</option>
-                                    <option value="closed">Closed</option>
-                                </select>
-                            </div>
-    <!--                        <a href="StudentsController?action=AddClaimPage&idC=${c.idCourse}&idCM=${c.idClaim}" class="btn btn-default" style="float: right;margin-top: 20px"><i
-                                    class="glyphicon glyphicon-plus-sign"></i> New</a>-->
+                <div class="panel panel-primary">
+                    <form class="form-inline" style="padding: 10px">
+                        <div class="form-group">
+                            <label for="status">Filter by status: </label>
+                            <select id="status" class="form-control" name="status">
+                                <option value="open">Open</option>
+                                <option value="closed">Closed</option>
+                            </select>
+                        </div>
+<!--                        <a href="StudentsController?action=AddClaimPage&idC=${c.idCourse}&idCM=${c.idClaim}" class="btn btn-default" style="float: right;margin-top: 20px"><i
+                                class="glyphicon glyphicon-plus-sign"></i> New</a>-->
                     </form>
 
                     <table class="dataTable table table-bordered table table-responsive">

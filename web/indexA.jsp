@@ -71,29 +71,29 @@
 
 
                 <ul id="main-menu" class="">
-                    <li>
-                        <a href="#"><i class="entypo-user"></i><span>Account</span></a>
-                        <ul>
+                        <li>
+                            <a href="#"><i class="entypo-user"></i><span>Accounts</span></a>
+                            <ul>
 
 
-                            <li><a href="AdminController?action=openCreateUser"><i class="entypo entypo-user-add"></i> Create</a></li>
-                            <li><a href="AdminController?action=viewAllUser"><i class="entypo entypo-users"></i> View all</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#"><i class="entypo-suitcase"></i> Claim</a>
-                        <ul>
-                            <li><a href="AdminController?action=openShedule">Create</a></li>
-                            <li><a href="AdminController?action=adminViewAll">View all</a></li>
-                        </ul>
+                                <li><a href="AdminController?action=openCreateUser"><i class="entypo entypo-user-add"></i>Create</a></li>
+                                <li><a href="AdminController?action=viewAllUser"><i class="entypo entypo-users"></i>View</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#"><i class="entypo-suitcase"></i>Claims</a>
+                            <ul>
+                                <li><a href="AdminController?action=openShedule">Create</a></li>
+                                <li><a href="AdminController?action=adminViewAll">View</a></li>
+                            </ul>
 
-                    </li>
-                    <li><a href="AdminController?action=viewAllFaculty"><i class="entypo-user"></i><span>Faculty</span></a></li>
-                    <li><a href="logout.jsp"><i class="entypo-logout"></i> Logout</a></li>
-                </ul>
+                        </li>
+                        <li><a href="AdminController?action=viewAllFaculty"><i class="entypo-suitcase"></i><span>Faculty</span></a></li>
+                        <li><a href="logout.jsp"><i class="entypo-logout"></i>Logout</a></li>
+                    </ul>
 
             </div>
             <div class="main-content">
-                <h2>Welcome: ${account.fullName}</h2>
+                <h2>Welcome: ${account.idUser}</h2>
 
                 <br/>
                 <div class="row">
@@ -129,7 +129,6 @@
                         <table class="dataTable table table-bordered table table-responsive">
                             <thead>
                             <th>#</th>
-                            <!--<th>Title</th>-->
                             <th>Assessment</th>
                             <th>Item</th>
                             <th>Create Date</th>
@@ -141,7 +140,6 @@
                                 <c:forEach var="c" items="${beanAdminCM.listClaim}">
                                     <tr>
                                         <td>${c.idClaim}</td>
-                                        <!--<td>${c.title}</td>-->
                                         <td>${c.assessmentName}</td>
                                         <td>${c.itemAssessmentName} - ${c.facultyName}</td>
                                         <td>${c.createDate}</td>

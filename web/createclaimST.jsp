@@ -66,10 +66,14 @@
 
 
                 <ul id="main-menu" class="">
-                    <li class="active">
-                        <a href="StudentsController?action=viewAllCM"><i class="glyphicon glyphicon-home"></i> All Claims</a>
+
+                    <li>
+                        <a href="StudentsController?action=viewAllCM"><i class="glyphicon glyphicon-home"></i>Claims</a>
                     </li>
-                    <li><a href="logout.jsp"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
+                    <li >
+                        <a href="StudentsController?action=changePass"><i class="glyphicon glyphicon-lock"></i>Password</a>
+                    </li>
+                    <li><a href="logout.jsp"><i class="glyphicon glyphicon-log-out"></i>Logout</a></li>
 
 
                 </ul>
@@ -90,7 +94,7 @@
                                 <!-- add class "pull-right" if you want to place this from right -->
 
 
-                                Welcome: <strong>${idUser} (${fullName})</strong>
+                                Welcome: <strong>${fullName} (${idUser})</strong>
 
 
                             </li>

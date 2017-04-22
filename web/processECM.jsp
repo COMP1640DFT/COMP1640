@@ -17,7 +17,7 @@
         <meta name="description" content="Neon Admin Panel"/>
         <meta name="author" content="Laborator.co"/>
 
-        <title>Neon | Blank Page</title>
+        <title>Process</title>
 
 
         <link rel="stylesheet" href="assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
@@ -157,7 +157,7 @@
             $(document).ready(function () {
 
                 $('.dataTable').DataTable({
-                    searching: false,
+                    searching: true,
                     bLengthChange: false,
                     responsive: {
                         details: {

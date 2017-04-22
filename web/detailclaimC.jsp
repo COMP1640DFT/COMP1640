@@ -17,7 +17,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 
-        <title>Home</title>
+        <title>Claim</title>
 
         <link rel="stylesheet" href="assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css">
         <link rel="stylesheet" href="assets/css/font-icons/font-awesome/css/font-awesome.min.css" id="style-resource-1">
@@ -237,10 +237,15 @@
 
                                 <!-- links -->
                                 <div class="mail-links">
-
-
-                                    <span>Status: <span class="label label-success">Open</span></span>
-
+                                    <c:if test="${claimD.status == 0}">
+                                        <span>Status: <span class="label label-default">Waiting</span></span>
+                                    </c:if>
+                                    <c:if test="${claimD.status == 1}"> 
+                                        <span>Status: <span class="label label-success">Approve</span></span>
+                                    </c:if>
+                                    <c:if test="${claimD.status == 2}"> 
+                                        <span>Status: <span class="label label-danger">Reject</span></span>
+                                    </c:if>  
                                 </div>
                             </div>
 
@@ -276,7 +281,7 @@
                                 <c:if test="${claimD.filedata != ''}">
                                     <ul>
                                         <li>
-                                            <a href="../files/${claimD.filedata}" class="thumb">
+                                            <a href="${claimD.filedata}" class="thumb">
                                                 <img src="http://placehold.it/350x150?text=File" class="img-rounded"/>
                                             </a>
                                         </li>
@@ -287,7 +292,7 @@
 
                             <div class="mail-reply">
                                 <c:choose>
-                                    <c:when test="${claimD.status==1}">
+                                    <c:when test="${claimD.status!=0}">
                                         <div class="fake-form coordinator">
                                             ${decision.content}
                                             <p><strong>${decision.fullNameEC}</strong>   ${decision.sendDate}</p>
@@ -300,8 +305,8 @@
                                         <div class="form-group">
                                             <label for="message">Status:</label>
                                             <select style="margin-top: 10px;"addMessage name="selectStatus" id="selectStatus"  >                          
-                                                <option  value="1"   >Accept</option>
-                                                <option  value="0" >Protest</option>
+                                                <option  value="1"   >Approve</option>
+                                                <option  value="0" >Reject</option>
                                             </select><br/>
                                             <label for="message">Message:</label>
                                             <textarea class="form-control" name="message" id="message"></textarea>

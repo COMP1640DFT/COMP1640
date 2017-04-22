@@ -30,6 +30,7 @@ public class Claim {
     private List<Claim> listClaimUnresolved;
     private List<Claim> listClaim;
     private List<ItemSelected> listSelectedMajor;
+    private List<ItemSelected> listSelectedYear;
     
     public List<ItemSelected> getListSelectedMajor() {
         return listSelectedMajor;
@@ -253,6 +254,15 @@ public class Claim {
     public void setStatusCM(int statusCM) {
         this.statusCM = statusCM;
     }
+
+    public List<ItemSelected> getListSelectedYear() {
+        return listSelectedYear;
+    }
+
+    public void setListSelectedYear(List<ItemSelected> listSelectedYear) {
+        this.listSelectedYear = listSelectedYear;
+    }
+    
     
     
 }

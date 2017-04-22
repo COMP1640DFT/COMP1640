@@ -16,7 +16,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 
-        <title>Home</title>
+        <title>Account</title>
 
         <link rel="stylesheet" href="assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css">
 
@@ -81,11 +81,16 @@
 
                 <ul id="main-menu" class="">
 
-                    <li class="active">
-                            <a href="CoordinatorController?action=viewAllClaim"><i class="glyphicon glyphicon-home"></i> Home</a>
-                        </li>
-                        <li><a href="eccoorChangePwd.jsp"><i class="glyphicon glyphicon-log-out"></i>Change password</a></li>
-                        <li><a href="logout"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
+                    <li>
+                        <a href="Controller?action=viewC"><i class="glyphicon glyphicon-info-sign"></i>  View Process</a>
+                    </li>
+                    <li >
+                        <a href="Controller?action=viewstatistic"><i class="glyphicon glyphicon-dashboard"></i>  View Statistics</a>
+                    </li>
+                     <li class="active">
+                        <a href="managerChangePwd.jsp"><i class="glyphicon glyphicon-lock"></i>  Change password</a>
+                    </li>
+                    <li><a href="logout.jsp"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
 
 
                 </ul>

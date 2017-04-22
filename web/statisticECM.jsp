@@ -17,10 +17,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 
-        <title>Home</title>
+        <title>Statistics</title>
 
         <link rel="stylesheet" href="assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css">
-
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css"/>
         <link rel="stylesheet" href="assets/css/font-icons/font-awesome/css/font-awesome.min.css" id="style-resource-1">
         <link rel="stylesheet" href="assets/css/font-icons/entypo/css/entypo.css" id="style-resource-2">
         <link rel="stylesheet" href="assets/css/font-icons/entypo/css/animation.css" id="style-resource-3">
@@ -29,18 +29,12 @@
         <link rel="stylesheet" href="assets/css/main.css" id="style-resource-5">
         <link rel="stylesheet" href="assets/css/custom.css" id="style-resource-6">
 
-        <script src="assets/js/jquery-1.10.2.min.js"></script>
 
-        <link rel="stylesheet" type="text/css" href="assets/css/responsive.jqueryui.min.css">
-        <link rel="stylesheet" type="text/css" href="assets/css/responsive.dataTables.min.css">
-        <link rel="stylesheet" href="assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
-              id="style-resource-1">
-        <link rel="stylesheet" href="assets/css/font-icons/entypo/css/entypo.css" id="style-resource-2">
-        <link rel="stylesheet" href="assets/css/font-icons/entypo/css/animation.css" id="style-resource-3">
-        <link rel="stylesheet" href="assets/css/main.css" id="style-resource-5">
-        <link rel="stylesheet" href="assets/css/custom.css" id="style-resource-6">
+        <link rel="stylesheet" href="assets/css/responsive.bootstrap.min.css">
+        <link rel="stylesheet" href="assets/css/responsive.dataTables.min.css">
 
         <script src="assets/js/jquery-1.10.2.min.js"></script>
+
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -93,7 +87,7 @@
                     <li class="active">
                         <a href="Controller?action=viewstatistic"><i class="glyphicon glyphicon-dashboard"></i>  View Statistics</a>
                     </li>
-                     <li>
+                    <li>
                         <a href="managerChangePwd.jsp"><i class="glyphicon glyphicon-lock"></i>  Change password</a>
                     </li>
                     <li><a href="logout.jsp"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
@@ -348,6 +342,22 @@
                                             <label><strong>Filter: &nbsp;&nbsp;&nbsp;&nbsp;</strong></label>
                                         </div>
                                         <div class="form-group">
+                                            <label for="option1">Year</label>
+                                            <select id="option1" name="year">
+                                                <c:forEach var="y" items="${beanClaim.listSelectedYear}">
+                                                    <c:choose>
+                                                        <c:when test="${y.selected==true}">
+                                                            <option selected value="${y.value}">${y.data}</option>
+                                                        </c:when>    
+                                                        <c:otherwise>
+                                                            <option value="${y.value}">${y.data}</option>
+                                                        </c:otherwise>
+                                                    </c:choose>
+
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
                                             <label for="option2">Major</label>
                                             <select id="option2" name="idmajor">
                                                 <c:forEach var="m" items="${beanClaim.listSelectedMajor}">
@@ -372,10 +382,11 @@
                                 <h3>Student up claim without evidence</h3>
                                 <table class="dataTable table table-bordered table table-responsive responsive">
                                     <thead>
-                                    <th>Claim ID</th>
-                                    <th>Student Name</th>
-                                    <th>Claim Title</th>
-                                    <th>Send Date</th>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Title</th>
+                                    <th>Date</th>
+                                    <th>Assessment</th>
                                     </thead>
                                     <tbody>
                                         <c:forEach var="c" items="${beanClaim.listClaimWithoutEvidence}">
@@ -384,6 +395,7 @@
                                                 <td>${c.userFullName}</td>
                                                 <td>${c.title}</td>
                                                 <td>${c.sendDate}</td>
+                                                <td>${c.assessmentName}</td>
                                             </tr>
                                         </c:forEach>
                                     </tbody>
@@ -395,38 +407,43 @@
                                 <table class="dataTable table table-bordered table table-responsive">
                                     <thead>
                                     <th>Claim ID</th>
+                                    <th>User</th>
                                     <th>Title</th>
-                                    <th>Content</th>
-                                    <th>Evidence File</th>
+                                    <th>Assessment</th>
+                                    <th>Evidence</th>
                                     <th>Send Date</th>
                                     <th>Status</th>
-                                    <th>User</th>
-                                    <th>Full Name</th>
+                                    
                                     </thead>
                                     <tfoot>
                                     <th>Claim ID</th>
+                                    <th>User</th>
                                     <th>Title</th>
-                                    <th>Content</th>
-                                    <th>Evidence File</th>
+                                    <th>Assessment</th>
+                                    <th>Evidence</th>
                                     <th>Send Date</th>
                                     <th>Status</th>
-                                    <th>User</th>
-                                    <th>Full Name</th>
+                                    
                                     </tfoot>
                                     <tbody>
 
                                         <c:forEach var="cl" items="${beanClaim.listClaimUnresolved}">
                                             <tr>
                                                 <td>${cl.idClaim}</td>
+                                                <td>${cl.idUser}</td>
                                                 <td>${cl.title}</td>
-                                                <td>${cl.content}</td>
-                                                <td>${cl.filedata}</td>
+                                                <td>${cl.assessmentName}</td>
+                                                <c:if test="${cl.filedata == ''}">
+                                                    <td><span class="text-danger"><c:out value="No"/></span></td>
+                                                    </c:if>
+                                                    <c:if test="${cl.filedata != ''}">
+                                                    <td><span ><c:out value="Yes"/></span></td>
+                                                    </c:if>
                                                 <td>${cl.sendDate}</td>
                                                 <c:if test="${cl.status == 0}">
                                                     <td><c:out value="Waiting"/></td>
                                                 </c:if>
-                                                <td>${cl.idUser}</td>
-                                                <td>${cl.userFullName}</td>
+                                                
                                             </tr>
                                         </c:forEach>
 
@@ -439,7 +456,7 @@
                 </div>
 
             </div>
-            
+
         </div>
 
         <script src="assets/js/gsap/main-gsap.js" id="script-resource-1"></script>
@@ -449,6 +466,13 @@
         <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js" ></script>
         <script src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
         <script src="https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js" type="text/javascript"></script>
+        <script src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.flash.min.js" type="text/javascript"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js" type="text/javascript"></script>
+        <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js" type="text/javascript"></script>
+        <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js" type="text/javascript"></script>
+        <script src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js" type="text/javascript"></script>
+        <script src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.print.min.js" type="text/javascript"></script>
         <script src="assets/js/joinable.js" id="script-resource-4"></script>
         <script src="assets/js/resizeable.js" id="script-resource-5"></script>
         <script src="assets/js/select2/select2.min.js" id="script-resource-12"></script>
@@ -462,78 +486,78 @@
                 e.preventDefault();
                 $("#wrapper").toggleClass("toggled");
             });
-            
+
             $(document).ready(function () {
                 var ctx = document.getElementById("myChart1");
                 var data = [12, 19, 3, 5, 2, 3, 6, 7, 8];
-                var myChart = new Chart(ctx, 
-                {
-                    type: 'bar',
-                    data: {
-                        labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
-                        datasets: [{
-                            label: '# of claims',
-                            data: [<c:forEach var="m" items="${beanStatistic.listNumOfClaim}">${m.data},</c:forEach>],
-                            backgroundColor: "#758EA7",
-                            borderWidth: 0
-                        }]},
-                    options: {
-                        scales: {
-                            yAxes: [{ticks: {
-                                beginAtZero: true
-                            }}]
-                        }
-                    }
-                });
-                    
+                var myChart = new Chart(ctx,
+                        {
+                            type: 'bar',
+                            data: {
+                                labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+                                datasets: [{
+                                        label: '# of claims',
+                                        data: [<c:forEach var="m" items="${beanStatistic.listNumOfClaim}">${m.data},</c:forEach>],
+                                        backgroundColor: "#758EA7",
+                                        borderWidth: 0
+                                    }]},
+                            options: {
+                                scales: {
+                                    yAxes: [{ticks: {
+                                                beginAtZero: true
+                                            }}]
+                                }
+                            }
+                        });
+
                 var ctx2 = document.getElementById("myChart2");
                 var data2 = {
                     labels: [<c:forEach var="m" items="${beanStatistic.listStatisticAllMajor}">"${m.title}",</c:forEach>],
-                    datasets: [{
-                        data: [<c:forEach var="m" items="${beanStatistic.listStatisticAllMajor}">${m.data},</c:forEach>],
-                        backgroundColor: ["#9c3a4e","#1a4466"],
-                        hoverBackgroundColor: ["#FF6384","#36A2EB"]}]
+                            datasets: [{
+                                    data: [<c:forEach var="m" items="${beanStatistic.listStatisticAllMajor}">${m.data},</c:forEach>],
+                                    backgroundColor: ["#9c3a4e", "#1a4466"],
+                                    hoverBackgroundColor: ["#FF6384", "#36A2EB"]}]
                 };
-                    
+
                 var myPieChart = new Chart(ctx2, {
                     type: 'pie',
                     data: data2,
                     options: {}
                 });
-                
+
                 var ctx3 = document.getElementById('myChart3');
                 var myChart3 = new Chart(ctx3, {
                     type: 'bar',
-                        data: {
-                            labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
-                            datasets: [{
+                    data: {
+                        labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+                        datasets: [{
                                 label: '# of student up claims',
                                 data: [<c:forEach var="s" items="${beanStatistic.listNumOfStudent}">${s.data},</c:forEach>],
                                 backgroundColor: "#7A8E59",
                                 borderColor: "#44572f",
                                 borderWidth: 3
                             }]},
-                        options: {
-                            scales: {
-                                yAxes: [{ticks: {beginAtZero: true}}]
-                            }
+                    options: {
+                        scales: {
+                            yAxes: [{ticks: {beginAtZero: true}}]
                         }
+                    }
                 });
-                    
+
                 $('.dataTable').DataTable({
                     dom: 'Bfrtip',
                     buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
-                    searching:false,
-                    bLengthChange:false,
+                    searching: true,
+                    bLengthChange: false,
                     responsive: {
                         details: {
                             display: $.fn.dataTable.Responsive.display.modal({
                                 header: function (row) {
                                     var data = row.data();
-                                        return 'Details for ' + data[0] + ' ' + data[1];
-                                    }
-                                }),
-                                renderer: $.fn.dataTable.Responsive.renderer.tableAll({tableClass: 'table'})
+                                    return 'Details for ' + data[0] + ' ' + data[1];
+                                }
+                            }),
+                            renderer: $.fn.dataTable.Responsive.renderer.tableAll({tableClass: 'table'})
                         }
                     }
                 });

@@ -16,7 +16,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 
-        <title>Home</title>
+        <title>Claim</title>
 
         <link rel="stylesheet" href="assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css">
         <link rel="stylesheet" href="assets/css/font-icons/font-awesome/css/font-awesome.min.css" id="style-resource-1">
@@ -72,10 +72,13 @@
 
                 <ul id="main-menu" class="">
 
-                    <li class="active">
-                        <a href="StudentsController?action=viewAllCM"><i class="glyphicon glyphicon-home"></i> All Claims</a>
+                    <li>
+                        <a href="StudentsController?action=viewAllCM"><i class="glyphicon glyphicon-home"></i>Claims</a>
                     </li>
-                    <li><a href="logout.jsp"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
+                    <li >
+                        <a href="StudentsController?action=changePass"><i class="glyphicon glyphicon-lock"></i>Password</a>
+                    </li>
+                    <li><a href="logout.jsp"><i class="glyphicon glyphicon-log-out"></i>Logout</a></li>
 
 
                 </ul>
@@ -96,7 +99,7 @@
                                 <!-- add class "pull-right" if you want to place this from right -->
 
 
-                                Welcome: <strong>${idUser} (${fullName})</strong>
+                                Welcome: <strong>${fullName} (${idUser})</strong>
 
 
                             </li>

@@ -16,7 +16,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 
-        <title>Home</title>
+        <title>Claims</title>
 
         <link rel="stylesheet" href="assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css">
 
@@ -145,7 +145,6 @@
                                 <table class="dataTable table table-bordered table table-responsive">
                                     <thead>
                                     <th>#</th>
-                                    <!--<th>Title</th>-->
                                     <th>Assessment Name</th>
                                     <th>Item</th>
                                     <th>End Date</th>
@@ -154,7 +153,6 @@
                                     </thead>
                                     <tfoot>
                                     <th>#</th>
-                                    <!--<th>Title</th>-->
                                     <th>Assessment Name</th>
                                     <th>Item </th>
                                     <th>End Date</th>
@@ -166,7 +164,7 @@
                                         <c:forEach var="c" items="${beanAllClaim.listClaim}">
                                             <tr>
                                                 <td>${c.idCM}</td>
-                                                <!--<td>${c.title}</td>-->
+                                                
                                                 <td>${c.assessmentName}</td>
                                                 <td>${c.itemAssessmentName}</td>
                                                 <td>${c.endDate}</td>

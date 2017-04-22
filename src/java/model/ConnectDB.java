@@ -133,7 +133,8 @@ public class ConnectDB {
 
     public List<Claim> getAllClaim(int year) {
 
-        String sql = "select c.idClaim,c.idUser,c.title,f.name ,asm._name,im.name,c.sendDate  from tblClaim c join tblClaimManage cm on c.idCM=cm.idCM \n"
+        String sql = "select c.idClaim,c.idUser,c.title,f.name ,asm._name,im.name,c.sendDate  from tblClaim c "
+                + "join tblClaimManage cm on c.idCM=cm.idCM \n"
                 + "join tblADetail ad on cm.idItemAssessment=ad.id \n"
                 + "join  tblItemA im on ad.idItem= im.id\n"
                 + "join  tblAssessment  asm on asm.id= ad.idAssesment\n"
@@ -247,7 +248,11 @@ public class ConnectDB {
     public List<Claim> getStudentUpClaimWithOutEvidence(int year) {
         String y = Integer.toString(year);
         List<Claim> list = new LinkedList<>();
-        String sql = "select c.idClaim, c.title, c.sendDate, u.fullName from tblClaim c \n"
+        String sql = "select c.idClaim, c.title, c.sendDate, u.fullName, asm._name,im.name from tblClaim c \n"
+                + "join tblClaimManage cm on c.idCM=cm.idCM \n"
+                + "join tblADetail ad on cm.idItemAssessment=ad.id \n"
+                + "join  tblItemA im on ad.idItem= im.id\n"
+                + "join  tblAssessment  asm on asm.id= ad.idAssesment\n"
                 + "inner join tblUser u on c.idUser = u.idUser \n"
                 + "where c.evidence = '' and c.sendDate like ?";
         try {
@@ -261,6 +266,8 @@ public class ConnectDB {
                 c.setTitle(rs.getString(2));
                 c.setSendDate(rs.getDate(3).toString());
                 c.setUserFullName(rs.getString(4));
+                c.setAssessmentName(rs.getString(5));
+                c.setItemAssessmentName(rs.getString(6));
                 list.add(c);
             }
             con.close();
@@ -270,12 +277,16 @@ public class ConnectDB {
         return list;
     }
 
-    public List<Claim> getStudentUpClaimWithOutEvidenceInMajor(int id) {
+    public List<Claim> getStudentUpClaimWithOutEvidenceInMajor(int id, int year) {
         List<Claim> list = new LinkedList<>();
-        String sql = "select c.idClaim, c.title, c.sendDate, u.fullName from tblClaim c \n"
+        String sql = "select c.idClaim, c.title, c.sendDate, u.fullName, asm._name,im.name from tblClaim c \n"
+                + "join tblClaimManage cm on c.idCM=cm.idCM \n"
+                + "join tblADetail ad on cm.idItemAssessment=ad.id \n"
+                + "join  tblItemA im on ad.idItem= im.id\n"
+                + "join  tblAssessment  asm on asm.id= ad.idAssesment\n"
                 + "inner join tblUser u on c.idUser = u.idUser \n"
                 + "inner join tblFaculty m on u.idFaculty = m.id\n"
-                + "where c.evidence = '' and m.id = ?";
+                + "where c.evidence = '' and m.id = ? and c.sendDate like '%"+year+"%'";
         try {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
@@ -287,6 +298,8 @@ public class ConnectDB {
                 c.setTitle(rs.getString(2));
                 c.setSendDate(rs.getDate(3).toString());
                 c.setUserFullName(rs.getString(4));
+                c.setAssessmentName(rs.getString(5));
+                c.setItemAssessmentName(rs.getString(6));
                 list.add(c);
             }
             con.close();
@@ -297,11 +310,15 @@ public class ConnectDB {
     }
 
     // Get all claim unresolved after 14 days
-    public List<Claim> getAllClaimUnresolvedAfterTwoWeek() {
-        String sql = "select c.idClaim, c.title,c.content, c.sendDate,c.evidence, c._status, c.idUser, u.fullName \n"
+    public List<Claim> getAllClaimUnresolvedAfterTwoWeek(int year) {
+        String sql = "select c.idClaim, c.title,c.content, c.sendDate,c.evidence, c._status, c.idUser, u.fullName, asm._name,im.name \n"
                 + "from tblClaim c \n"
                 + "join tblUser u on c.idUser = u.idUser \n"
-                + "where c.sendDate <= ADDDATE(NOW(),-14) and _status = 0";
+                + "join tblClaimManage cm on c.idCM=cm.idCM \n"
+                + "join tblADetail ad on cm.idItemAssessment=ad.id \n"
+                + "join  tblItemA im on ad.idItem= im.id\n"
+                + "join  tblAssessment  asm on asm.id= ad.idAssesment\n"
+                + "where c.sendDate <= ADDDATE(NOW(),-14) and c._status = 0 and c.sendDate like '%"+year+"%'";
         List<Claim> list = new LinkedList<>();
 
         try {
@@ -318,6 +335,8 @@ public class ConnectDB {
                 claim.setStatus(rs.getInt(6));
                 claim.setIdUser(rs.getString(7));
                 claim.setUserFullName(rs.getString(8));
+                claim.setAssessmentName(rs.getString(9));
+                claim.setItemAssessmentName(rs.getString(10));
                 list.add(claim);
 
             }
@@ -328,12 +347,16 @@ public class ConnectDB {
         return list;
     }
 
-    public List<Claim> getAllClaimUnresolvedAfterTwoWeekInMajor(int id) {
-        String sql = "select c.idClaim, c.title,c.content, c.sendDate,c.evidence, c._status, c.idUser, u.fullName \n"
+    public List<Claim> getAllClaimUnresolvedAfterTwoWeekInMajor(int id, int year) {
+        String sql = "select c.idClaim, c.title,c.content, c.sendDate,c.evidence, c._status, c.idUser, u.fullName, asm._name,im.name \n"
                 + "from tblClaim c \n"
                 + "join tblUser u on c.idUser = u.idUser\n"
+                + "join tblClaimManage cm on c.idCM=cm.idCM \n"
+                + "join tblADetail ad on cm.idItemAssessment=ad.id \n"
+                + "join  tblItemA im on ad.idItem= im.id\n"
+                + "join  tblAssessment  asm on asm.id= ad.idAssesment\n"
                 + "join tblFaculty m on u.idFaculty = m.id \n"
-                + "where c.sendDate <= ADDDATE(NOW(),-14) and _status = 0 and m.id = ?";
+                + "where c.sendDate <= ADDDATE(NOW(),-14) and c._status = 0 and m.id = ? and c.sendDate like '%"+year+"%'";
         List<Claim> list = new LinkedList<>();
 
         try {
@@ -351,6 +374,8 @@ public class ConnectDB {
                 claim.setStatus(rs.getInt(6));
                 claim.setIdUser(rs.getString(7));
                 claim.setUserFullName(rs.getString(8));
+                claim.setAssessmentName(rs.getString(9));
+                claim.setItemAssessmentName(rs.getString(10));
                 list.add(claim);
 
             }

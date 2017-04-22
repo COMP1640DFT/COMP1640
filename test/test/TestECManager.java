@@ -49,13 +49,13 @@ public class TestECManager {
     @Test
     public void getAllClaim() {
         int totalClaim = 11;
-        assertEquals("Total all claim", totalClaim, connectDB.getAllClaim().size());
+        assertEquals("Total all claim", totalClaim, connectDB.getAllClaim(2017).size());
     }
 
     @Test
     public void getAllClaimbyTwoWeek() {
         int totalClaim = 1;
-        assertEquals("Total all claim 2 after week", 1, connectDB.getAllClaimUnresolvedAfterTwoWeek().size());
+        assertEquals("Total all claim 2 after week", 1, connectDB.getAllClaimUnresolvedAfterTwoWeek(2017).size());
     }
 
     @Test
