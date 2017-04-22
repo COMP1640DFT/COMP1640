@@ -44,57 +44,57 @@
         <c:if test="${account.lever != 2}">
             <jsp:forward page="logout.jsp"></jsp:forward>
         </c:if>
-            <div class="page-container">
+        <div class="page-container">
 
-                <div class="sidebar-menu">
+            <div class="sidebar-menu">
 
-                    <header class="logo-env">
+                <header class="logo-env">
 
-                        <!-- logo -->
-                        <div class="logo text-center">
-                            <a href="dashboard/main/index.html">
-                                <img src="assets/images/logo.png" width="100" alt="" style="margin-right: auto"/>
+                    <!-- logo -->
+                    <div class="logo text-center">
+                        <a href="dashboard/main/index.html">
+                            <img src="assets/images/logo.png" width="100" alt="" style="margin-right: auto"/>
 
-                            </a>
-                            <h3>Greenwich University</h3>
-                        </div>
-
-
-                        <!-- open/close menu icon (do not remove if you want to enable menu on mobile devices) -->
-                        <div class="sidebar-mobile-menu visible-xs">
-                            <a href="#" class="with-animation"><!-- add class "with-animation" to support animation -->
-                                <i class="entypo-menu"></i>
-                            </a>
-                        </div>
-
-                    </header>
+                        </a>
+                        <h3>Greenwich University</h3>
+                    </div>
 
 
-                    <ul id="main-menu" class="">
-                        <li>
-                            <a href="#"><i class="entypo-user"></i><span>Accounts</span></a>
-                            <ul>
+                    <!-- open/close menu icon (do not remove if you want to enable menu on mobile devices) -->
+                    <div class="sidebar-mobile-menu visible-xs">
+                        <a href="#" class="with-animation"><!-- add class "with-animation" to support animation -->
+                            <i class="entypo-menu"></i>
+                        </a>
+                    </div>
+
+                </header>
 
 
-                                <li><a href="AdminController?action=openCreateUser"><i class="entypo entypo-user-add"></i>Create</a></li>
-                                <li><a href="AdminController?action=viewAllUser"><i class="entypo entypo-users"></i>View</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#"><i class="entypo-suitcase"></i>Claims</a>
-                            <ul>
-                                <li><a href="AdminController?action=openShedule">Create</a></li>
-                                <li><a href="AdminController?action=adminViewAll">View</a></li>
-                            </ul>
-
-                        </li>
-                        <li><a href="AdminController?action=viewAllFaculty"><i class="entypo-suitcase"></i><span>Faculty</span></a></li>
-                        <li><a href="logout.jsp"><i class="entypo-logout"></i>Logout</a></li>
-                    </ul>
+                <ul id="main-menu" class="">
+                    <li>
+                        <a href="#"><i class="entypo-user"></i><span>Accounts</span></a>
+                        <ul>
 
 
-                </div>
-                <div class="main-content">
-                    <h2>Welcome: ${account.idUser}</h2>
+                            <li><a href="AdminController?action=openCreateUser"><i class="entypo entypo-user-add"></i>Create</a></li>
+                            <li><a href="AdminController?action=viewAllUser"><i class="entypo entypo-users"></i>View</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#"><i class="entypo-suitcase"></i>Claims</a>
+                        <ul>
+                            <li><a href="AdminController?action=openShedule">Create</a></li>
+                            <li><a href="AdminController?action=adminViewAll">View</a></li>
+                        </ul>
+
+                    </li>
+                    <li><a href="AdminController?action=viewAllFaculty"><i class="entypo-suitcase"></i><span>Faculty</span></a></li>
+                    <li><a href="logout.jsp"><i class="entypo-logout"></i>Logout</a></li>
+                </ul>
+
+
+            </div>
+            <div class="main-content">
+                <h2>Welcome: ${account.idUser}</h2>
 
                 <br/>
                 <div class="col-sm-12">
@@ -121,7 +121,7 @@
                                             <td>${a.email}</td>
                                             <td>${a.fullName}</td>
                                             <td>${a.facultyName}</td>
-                                            
+
                                             <c:if test="${a.lever == 1}">
                                                 <td><c:out value="Student"/></td>
                                             </c:if>
@@ -132,7 +132,7 @@
                                                 <td><c:out value="EC Coordinator"/></td>
                                             </c:if>
                                             <td>
-                                                <a href="AdminController?id=${a.idUser}&action=viewUserDetail" class="btn btn-default btn-icon"><i class="entypo entypo-pencil"></i> Edit</a>|<a href="" class="btn btn-default btn-icon"><i class="entypo entypo-trash"></i> Delete</a>
+                                                <a href="AdminController?id=${a.idUser}&action=viewUserDetail" class="btn btn-default btn-icon"><i class="entypo entypo-pencil"></i> Edit</a>|<a class="btn btn-default btn-icon" onclick="confirmDelete()"><i class="entypo entypo-trash"></i> Delete</a>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -168,7 +168,9 @@
         <script src="assets/js/demo.js" id="script-resource-9"></script>
 
         <script>
-
+            function confirmDelete(){
+                
+            }
 
             $(document).ready(function () {
 

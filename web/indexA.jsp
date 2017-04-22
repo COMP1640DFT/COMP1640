@@ -71,25 +71,25 @@
 
 
                 <ul id="main-menu" class="">
-                        <li>
-                            <a href="#"><i class="entypo-user"></i><span>Accounts</span></a>
-                            <ul>
+                    <li>
+                        <a href="#"><i class="entypo-user"></i><span>Accounts</span></a>
+                        <ul>
 
 
-                                <li><a href="AdminController?action=openCreateUser"><i class="entypo entypo-user-add"></i>Create</a></li>
-                                <li><a href="AdminController?action=viewAllUser"><i class="entypo entypo-users"></i>View</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#"><i class="entypo-suitcase"></i>Claims</a>
-                            <ul>
-                                <li><a href="AdminController?action=openShedule">Create</a></li>
-                                <li><a href="AdminController?action=adminViewAll">View</a></li>
-                            </ul>
+                            <li><a href="AdminController?action=openCreateUser"><i class="entypo entypo-user-add"></i>Create</a></li>
+                            <li><a href="AdminController?action=viewAllUser"><i class="entypo entypo-users"></i>View</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#"><i class="entypo-suitcase"></i>Claims</a>
+                        <ul>
+                            <li><a href="AdminController?action=openShedule">Create</a></li>
+                            <li><a href="AdminController?action=adminViewAll">View</a></li>
+                        </ul>
 
-                        </li>
-                        <li><a href="AdminController?action=viewAllFaculty"><i class="entypo-suitcase"></i><span>Faculty</span></a></li>
-                        <li><a href="logout.jsp"><i class="entypo-logout"></i>Logout</a></li>
-                    </ul>
+                    </li>
+                    <li><a href="AdminController?action=viewAllFaculty"><i class="entypo-suitcase"></i><span>Faculty</span></a></li>
+                    <li><a href="logout.jsp"><i class="entypo-logout"></i>Logout</a></li>
+                </ul>
 
             </div>
             <div class="main-content">
@@ -159,7 +159,7 @@
                                                     <a href="AdminController?action=updateSttCM&stt=1&idCM=${c.idClaim}">Close upload claim</a>
                                                     <a href="AdminController?action=updateSttCM&stt=2&idCM=${c.idClaim}">Close upload evidence</a>
                                                 </div>
-                                            </div>|<a href="AdminController?action=deleteCM&idCM=${c.idClaim}" class="btn btn-default btn-icon"><i class="entypo entypo-trash"></i> Delete</a></td>
+                                            </div>|<a onclick="confirmDelete(${c.idClaim})" class="btn btn-default btn-icon"><i class="entypo entypo-trash"></i> Delete</a></td>
                                     </tr>
                                 </c:forEach>
                             </tbody>
@@ -191,7 +191,12 @@
         <script src="assets/js/demo.js" id="script-resource-9"></script>
 
         <script>
-
+            function confirmDelete(idCM) {
+                var r = confirm("Do you want to delete?");
+                if(r){
+                    window.location.href="AdminController?action=deleteCM&idCM="+idCM;
+                }
+            }
 
             $(document).ready(function () {
 

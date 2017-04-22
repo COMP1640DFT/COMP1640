@@ -89,7 +89,7 @@ public class StudentsController extends HttpServlet {
             String description = request.getParameter("description");
             int idMajor = Integer.parseInt(request.getParameter("idM"));
             String file_name = request.getParameter("linkfile");
-            System.out.println("URL--: "+ file_name);
+            System.out.println("URL--: " + file_name);
 
             if (!title.equals("") && !description.equals("")) {
                 String date_send = new SimpleDateFormat("yyyy/MM/dd").format(Calendar.getInstance().getTime());
@@ -142,7 +142,7 @@ public class StudentsController extends HttpServlet {
                     } else {
                         sendMessage(response, "Update file failed!", "detailclaimST.jsp");
                     }
-                }else{
+                } else {
                     sendMessage(response, "Too late for upload evidence!", "detailclaimST.jsp");
                 }
             } else {
@@ -150,27 +150,48 @@ public class StudentsController extends HttpServlet {
             }
 
         }
-        
-        if(action.equals("changePass")){
+
+        if (action.equals("changePass")) {
             changePass(request, response, session);
         }
-      
+
+        if (action.equals("deleteClaim")) {
+            deleteClaim(request, response, session);
+        }
+
     }
-    
+
+    private void deleteClaim(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        if (connectDB.removeClaimByStudent(id)) {
+            String idCM = request.getParameter("idCM");
+            String idUser = request.getParameter("idUser");
+            int idC = Integer.parseInt(idCM);
+            Claim c = new Claim();
+            c.setListClaim(connectDB.getAllClaimOfStudent(idUser, idC));
+            session.setAttribute("beanAllStudentClaim", c);
+            String mes = "Delete faculty successful!";
+            sendMessage(response, mes, "allClaimsST.jsp");
+        } else {
+            String mes = "Can not delete!";
+            sendMessage(response, mes, "allClaimsST.jsp");
+        }
+    }
+
     private void changePass(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
         String oldPass = request.getParameter("oldpass");
         String idUser = request.getParameter("idUser");
         String newpass = request.getParameter("password");
         Account acc = connectDB.checkLogin(idUser, Encode.encryptPass(oldPass));
-        if(acc!=null){
-            if(connectDB.changePassword(idUser, Encode.encryptPass(newpass))){
+        if (acc != null) {
+            if (connectDB.changePassword(idUser, Encode.encryptPass(newpass))) {
                 String message = "Chang password successful! Please login again with new password!";
                 sendMessage(response, message, "logout.jsp");
-            }else{
+            } else {
                 String message = "Chang password failed! Please try again!";
                 sendMessage(response, message, "accountST.jsp");
             }
-        }else{
+        } else {
             String message = "Old password is incorrect!";
             sendMessage(response, message, "accountST.jsp");
         }
@@ -194,6 +215,7 @@ public class StudentsController extends HttpServlet {
         String idUser = request.getParameter("idUser");
         int idC = Integer.parseInt(id);
         Claim c = new Claim();
+        c.setIdCM(idC);
         c.setListClaim(connectDB.getAllClaimOfStudent(idUser, idC));
         HttpSession session = request.getSession();
         session.setAttribute("beanAllStudentClaim", c);

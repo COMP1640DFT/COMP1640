@@ -1257,6 +1257,21 @@ public class ConnectDB {
         }
         return rs;
     }
+    
+    public boolean removeClaimByStudent(int id) {
+        boolean rs = false;
+        String sql = "DELETE FROM tblClaim WHERE idClaim = " + id;
+        try {
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
+            rs = ps.executeUpdate() > 0;
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        return rs;
+    }
 
     public void main(String[] args) {
 //        con;

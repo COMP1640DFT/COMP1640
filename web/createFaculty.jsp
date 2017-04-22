@@ -107,7 +107,7 @@
                                         <td>${f.id}</td>
                                         <td>${f.name}</td>
                                         <td><a href="AdminController?action=openCreateAsses&id=${f.id}" class="btn btn-default btn-icon"><i class="entypo entypo-pencil"></i> Add</a></td>
-                                        <td><a href="AdminController?action=deleteFaculty&id=${f.id}" class="btn btn-default btn-icon"><i class="entypo entypo-trash"></i> Delete</a></td>
+                                        <td><a onclick="confirmDelete(${f.id})"  class="btn btn-default btn-icon"><i class="entypo entypo-trash"></i> Delete</a></td>
                                     </tr>
                                 </c:forEach>
                                 </tbody>
@@ -164,6 +164,12 @@
         <script src="assets/js/custom.js" id="script-resource-8"></script>
         <script src="assets/js/demo.js" id="script-resource-9"></script>
         <script>
+            function confirmDelete(idF) {
+                var r = confirm("Do you want to delete faculty?");
+                if(r){
+                    window.location.href="AdminController?action=deleteFaculty&id="+idF;
+                }
+            }
             document.addFaculty.name.addEventListener('focus', function () {
                                     $('#errorFaculty').text("");
                                 });

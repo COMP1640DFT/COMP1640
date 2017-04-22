@@ -142,19 +142,21 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Subject</th>
+                                <th>Title</th>
                                 <th>EC Coordinator</th>
                                 <th>File</th>
                                 <th>Status</th>
+                                <th>---</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
                                 <th>#</th>
-                                <th>Subject</th>
+                                <th>Title</th>
                                 <th>EC Coordinator</th>
                                 <th>Evidence</th>
                                 <th>Status</th>
+                                <th>---</th>
                             </tr>
                         </tfoot>
 
@@ -176,6 +178,7 @@
                                         <c:if test="${c.status == 1}">
                                         <td><c:out value="Done"/></td>
                                     </c:if>
+                                    <td><a onclick="confirmDelete(${c.idClaim})" class="btn btn-default btn-icon"><i class="entypo entypo-trash"></i> Delete</a></td>
                                 </tr>
                             </c:forEach>
                         </tbody>
@@ -203,30 +206,35 @@
         <script src="assets/js/demo.js" id="script-resource-9"></script>
 
         <script>
+                                        function confirmDelete(idC) {
+                                            var r = confirm("Do you want to delete claim?");
+                                            if (r) {
+                                                window.location.href = "StudentsController?action=deleteClaim&id=" + idC +"&idUser=${account.idUser}&idCM=${beanAllStudentClaim.idCM}";
+                                            }
+                                        }
+
+                                        $(document).ready(function () {
+
+                                            $('.dataTable').DataTable({
+                                                searching: false,
+                                                bLengthChange: false,
+                                                responsive: {
+                                                    details: {
+                                                        display: $.fn.dataTable.Responsive.display.modal({
+                                                            header: function (row) {
+                                                                var data = row.data();
+                                                                return 'Details for ' + data[0] + ' ' + data[1];
+                                                            }
+                                                        }),
+                                                        renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+                                                            tableClass: 'table'
+                                                        })
+                                                    }
+                                                }
+                                            });
 
 
-            $(document).ready(function () {
-
-                $('.dataTable').DataTable({
-                    searching: false,
-                    bLengthChange: false,
-                    responsive: {
-                        details: {
-                            display: $.fn.dataTable.Responsive.display.modal({
-                                header: function (row) {
-                                    var data = row.data();
-                                    return 'Details for ' + data[0] + ' ' + data[1];
-                                }
-                            }),
-                            renderer: $.fn.dataTable.Responsive.renderer.tableAll({
-                                tableClass: 'table'
-                            })
-                        }
-                    }
-                });
-
-
-            });
+                                        });
         </script>
 
     </body>

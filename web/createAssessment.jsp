@@ -103,7 +103,7 @@
                                          <tr>
                                         <td>${Assessment.id}</td>
                                         <td>${Assessment.name}</td>
-                                        <td><a href="AdminController?action=deleteAss&idAss=${Assessment.id}" class="btn btn-default btn-icon"><i class="entypo entypo-trash"></i> Delete</a></td>
+                                        <td><a onclick="confirmDelete(${Assessment.id})" class="btn btn-default btn-icon"><i class="entypo entypo-trash"></i> Delete</a></td>
                                     </tr>
                                  
                                     </c:forEach>
@@ -169,7 +169,12 @@
         <script src="assets/js/custom.js" id="script-resource-8"></script>
         <script src="assets/js/demo.js" id="script-resource-9"></script>
         <script>
-
+            function confirmDelete(idA) {
+                var r = confirm("Do you want to delete assessment?");
+                if(r){
+                    window.location.href="AdminController?action=deleteAss&idAss="+idA;
+                }
+            }
 
             $(document).ready(function () {
 
