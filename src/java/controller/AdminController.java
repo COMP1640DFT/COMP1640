@@ -114,6 +114,9 @@ public class AdminController extends HttpServlet {
         if (action.equals("deleteAss")) {
             deleteAssessment(request, response, session);
         }
+        if (action.equals("deleteUser")) {
+            deleteUser(request, response, session);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -154,6 +157,23 @@ public class AdminController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private void deleteUser(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+        String user = request.getParameter("idU");
+        if (connectDB.removeUser(user)) {
+            Account acc = (Account) session.getAttribute("account");
+            Account aL = new Account();
+            aL.setListAccount(connectDB.getAllAccount(acc.getIdUser()));
+            session.setAttribute("idUser", acc.getIdUser());
+            session.setAttribute("fullName", acc.getFullName());
+            session.setAttribute("beanAllUser", aL);
+            String mes = "Delete user successful!";
+            sendMessage(response, mes, "account-view-all.jsp");
+        } else {
+            String mes = "Can not delete!";
+            sendMessage(response, mes, "account-view-all.jsp");
+        }
+    }
 
     private void viewAllFaculty(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
         List<Faculty> listFaculty = connectDB.getListMajor();
@@ -219,8 +239,6 @@ public class AdminController extends HttpServlet {
         df.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
 
         List<Claim> list = connectDB.getAllClaimManageByStt(stt, df.format(a));
-        System.out.println("" + list.size());
-        System.out.println(stt + "---" + df.format(a));
         Claim c = new Claim();
         c.setListClaim(list);
         session.setAttribute("beanAdminCM", c);
@@ -362,10 +380,9 @@ public class AdminController extends HttpServlet {
         String academy = request.getParameter("academy");
         Account account = connectDB.getAccountInfor(userid);
         if (account == null) {
-
             Account acc = new Account(userid, Encode.encryptPass(password), fullname, dob, email, phone, Integer.parseInt(academy), Integer.parseInt(faculty), Integer.parseInt(role));
             if (connectDB.addAccount(acc)) {
-                response.sendRedirect("account-create.jsp");
+                response.sendRedirect("AdminController?action=viewAllUser");
             } else {
                 String mes = "Add failed!";
                 sendMessage(response, mes, "account-create.jsp");
@@ -384,9 +401,11 @@ public class AdminController extends HttpServlet {
         Assessment ass = new Assessment(Integer.parseInt(idass), nameass, Integer.parseInt(idFa));
         if (connectDB.addAssessment(ass)) {
             int idF = Integer.parseInt((String) session.getAttribute("idF"));
-            List<Assessment> listAssByIdFaculty = connectDB.getListAssessmentByIdFac(idF);
-            session.setAttribute("lAssbyIdF", listAssByIdFaculty);
-            response.sendRedirect("createAssessment.jsp");
+            if (connectDB.addItemAssessment(Integer.parseInt(idass))) {
+                List<Assessment> listAssByIdFaculty = connectDB.getListAssessmentByIdFac(idF);
+                session.setAttribute("lAssbyIdF", listAssByIdFaculty);
+                response.sendRedirect("createAssessment.jsp");
+            }
         } else {
             String mes = "Add Assessment Failed!";
             sendMessage(response, mes, "createAssessment.jsp");
@@ -396,13 +415,17 @@ public class AdminController extends HttpServlet {
 
     private void deleteAssessment(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("idAss"));
-        if (connectDB.removeAssessment(id)) {
-            int idF = Integer.parseInt((String) session.getAttribute("idF"));
-            List<Assessment> listAssByIdFaculty = connectDB.getListAssessmentByIdFac(idF);
-            session.setAttribute("lAssbyIdF", listAssByIdFaculty);
-             List<Assessment> lAss = connectDB.getAllAssessment();
-            session.setAttribute("listAss", lAss);
-            response.sendRedirect("createAssessment.jsp");
+        if (connectDB.checkExistAssessment(id) < 1) {
+            if (connectDB.removeItemAssessment(id)) {
+                if (connectDB.removeAssessment(id)) {
+                    int idF = Integer.parseInt((String) session.getAttribute("idF"));
+                    List<Assessment> listAssByIdFaculty = connectDB.getListAssessmentByIdFac(idF);
+                    session.setAttribute("lAssbyIdF", listAssByIdFaculty);
+                    List<Assessment> lAss = connectDB.getAllAssessment();
+                    session.setAttribute("listAss", lAss);
+                    response.sendRedirect("createAssessment.jsp");
+                }
+            }
         } else {
             String mes = "Can not delete!";
             sendMessage(response, mes, "createAssessment.jsp");

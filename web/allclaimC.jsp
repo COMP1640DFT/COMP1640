@@ -76,7 +76,7 @@
                             <a href="CoordinatorController?action=viewAllClaim"><i class="glyphicon glyphicon-home"></i>Claims</a>
                         </li>
                         <li><a href="eccoorChangePwd.jsp"><i class="glyphicon glyphicon-lock"></i>Password</a></li>
-                        <li><a href="logout"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
+                        <li><a href="logout.jsp"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
 
 
                     </ul>
@@ -101,87 +101,7 @@
                             </li>
                         </ul>
 
-                        <ul class="user-info pull-left pull-right-xs pull-none-xsm">
-                            <!-- Message Notifications -->
-                            <li class="notifications dropdown">
-
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
-                                   data-close-others="true">
-                                    <i class="fa fa-globe fa-3x" style="font-size: 2.0em"></i>
-                                    <span class="badge badge-secondary">10</span>
-                                </a>
-
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <ul class="dropdown-menu-list scroller">
-                                            <li class="active">
-                                                <a href="#">
-
-                                                    <span class="line">
-                                                        <strong>Luc Chartier</strong>
-                                                        - yesterday
-                                                    </span>
-
-                                                    <span class="line desc small">
-                                                        This ain’t our first item, it is the best of the rest.
-                                                    </span>
-                                                </a>
-                                            </li>
-
-                                            <li class="active">
-                                                <a href="#">
-
-                                                    <span class="line">
-                                                        <strong>Salma Nyberg</strong>
-                                                        - 2 days ago
-                                                    </span>
-
-                                                    <span class="line desc small">
-                                                        Oh he decisively impression attachment friendship so if everything.
-                                                    </span>
-                                                </a>
-                                            </li>
-
-                                            <li>
-                                                <a href="#">
-
-
-                                                    <span class="line">
-                                                        Hayden Cartwright
-                                                        - a week ago
-                                                    </span>
-
-                                                    <span class="line desc small">
-                                                        Whose her enjoy chief new young. Felicity if ye required likewise so doubtful.
-                                                    </span>
-                                                </a>
-                                            </li>
-
-                                            <li>
-                                                <a href="#">
-
-
-                                                    <span class="line">
-                                                        Sandra Eberhardt
-                                                        - 16 days ago
-                                                    </span>
-
-                                                    <span class="line desc small">
-                                                        On so attention necessary at by provision otherwise existence direction.
-                                                    </span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-
-                                    <li class="external">
-                                        <a href="mailbox/main/index.html">All Messages</a>
-                                    </li>
-                                </ul>
-
-                            </li>
-
-                        </ul>
+                        
 
                     </div>
 
@@ -212,10 +132,10 @@
                     <form class="form-inline" action="CoordinatorController?action=viewAllClaimFilterByStatus" method="post" style="padding: 10px">
                         <div class="form-group">
                             <label for="status">Filter by status: </label>
-                            <select id="status" class="form-control" name="status">
-                                <option value="Waiting">Waiting</option>
-                                <option value="Done">Done</option>
-                                <option value="Expired">Expired</option>
+                             <select id="status" class="form-control" name="status">
+                                <option value="0">Waiting</option>
+                                <option value="1">Approve</option>
+                                <option value="2">Reject</option>
                             </select>
 
                         </div>
@@ -264,10 +184,13 @@
                                     <td>${c.assessmentName}</td>
                                     <td>${c.itemAssessmentName}</td>
                                     <c:if test="${c.status == 0}">
-                                        <td><span class="text-danger"><c:out value="Waiting"/></span></td>
+                                        <td><span><c:out value="Waiting"/></span></td>
                                         </c:if>
                                         <c:if test="${c.status == 1}">
-                                        <td><c:out value="Done"/></td>
+                                        <td><c:out value="Approve"/></td>
+                                    </c:if>
+                                    <c:if test="${c.status == 2}">
+                                        <td><c:out value="Reject"/></td>
                                     </c:if>
                                 </tr>
                             </c:forEach>

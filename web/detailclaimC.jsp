@@ -83,7 +83,7 @@
                             <a href="CoordinatorController?action=viewAllClaim"><i class="glyphicon glyphicon-home"></i> Home</a>
                         </li>
                         <li><a href="eccoorChangePwd.jsp"><i class="glyphicon glyphicon-lock"></i>Change password</a></li>
-                        <li><a href="logout"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
+                        <li><a href="logout.jsp"><i class="glyphicon glyphicon-log-out"></i>Logout</a></li>
 
                     </ul>
 
@@ -110,97 +110,7 @@
 
                         </ul>
 
-                        <ul class="user-info pull-left pull-right-xs pull-none-xsm">
-                            <!-- Message Notifications -->
-                            <li class="notifications dropdown">
-
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
-                                   data-close-others="true">
-                                    <i class="fa fa-globe fa-3x" style="font-size: 2.0em"></i>
-                                    <span class="badge badge-secondary">10</span>
-                                </a>
-
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <ul class="dropdown-menu-list scroller">
-                                            <li class="active">
-                                                <a href="#">
-                                                    <span class="image pull-right">
-                                                        <img src="assets/images/thumb-1.png" alt="" class="img-circle"/>
-                                                    </span>
-
-                                                    <span class="line">
-                                                        <strong>Luc Chartier</strong>
-                                                        - yesterday
-                                                    </span>
-
-                                                    <span class="line desc small">
-                                                        This ain’t our first item, it is the best of the rest.
-                                                    </span>
-                                                </a>
-                                            </li>
-
-                                            <li class="active">
-                                                <a href="#">
-                                                    <span class="image pull-right">
-                                                        <img src="assets/images/thumb-2.png" alt="" class="img-circle"/>
-                                                    </span>
-
-                                                    <span class="line">
-                                                        <strong>Salma Nyberg</strong>
-                                                        - 2 days ago
-                                                    </span>
-
-                                                    <span class="line desc small">
-                                                        Oh he decisively impression attachment friendship so if everything.
-                                                    </span>
-                                                </a>
-                                            </li>
-
-                                            <li>
-                                                <a href="#">
-                                                    <span class="image pull-right">
-                                                        <img src="assets/images/thumb-3.png" alt="" class="img-circle"/>
-                                                    </span>
-
-                                                    <span class="line">
-                                                        Hayden Cartwright
-                                                        - a week ago
-                                                    </span>
-
-                                                    <span class="line desc small">
-                                                        Whose her enjoy chief new young. Felicity if ye required likewise so doubtful.
-                                                    </span>
-                                                </a>
-                                            </li>
-
-                                            <li>
-                                                <a href="#">
-                                                    <span class="image pull-right">
-                                                        <img src="assets/images/thumb-4.png" alt="" class="img-circle"/>
-                                                    </span>
-
-                                                    <span class="line">
-                                                        Sandra Eberhardt
-                                                        - 16 days ago
-                                                    </span>
-
-                                                    <span class="line desc small">
-                                                        On so attention necessary at by provision otherwise existence direction.
-                                                    </span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-
-                                    <li class="external">
-                                        <a href="mailbox/main/index.html">All Messages</a>
-                                    </li>
-                                </ul>
-
-                            </li>
-
-                        </ul>
+                       
 
                     </div>
 
@@ -228,10 +138,6 @@
                                 <!-- title -->
                                 <div class="mail-title">
                                     ${claimD.title}
-                                    <p>
-                                        <span class="text-danger">Remaining time: 13 days 4 hours</span>
-
-                                    </p>
 
                                 </div>
 
@@ -305,8 +211,10 @@
                                         <div class="form-group">
                                             <label for="message">Status:</label>
                                             <select style="margin-top: 10px;"addMessage name="selectStatus" id="selectStatus"  >                          
-                                                <option  value="1"   >Approve</option>
-                                                <option  value="0" >Reject</option>
+                                                
+                                                <option  value="1" <c:if test="${claimD.status==1}">selected</c:if>>Approve</option>
+                                                
+                                                <option  value="2" <c:if test="${claimD.status==2}">selected</c:if> >Reject</option>
                                             </select><br/>
                                             <label for="message">Message:</label>
                                             <textarea class="form-control" name="message" id="message"></textarea>

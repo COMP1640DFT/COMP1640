@@ -225,7 +225,8 @@ public class StudentsController extends HttpServlet {
     private void viewAllClaimManage(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
         Account acc = (Account) session.getAttribute("account");
         Claim c = new Claim();
-        c.setListClaim(connectDB.getAllClaimManage(acc.getIdFaculty()));
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        c.setListClaim(connectDB.getAllClaimManage(acc.getIdFaculty(),year));
         session.setAttribute("idUser", acc.getIdUser());
         session.setAttribute("idMajor", acc.getIdFaculty());
         session.setAttribute("fullName", acc.getFullName());
@@ -236,8 +237,9 @@ public class StudentsController extends HttpServlet {
     private void viewAllClaimManageFilterByStatus(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
         Account acc = (Account) session.getAttribute("account");
         Claim c = new Claim();
+        int year = Calendar.getInstance().get(Calendar.YEAR);
         int idStt = Integer.parseInt(request.getParameter("status"));
-        c.setListClaim(connectDB.getAllClaimManageFilterByStatus(acc.getIdFaculty(), idStt));
+        c.setListClaim(connectDB.getAllClaimManageFilterByStatus(acc.getIdFaculty(), idStt,year));
         session.setAttribute("idUser", acc.getIdUser());
         session.setAttribute("idMajor", acc.getIdFaculty());
         session.setAttribute("fullName", acc.getFullName());

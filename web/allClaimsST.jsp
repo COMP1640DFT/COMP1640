@@ -76,7 +76,7 @@
                         <a href="StudentsController?action=viewAllCM"><i class="glyphicon glyphicon-home"></i>Claims</a>
                     </li>
                     <li >
-                        <a href="StudentsController?action=changePass"><i class="glyphicon glyphicon-lock"></i>Password</a>
+                        <a href="accountST.jsp"><i class="glyphicon glyphicon-lock"></i>Password</a>
                     </li>
                     <li><a href="logout.jsp"><i class="glyphicon glyphicon-log-out"></i>Logout</a></li>
 
@@ -126,7 +126,7 @@
                 <br/>
 
                 <div class="panel panel-primary">
-                    <form class="form-inline" style="padding: 10px">
+<!--                    <form class="form-inline" style="padding: 10px">
                         <div class="form-group">
                             <label for="status">Filter by status: </label>
                             <select id="status" class="form-control" name="status">
@@ -134,9 +134,9 @@
                                 <option value="closed">Closed</option>
                             </select>
                         </div>
-<!--                        <a href="StudentsController?action=AddClaimPage&idC=${c.idCourse}&idCM=${c.idClaim}" class="btn btn-default" style="float: right;margin-top: 20px"><i
-                                class="glyphicon glyphicon-plus-sign"></i> New</a>-->
-                    </form>
+                        <a href="StudentsController?action=AddClaimPage&idC=${c.idCourse}&idCM=${c.idClaim}" class="btn btn-default" style="float: right;margin-top: 20px"><i
+                                class="glyphicon glyphicon-plus-sign"></i> New</a>
+                    </form>-->
 
                     <table class="dataTable table table-bordered table table-responsive">
                         <thead>
@@ -176,7 +176,10 @@
                                         <td><span class="text-danger"><c:out value="Waiting"/></span></td>
                                         </c:if>
                                         <c:if test="${c.status == 1}">
-                                        <td><c:out value="Done"/></td>
+                                        <td><c:out value="Approve"/></td>
+                                    </c:if>
+                                    <c:if test="${c.status == 2}">
+                                        <td><c:out value="Reject"/></td>
                                     </c:if>
                                     <td><a onclick="confirmDelete(${c.idClaim})" class="btn btn-default btn-icon"><i class="entypo entypo-trash"></i> Delete</a></td>
                                 </tr>
@@ -209,14 +212,14 @@
                                         function confirmDelete(idC) {
                                             var r = confirm("Do you want to delete claim?");
                                             if (r) {
-                                                window.location.href = "StudentsController?action=deleteClaim&id=" + idC +"&idUser=${account.idUser}&idCM=${beanAllStudentClaim.idCM}";
+                                                window.location.href = "StudentsController?action=deleteClaim&id=" + idC + "&idUser=${account.idUser}&idCM=${beanAllStudentClaim.idCM}";
                                             }
                                         }
 
                                         $(document).ready(function () {
 
                                             $('.dataTable').DataTable({
-                                                searching: false,
+                                                searching: true,
                                                 bLengthChange: false,
                                                 responsive: {
                                                     details: {

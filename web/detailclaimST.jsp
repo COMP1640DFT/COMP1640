@@ -76,7 +76,7 @@
                         <a href="StudentsController?action=viewAllCM"><i class="glyphicon glyphicon-home"></i>Claims</a>
                     </li>
                     <li >
-                        <a href="StudentsController?action=changePass"><i class="glyphicon glyphicon-lock"></i>Password</a>
+                        <a href="accountST.jsp"><i class="glyphicon glyphicon-lock"></i>Password</a>
                     </li>
                     <li><a href="logout.jsp"><i class="glyphicon glyphicon-log-out"></i>Logout</a></li>
 

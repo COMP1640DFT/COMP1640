@@ -83,7 +83,7 @@
 
             </div>
             <div class="main-content">
-                <h2>Welcome: </h2>
+                <h2>Welcome: ${account.idUser}</h2>
 
                 <br/>
                 <div class="col-sm-12">
@@ -106,7 +106,7 @@
                                     <tr>
                                         <td>${f.id}</td>
                                         <td>${f.name}</td>
-                                        <td><a href="AdminController?action=openCreateAsses&id=${f.id}" class="btn btn-default btn-icon"><i class="entypo entypo-pencil"></i> Add</a></td>
+                                        <td><a href="AdminController?action=openCreateAsses&id=${f.id}" class="btn btn-default btn-icon"><i class="entypo entypo-plus"></i> Add</a></td>
                                         <td><a onclick="confirmDelete(${f.id})"  class="btn btn-default btn-icon"><i class="entypo entypo-trash"></i> Delete</a></td>
                                     </tr>
                                 </c:forEach>

@@ -94,7 +94,7 @@
 
             </div>
             <div class="main-content">
-                <h2>Welcome: ${account.fullName}</h2>
+                <h2>Welcome: ${account.idUser}</h2>
 
                 <br/>
 

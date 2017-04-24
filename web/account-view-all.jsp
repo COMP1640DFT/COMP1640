@@ -132,7 +132,7 @@
                                                 <td><c:out value="EC Coordinator"/></td>
                                             </c:if>
                                             <td>
-                                                <a href="AdminController?id=${a.idUser}&action=viewUserDetail" class="btn btn-default btn-icon"><i class="entypo entypo-pencil"></i> Edit</a>|<a class="btn btn-default btn-icon" onclick="confirmDelete()"><i class="entypo entypo-trash"></i> Delete</a>
+                                                <a href="AdminController?id=${a.idUser}&action=viewUserDetail" class="btn btn-default btn-icon"><i class="entypo entypo-pencil"></i> Edit</a>|<a class="btn btn-default btn-icon" onclick="confirmDelete('${a.idUser}')"><i class="entypo entypo-trash"></i> Delete</a>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -168,32 +168,36 @@
         <script src="assets/js/demo.js" id="script-resource-9"></script>
 
         <script>
-            function confirmDelete(){
-                
-            }
-
-            $(document).ready(function () {
-
-                $('.dataTable').DataTable({
-                    searching: true,
-                    bLengthChange: false,
-                    responsive: {
-                        details: {
-                            display: $.fn.dataTable.Responsive.display.modal({
-                                header: function (row) {
-                                    var data = row.data();
-                                    return 'Details for ' + data[0] + ' ' + data[1];
-                                }
-                            }),
-                            renderer: $.fn.dataTable.Responsive.renderer.tableAll({
-                                tableClass: 'table'
-                            })
-                        }
-                    }
-                });
+                                                    function confirmDelete(idU) {
+                                                        var r = confirm("Do you want to delete user?");
+                                                        if (r) {
+                                                            window.location.href = "AdminController?action=deleteUser&idU=" + idU;
+                                                        }
+                                                    }
 
 
-            });
+                                                    $(document).ready(function () {
+
+                                                        $('.dataTable').DataTable({
+                                                            searching: true,
+                                                            bLengthChange: false,
+                                                            responsive: {
+                                                                details: {
+                                                                    display: $.fn.dataTable.Responsive.display.modal({
+                                                                        header: function (row) {
+                                                                            var data = row.data();
+                                                                            return 'Details for ' + data[0] + ' ' + data[1];
+                                                                        }
+                                                                    }),
+                                                                    renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+                                                                        tableClass: 'table'
+                                                                    })
+                                                                }
+                                                            }
+                                                        });
+
+
+                                                    });
         </script>
 
     </body>

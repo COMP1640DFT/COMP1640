@@ -147,7 +147,7 @@ public class ConnectDB {
         try {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, "%"+y+"%");
+            ps.setString(1, "%" + y + "%");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 claim = new Claim();
@@ -258,7 +258,7 @@ public class ConnectDB {
         try {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, "%"+y+"%");
+            ps.setString(1, "%" + y + "%");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Claim c = new Claim();
@@ -286,7 +286,7 @@ public class ConnectDB {
                 + "join  tblAssessment  asm on asm.id= ad.idAssesment\n"
                 + "inner join tblUser u on c.idUser = u.idUser \n"
                 + "inner join tblFaculty m on u.idFaculty = m.id\n"
-                + "where c.evidence = '' and m.id = ? and c.sendDate like '%"+year+"%'";
+                + "where c.evidence = '' and m.id = ? and c.sendDate like '%" + year + "%'";
         try {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
@@ -318,7 +318,7 @@ public class ConnectDB {
                 + "join tblADetail ad on cm.idItemAssessment=ad.id \n"
                 + "join  tblItemA im on ad.idItem= im.id\n"
                 + "join  tblAssessment  asm on asm.id= ad.idAssesment\n"
-                + "where c.sendDate <= ADDDATE(NOW(),-14) and c._status = 0 and c.sendDate like '%"+year+"%'";
+                + "where c.sendDate <= ADDDATE(NOW(),-14) and c._status = 0 and c.sendDate like '%" + year + "%'";
         List<Claim> list = new LinkedList<>();
 
         try {
@@ -356,7 +356,7 @@ public class ConnectDB {
                 + "join  tblItemA im on ad.idItem= im.id\n"
                 + "join  tblAssessment  asm on asm.id= ad.idAssesment\n"
                 + "join tblFaculty m on u.idFaculty = m.id \n"
-                + "where c.sendDate <= ADDDATE(NOW(),-14) and c._status = 0 and m.id = ? and c.sendDate like '%"+year+"%'";
+                + "where c.sendDate <= ADDDATE(NOW(),-14) and c._status = 0 and m.id = ? and c.sendDate like '%" + year + "%'";
         List<Claim> list = new LinkedList<>();
 
         try {
@@ -386,13 +386,13 @@ public class ConnectDB {
         return list;
     }
 
-    public List<Claim> getAllClaimManage(int idFaculty) {
+    public List<Claim> getAllClaimManage(int idFaculty, int year) {
         String sql = "select tcm.idCM, tcm.title, tcm.createdate, tcm.enddate, tcm._status, ta._name, tia.name \n"
                 + "from tblClaimManage tcm\n"
                 + "join tblADetail tad on tcm.idItemAssessment = tad.id\n"
                 + "join tblAssessment ta on ta.id = tad.idAssesment\n"
                 + "join tblFaculty tf on tf.id = ta.idFaculty\n"
-                + "join tblItemA tia on tad.idItem = tia.id  where tf.id = ?";
+                + "join tblItemA tia on tad.idItem = tia.id  where tf.id = ? and tcm.createdate like '%"+year+"%'";
         List<Claim> list = new LinkedList<>();
 
         try {
@@ -420,13 +420,33 @@ public class ConnectDB {
         return list;
     }
 
-    public List<Claim> getAllClaimManageFilterByStatus(int idFaculty, int stt) {
+    public List<Claim> getAllClaimManageFilterByStatus(int idFaculty, int stt,int year) {
         String sql = "select tcm.idCM, tcm.title, tcm.createdate, tcm.enddate, tcm._status, ta._name, tia.name \n"
                 + "from tblClaimManage tcm\n"
                 + "join tblADetail tad on tcm.idItemAssessment = tad.id\n"
                 + "join tblAssessment ta on ta.id = tad.idAssesment\n"
                 + "join tblFaculty tf on tf.id = ta.idFaculty\n"
-                + "join tblItemA tia on tad.idItem = tia.id  where ta.idFaculty = ? and tcm._status = ?";
+                + "join tblItemA tia on tad.idItem = tia.id  where tf.id = ? and tcm._status = ? and tcm.createdate like '%"+year+"%'";
+        
+        if(stt == 1 ){
+            sql = "select tcm.idCM, tcm.title, tcm.createdate, tcm.enddate, tcm._status, ta._name, tia.name \n"
+                + "from tblClaimManage tcm\n"
+                + "join tblADetail tad on tcm.idItemAssessment = tad.id\n"
+                + "join tblAssessment ta on ta.id = tad.idAssesment\n"
+                + "join tblFaculty tf on tf.id = ta.idFaculty\n"
+                + "join tblItemA tia on tad.idItem = tia.id  where tf.id = ? and (tcm._status = ? OR tcm._status = 0) and tcm.createdate like '%"+year+"%'";;
+        }
+        
+        if(stt == 0 ){
+            sql = "select tcm.idCM, tcm.title, tcm.createdate, tcm.enddate, tcm._status, ta._name, tia.name \n"
+                + "from tblClaimManage tcm\n"
+                + "join tblADetail tad on tcm.idItemAssessment = tad.id\n"
+                + "join tblAssessment ta on ta.id = tad.idAssesment\n"
+                + "join tblFaculty tf on tf.id = ta.idFaculty\n"
+                + "join tblItemA tia on tad.idItem = tia.id  where tf.id = ? and (tcm._status = ? OR tcm._status = 0) and tcm.createdate like '%"+year+"%'";;
+        }
+        
+        
         List<Claim> list = new LinkedList<>();
 
         try {
@@ -896,7 +916,7 @@ public class ConnectDB {
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+        return rs;
     }
 
     public boolean updateClaim(int status, int idClaim) {
@@ -1096,12 +1116,8 @@ public class ConnectDB {
         boolean rs = false;
         try {
             connectdatabase();
-            String sql = "insert into tblADetail(idAssesment,idItem) value (?,'1'),(?,'2'),(?,'3')";
+            String sql = "insert into tblADetail(idAssesment,idItem) value (" + idAssessment + ",1),(" + idAssessment + ",2),(" + idAssessment + ",3)";
             PreparedStatement st = con.prepareStatement(sql);
-            st.setInt(1, idAssessment);
-            st.setInt(2, idAssessment);
-            st.setInt(3, idAssessment);
-
             rs = st.executeUpdate() > 0;
             con.close();
         } catch (SQLException ex) {
@@ -1242,6 +1258,41 @@ public class ConnectDB {
         return rs;
     }
 
+    public int checkExistAssessment(int idA) {
+        int r = 0;
+        String sql = "SELECT COUNT( * ) \n"
+                + "FROM  tblClaimManage tcm join tblADetail tad on tcm.idItemAssessment = tad.id\n"
+                + "where idAssesment = " + idA;
+        try {
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                r = rs.getInt(1);
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
+        }
+        return r;
+    }
+
+    public boolean removeItemAssessment(int idA) {
+        boolean rs = false;
+        String sql = "DELETE FROM tblADetail WHERE idAssesment = " + idA;
+        try {
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
+            rs = ps.executeUpdate() > 0;
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        return rs;
+    }
+
     public boolean changePassword(String idUser, String pass) {
         boolean rs = false;
         try {
@@ -1257,13 +1308,29 @@ public class ConnectDB {
         }
         return rs;
     }
-    
+
     public boolean removeClaimByStudent(int id) {
         boolean rs = false;
         String sql = "DELETE FROM tblClaim WHERE idClaim = " + id;
         try {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
+            rs = ps.executeUpdate() > 0;
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        return rs;
+    }
+
+    public boolean removeUser(String id) {
+        boolean rs = false;
+        String sql = "DELETE FROM tblUser WHERE idUser = ?";
+        try {
+            connectdatabase();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, id);
             rs = ps.executeUpdate() > 0;
             con.close();
         } catch (SQLException ex) {

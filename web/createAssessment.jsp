@@ -81,7 +81,7 @@
 
             </div>
             <div class="main-content">
-                <h2>Welcome: </h2>
+                <h2>Welcome: ${account.idUser}</h2>
 
                 <br/>
                 <div class="col-sm-12">

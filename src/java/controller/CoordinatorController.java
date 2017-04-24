@@ -116,6 +116,7 @@ public class CoordinatorController extends HttpServlet {
                 }
             }
             if (btntext.equals("Update")) {
+
                 String message = request.getParameter("message");
                 String selectedStatus = request.getParameter("selectStatus");
 
@@ -128,14 +129,16 @@ public class CoordinatorController extends HttpServlet {
                         Decision decision = new Decision(claim.getIdClaim(), message, date_send, Integer.parseInt(selectedStatus), acc.getIdUser());
                         decision.setFullNameEC(acc.getFullName());
                         session.setAttribute("decision", decision);
+                        connectDB.updateClaim(Integer.parseInt(selectedStatus), claim.getIdClaim());
                         Account stdAcc = connectDB.getAccoutnByid(claim.getIdUser());
                         String mailtext = "Hello " + stdAcc.getFullName() + "(" + stdAcc.getIdUser() + ")"
                                 + "\n The decision of your claim  (" + claim.getTitle() + ") update finished.";
                         mail(stdAcc.getEmail(), mailtext);
+                        System.out.println("123");
 //                        response.sendRedirect("../coordinator/detailclaim.jsp");
                         response.sendRedirect("CoordinatorController?action=viewAllClaim");
                     } else {
-
+                        System.out.println("fialse");
                     }
                 } else {
                     sendMessage(response, "Please enter content before update!", "detailclaimC.jsp");
@@ -181,14 +184,8 @@ public class CoordinatorController extends HttpServlet {
 
     private void viewAllClaimFilterByStatus(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException, ServletException {
         Claim c = new Claim();
-        int idStt = 0;
-        String status = request.getParameter("status");
-        if (status.equals("Done")) {
-            idStt = 1;
-        }
-        if (status.equals("Expired")) {
-            idStt = 2;
-        }
+        int idStt = Integer.parseInt(request.getParameter("status"));
+
         Account acc = (Account) session.getAttribute("account");
         c.setListClaim(connectDB.getAllClaimOfStudentInAFacultyFilterByStatus(acc.getIdFaculty(), idStt));
         Faculty m = connectDB.getMajor(acc.getIdFaculty());
