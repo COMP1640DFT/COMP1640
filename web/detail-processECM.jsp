@@ -4,6 +4,7 @@
     Author     : minamaurer
 --%>
 
+<%@page import="entity.Claim"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -38,10 +39,12 @@
 
         <!-- TS1387507138: Neon - Responsive Admin Template created by Laborator -->
     </head>
+    <jsp:useBean id="ClaimDetail" class="entity.Claim" scope="session"></jsp:useBean>
+    <jsp:useBean id="DecisionDetail" class="entity.Decision" scope="session"></jsp:useBean>
     <jsp:useBean id="account" class="entity.Account" scope="session"></jsp:useBean>
-    <c:if test="${account.lever != 3}">
-        <jsp:forward page="logout.jsp"></jsp:forward>
-    </c:if>
+    <% if (account.getLever() != 3) {%>
+    <jsp:forward page="logout.jsp"></jsp:forward>
+    <%}%>
     <body class="page-body">
 
         <div class="page-container">
@@ -93,37 +96,20 @@
                 <br/>
                 <div class="col-sm-12">
                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h1 class="panel-title">All claims</h1>
-                        </div>
+                        <% Claim c = (Claim) session.getAttribute("ClaimDetail");%>
 
-                        <div class="panel-body">
-                            <table class="dataTable table table-bordered table table-responsive">
-                                <thead>
-                                <th>#</th>
-                                <th>Student</th>
-                                <th>Title</th>
-                                <th>Faculty</th>
-                                <th>Assessment</th>
-                                <th>Datetime</th>
-                                <th>Item</th>
-                                </thead>
-
-                                <tbody>
-                                    <c:forEach items="${sessionScope['listClaim']}" var="cl">
-                                        <tr>
-                                            <td>${cl.idClaim}</td>
-                                            <td>${cl.idUser}</td>
-                                            <td><a href="Controller?action=viewDetail&id=${cl.idClaim}" class="btn-reader">${cl.title}</a></td>
-                                            <td>${cl.facultyName}</td>
-                                            <td>${cl.assessmentName}</td>
-                                            <td>${cl.sendDate}</td>
-                                            <td>${cl.itemAssessmentName}</td>
-                                        </tr>
-                                    </c:forEach>
-                                </tbody>
-                            </table>
-                        </div>
+                        <h1>${ClaimDetail.title}</h1>
+                        <hr/>
+                        <h3>Feedback from: <strong>${ClaimDetail.idUser} (${ClaimDetail.userFullName})</strong></h3>
+                        <p>
+                            ${ClaimDetail.content}
+                        </p>
+                        <c:if test="${ClaimDetail.filedata != ''}">
+                            <a href="${ClaimDetail.filedata}" target="_blank"><img src="http://placehold.it/350x150?text=File" class="img-thumbnail"></a>
+                            </c:if>
+                        <hr/>
+                        <h3>Reply from: <strong>${DecisionDetail.idUser}</strong></h3>
+                        <p>${DecisionDetail.content}</p>
                     </div>
                 </div>
                 <!-- lets do some work here... --><!-- Footer -->
