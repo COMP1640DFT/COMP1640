@@ -101,88 +101,6 @@
 
                         </ul>
 
-                        <ul class="user-info pull-left pull-right-xs pull-none-xsm">
-                            <!-- Message Notifications -->
-                            <li class="notifications dropdown">
-
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
-                                   data-close-others="true">
-                                    <i class="fa fa-globe fa-3x" style="font-size: 2.0em"></i>
-                                    <span class="badge badge-secondary">10</span>
-                                </a>
-
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <ul class="dropdown-menu-list scroller">
-                                            <li class="active">
-                                                <a href="#">
-
-                                                    <span class="line">
-                                                        <strong>Luc Chartier</strong>
-                                                        - yesterday
-                                                    </span>
-
-                                                    <span class="line desc small">
-                                                        This ain’t our first item, it is the best of the rest.
-                                                    </span>
-                                                </a>
-                                            </li>
-
-                                            <li class="active">
-                                                <a href="#">
-
-                                                    <span class="line">
-                                                        <strong>Salma Nyberg</strong>
-                                                        - 2 days ago
-                                                    </span>
-
-                                                    <span class="line desc small">
-                                                        Oh he decisively impression attachment friendship so if everything.
-                                                    </span>
-                                                </a>
-                                            </li>
-
-                                            <li>
-                                                <a href="#">
-
-
-                                                    <span class="line">
-                                                        Hayden Cartwright
-                                                        - a week ago
-                                                    </span>
-
-                                                    <span class="line desc small">
-                                                        Whose her enjoy chief new young. Felicity if ye required likewise so doubtful.
-                                                    </span>
-                                                </a>
-                                            </li>
-
-                                            <li>
-                                                <a href="#">
-
-
-                                                    <span class="line">
-                                                        Sandra Eberhardt
-                                                        - 16 days ago
-                                                    </span>
-
-                                                    <span class="line desc small">
-                                                        On so attention necessary at by provision otherwise existence direction.
-                                                    </span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-
-                                    <li class="external">
-                                        <a href="mailbox/main/index.html">All Messages</a>
-                                    </li>
-                                </ul>
-
-                            </li>
-
-                        </ul>
-
                     </div>
 
 
@@ -287,10 +205,10 @@
                         var sttfile = document.getElementById('stt-file');
                         //
                         var file;
-                        
+
                         var types = ["jpg", "jpeg", "png", "pdf"];
-                        
-                            
+
+
                         fileButton.addEventListener('change', function (e) {
                             // get file
                             var file = e.target.files[0];
@@ -301,18 +219,18 @@
                                 if (file.size > max_file_size) {
                                     sttfile.innerHTML = "File size max 20MB.";
                                     return;
-                                } 
-                                var typef= file.name.split('.').pop().toLowerCase();
+                                }
+                                var typef = file.name.split('.').pop().toLowerCase();
                                 var checkf = 0;
-                                for(t in types){
-                                    if(types[t] == typef){
+                                for (t in types) {
+                                    if (types[t] == typef) {
                                         checkf++;
                                     }
                                 }
-                                if(checkf == 0){
+                                if (checkf == 0) {
                                     sttfile.innerHTML = "Please input file JPG-JPEG-PNG-PDF!";
-                                }else {
-                                    checkf = 0; 
+                                } else {
+                                    checkf = 0;
                                     $('#btnSend').prop("disabled", true);
                                     var storageRef = firebase.storage().ref('files/' + d.getTime() + "_${account.idUser}_" + file.name);
 
@@ -351,6 +269,13 @@
                             }
                         });
 
+                        document.addclaim.subject.addEventListener('focus', function () {
+                            $('#titleErr').text("");
+                        });
+
+                        document.addclaim.description.addEventListener('focus', function () {
+                            $('#contentErr').text("");
+                        });
                         function validate() {
                             var result = 0;
                             if (document.addclaim.subject.value == "") {

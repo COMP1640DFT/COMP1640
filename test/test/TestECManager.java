@@ -62,7 +62,7 @@ public class TestECManager {
     public void getAllClaimbyTwoWeekById() {
         int idMajor = 1;
         int totalClaim = 0;
-        assertEquals("Total all claim 2 after week by Major", totalClaim, connectDB.getAllClaimUnresolvedAfterTwoWeekInMajor(idMajor).size());
+        assertEquals("Total all claim 2 after week by Major", totalClaim, connectDB.getAllClaimUnresolvedAfterTwoWeekInMajor(idMajor, 2017).size());
     }
 
     @Test

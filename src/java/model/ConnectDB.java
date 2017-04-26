@@ -558,7 +558,7 @@ public class ConnectDB {
         List<ItemSelected> list = new ArrayList<>();
         String sql = "select tad.id, ta._name, tia.name, tf.name from tblADetail tad join tblAssessment ta on ta.id = tad.idAssesment\n"
                 + "                            join tblFaculty tf on tf.id = ta.idFaculty\n"
-                + "                            join tblItemA tia on tad.idItem = tia.id ";
+                + "                            join tblItemA tia on tad.idItem = tia.id order by ta._name asc";
         try {
             connectdatabase();
             PreparedStatement ps = con.prepareStatement(sql);
@@ -593,6 +593,7 @@ public class ConnectDB {
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
         return rs;
     }
@@ -878,6 +879,7 @@ public class ConnectDB {
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
         return rs;
     }
@@ -898,6 +900,7 @@ public class ConnectDB {
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
         return rs;
     }
@@ -915,6 +918,7 @@ public class ConnectDB {
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
         return rs;
     }
@@ -931,6 +935,7 @@ public class ConnectDB {
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
         return rs;
     }
@@ -947,6 +952,7 @@ public class ConnectDB {
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
         return rs;
     }
@@ -963,6 +969,7 @@ public class ConnectDB {
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
         return rs;
     }
@@ -1064,6 +1071,7 @@ public class ConnectDB {
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
         return rs;
     }
@@ -1083,6 +1091,7 @@ public class ConnectDB {
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
         return rs;
     }
@@ -1108,6 +1117,7 @@ public class ConnectDB {
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
         return rs;
     }
@@ -1122,6 +1132,7 @@ public class ConnectDB {
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
         return rs;
     }
@@ -1157,6 +1168,7 @@ public class ConnectDB {
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
         return rs;
     }
@@ -1239,6 +1251,7 @@ public class ConnectDB {
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
         return rs;
     }
@@ -1305,6 +1318,7 @@ public class ConnectDB {
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
         return rs;
     }

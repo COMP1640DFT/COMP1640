@@ -117,7 +117,7 @@
                     <div class="col-sm-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h1 class="panel-title">Create new account</h1>
+                                <h1 class="panel-title">Change password</h1>
                             </div>
 
                             <div class="panel-body">
@@ -140,7 +140,7 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="col-sm-7 col-sm-offset-5">
-                                            <button class="btn btn-success"  type="submit"><i class="entypo entypo-user-add"></i> Create</button>
+                                            <button class="btn btn-success"  type="submit"><i class="entypo entypo-pencil"></i>Update</button>
                                             <button class="btn btn-default" type="reset"><i class="entypo entypo-cancel-circled"></i> Reset</button>
                                         </div>
                                     </div>

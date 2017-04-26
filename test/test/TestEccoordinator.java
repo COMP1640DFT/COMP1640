@@ -17,11 +17,11 @@ import static org.junit.Assert.*;
  *
  * @author DaoMinhThien
  */
-public class TestStudent {
+public class TestEccoordinator {
     
     ConnectDB connectDB = new ConnectDB();
     
-    public TestStudent() {
+    public TestEccoordinator() {
     }
     
     @BeforeClass
@@ -39,22 +39,16 @@ public class TestStudent {
     @After
     public void tearDown() {
     }
+    
+    
+    @Test 
+    public void getAllClaimManageByMajor(){
+        assertEquals("Total all claim of IT", 1, connectDB.getAllClaimOfStudentInAFaculty(1, 2017).size());
+    }
 
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:
     //
     // @Test
     // public void hello() {}
-    
-    @Test 
-    public void getAllClaimManageByMajor(){
-        assertEquals("Total all claim of IT", 2, connectDB.getAllClaimManage(1,2017).size());
-    }
-    
-    @Test 
-    public void getAllClaimOfClaimManage(){
-        int idClaimManage =1;
-        String idUser = "taicngc";
-        assertEquals("Total all claim of user id taincgc ", 0, connectDB.getAllClaimOfStudent("taincgc", idClaimManage).size());
-    }
 }

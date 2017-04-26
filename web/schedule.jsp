@@ -192,12 +192,16 @@
         <script src="assets/js/demo.js" id="script-resource-8"></script>
 
         <script type="text/javascript">
+                                document.formcreate.from.addEventListener('focus', function () {
+                                    $('#fromdateer').text("");
+                                });
+                                
+                                document.formcreate.to.addEventListener('focus', function () {
+                                    $('#todateer').text("");
+                                });
+            
                                 function validate() {
                                     var rs = 0;
-                                    if (document.formcreate.title.value == "") {
-                                        $('#titleer').text("Please input title!");
-                                        rs = rs + 1;
-                                    }
                                     if (document.formcreate.from.value == "") {
                                         $('#fromdateer').text("Please input title!");
                                         rs = rs + 1;
@@ -206,6 +210,26 @@
                                         $('#todateer').text("Please input title!");
                                         rs = rs + 1;
                                     }
+
+                                    if (document.formcreate.from.value != "") {
+                                        var today = new Date();
+                                        var inputDate = new Date(document.formcreate.from.value);
+                                        if (inputDate < today) {
+                                            $('#fromdateer').text("Invalidate !");
+                                        }
+                                        rs = rs + 1;
+                                    }
+                                    
+                                    if (document.formcreate.to.value != "") {
+                                        var fromDate = new Date(document.formcreate.from.value);
+                                        var toDate = new Date(document.formcreate.to.value);
+                                        if (fromDate >= toDate) {
+                                            $('#todateer').text("Invalidate !");
+                                        }
+                                        rs = rs + 1;
+                                    }
+
+
                                     if (rs > 0) {
                                         return false;
                                     }
