@@ -98,7 +98,7 @@
                 <br/>
                 <div class="row">
                     <div class="col-sm-12">
-                        <form class="form-inline" action="Controller?action=getStt" method="POST">
+                        <form class="form-inline" >
                             <div class="form-group">
                                 <label><strong>Filter: &nbsp;&nbsp;&nbsp;&nbsp;</strong></label>
                             </div>
@@ -107,8 +107,8 @@
                                 <div class="dropdown">
                                     <button class="dropbtn">Search</button>
                                     <div class="dropdown-content">
-                                        <a href="AdminController?action=getStt&stt=0">Claim need close upload</a>
-                                        <a href="AdminController?action=getStt&stt=1">Claim need close upload evidence</a>
+                                        <a href="AdminController?action=getStt&stt=0">The deadline of uploading claim</a>
+                                        <a href="AdminController?action=getStt&stt=1">The deadline of uploading evidence</a>
                                     </div>
                                 </div>
                             </div>

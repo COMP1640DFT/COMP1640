@@ -203,30 +203,38 @@
                                 function validate() {
                                     var rs = 0;
                                     if (document.formcreate.from.value == "") {
-                                        $('#fromdateer').text("Please input title!");
+                                        $('#fromdateer').text("Please input from!");
                                         rs = rs + 1;
                                     }
                                     if (document.formcreate.to.value == "") {
-                                        $('#todateer').text("Please input title!");
+                                        $('#todateer').text("Please input to!");
                                         rs = rs + 1;
                                     }
 
                                     if (document.formcreate.from.value != "") {
                                         var today = new Date();
                                         var inputDate = new Date(document.formcreate.from.value);
-                                        if (inputDate < today) {
+                                        
+                                        var d1 = new Date(today.getYear(),today.getMonth(),today.getDay());
+                                        var d2 = new Date(inputDate.getYear(),inputDate.getMonth(),inputDate.getDay());
+                                        
+                                        if (d1 < d2) {
                                             $('#fromdateer').text("Invalidate !");
+                                            rs = rs + 1;
                                         }
-                                        rs = rs + 1;
                                     }
                                     
                                     if (document.formcreate.to.value != "") {
                                         var fromDate = new Date(document.formcreate.from.value);
                                         var toDate = new Date(document.formcreate.to.value);
+                                        
+                                        var d1 = new Date(fromDate.getYear(),fromDate.getMonth(),fromDate.getDay());
+                                        var d2 = new Date(toDate.getYear(),toDate.getMonth(),toDate.getDay());
+                                        
                                         if (fromDate >= toDate) {
                                             $('#todateer').text("Invalidate !");
+                                            rs = rs + 1;
                                         }
-                                        rs = rs + 1;
                                     }
 
 
