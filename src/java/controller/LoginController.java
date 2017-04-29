@@ -56,7 +56,7 @@ public class LoginController extends HttpServlet {
         
         Account acc = connectDB.checkLogin(idUser, Encode.encryptPass(pass));
         Claim c = new Claim();
-        if (acc != null) {
+        if (acc.getIdUser() != null) {
             session.setAttribute("account", acc);
             switch (acc.getLever()) {
                 //student

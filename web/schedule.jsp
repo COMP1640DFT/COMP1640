@@ -217,8 +217,7 @@
                                         
                                         var d1 = new Date(today.getYear(),today.getMonth(),today.getDay());
                                         var d2 = new Date(inputDate.getYear(),inputDate.getMonth(),inputDate.getDay());
-                                        
-                                        if (d1 < d2) {
+                                        if (d1 > d2) {
                                             $('#fromdateer').text("Invalidate !");
                                             rs = rs + 1;
                                         }
@@ -227,9 +226,6 @@
                                     if (document.formcreate.to.value != "") {
                                         var fromDate = new Date(document.formcreate.from.value);
                                         var toDate = new Date(document.formcreate.to.value);
-                                        
-                                        var d1 = new Date(fromDate.getYear(),fromDate.getMonth(),fromDate.getDay());
-                                        var d2 = new Date(toDate.getYear(),toDate.getMonth(),toDate.getDay());
                                         
                                         if (fromDate >= toDate) {
                                             $('#todateer').text("Invalidate !");
